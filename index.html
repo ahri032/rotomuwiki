@@ -101,6 +101,38 @@ body::before{
   padding:0 16px;gap:0;
   transition:background .3s,border-color .3s;
 }
+
+/* ===== 모바일 2줄 네비 ===== */
+@media(max-width:640px){
+  .navbar{
+    height:auto !important;
+    flex-wrap:wrap !important;
+    padding:0 12px !important;
+    gap:0 !important;
+  }
+  .navbar-brand{
+    flex:1 !important;
+    min-width:0;
+    padding:8px 0 !important;
+  }
+  .navbar-actions{
+    flex-shrink:0 !important;
+    padding:8px 0 !important;
+  }
+  .navbar-nav{
+    order:3 !important;
+    flex:0 0 100% !important;
+    width:100% !important;
+    min-width:100% !important;
+    margin:0 -12px !important;
+    padding:4px 12px 8px !important;
+    border-top:1px solid var(--border) !important;
+    overflow-x:auto !important;
+    scrollbar-width:none !important;
+  }
+  .navbar-nav::-webkit-scrollbar{display:none;}
+  .app{padding-top:108px !important;}
+}
 .navbar-brand{
   display:flex;align-items:center;gap:8px;
   font-family:var(--display);font-size:19px;font-weight:700;
@@ -124,6 +156,7 @@ body::before{
   flex:1;overflow-x:auto;scrollbar-width:none;
 }
 .navbar-nav::-webkit-scrollbar{display:none;}
+
 .nav-btn{
   display:flex;align-items:center;gap:4px;
   padding:6px 11px;font-size:12.5px;font-weight:500;
