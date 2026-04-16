@@ -587,28 +587,52 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
     <!-- AI 파티 분석 -->
     <div id="wr-ai" style="display:none;">
-      <div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:16px;margin-bottom:14px;">
-        <div style="font-size:11px;color:var(--accent);font-family:var(--mono);letter-spacing:2px;margin-bottom:10px;">MY PARTY (최대 6마리)</div>
-        <div id="wr-ai-party" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;"></div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <div style="position:relative;flex:1;">
-            <input id="wr-ai-search" type="text" placeholder="포켓몬 검색 후 추가..." autocomplete="off"
-              oninput="filterWrList('ai',this.value)" onfocus="showWrList('ai')"
-              style="width:100%;box-sizing:border-box;">
-            <div id="wr-ai-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:200px;overflow-y:auto;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);z-index:100;margin-top:2px;box-shadow:0 8px 24px rgba(0,0,0,.5);"></div>
-            <input type="hidden" id="wr-ai-add-poke" value="">
+      <!-- 파티 입력: 내 파티 / 상대 파티 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+
+        <!-- 내 파티 -->
+        <div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:11px;color:var(--accent);font-family:var(--mono);letter-spacing:2px;margin-bottom:10px;">MY PARTY <span id="ai-my-count" style="color:var(--muted);">0/6</span></div>
+          <div id="wr-ai-party" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;min-height:40px;"></div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <div style="position:relative;flex:1;">
+              <input id="wr-ai-search" type="text" placeholder="포켓몬 검색..." autocomplete="off"
+                oninput="filterWrList('ai',this.value)" onfocus="showWrList('ai')"
+                style="width:100%;box-sizing:border-box;font-size:12px;">
+              <div id="wr-ai-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:180px;overflow-y:auto;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);z-index:100;margin-top:2px;box-shadow:0 8px 24px rgba(0,0,0,.5);"></div>
+              <input type="hidden" id="wr-ai-add-poke" value="">
+            </div>
+            <button onclick="addAiPartyPoke('my')" style="background:var(--accent);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;">+</button>
+            <button onclick="clearAiParty('my')" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:11px;cursor:pointer;">초기화</button>
           </div>
-          <button onclick="addAiPartyPoke()" style="background:var(--surface2);color:var(--muted2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;">추가</button>
-          <button onclick="clearAiParty()" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:12px;cursor:pointer;">초기화</button>
+        </div>
+
+        <!-- 상대 파티 -->
+        <div style="background:var(--surface);border:1px solid rgba(248,113,113,.3);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:11px;color:#f87171;font-family:var(--mono);letter-spacing:2px;margin-bottom:10px;">OPPONENT PARTY <span id="ai-op-count" style="color:var(--muted);">0/6</span></div>
+          <div id="wr-op-party" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;min-height:40px;"></div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <div style="position:relative;flex:1;">
+              <input id="wr-aop-search" type="text" placeholder="포켓몬 검색..." autocomplete="off"
+                oninput="filterWrList('aop',this.value)" onfocus="showWrList('aop')"
+                style="width:100%;box-sizing:border-box;font-size:12px;">
+              <div id="wr-aop-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:180px;overflow-y:auto;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);z-index:100;margin-top:2px;box-shadow:0 8px 24px rgba(0,0,0,.5);"></div>
+              <input type="hidden" id="wr-aop-add-poke" value="">
+            </div>
+            <button onclick="addAiPartyPoke('op')" style="background:#f87171;color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;">+</button>
+            <button onclick="clearAiParty('op')" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:11px;cursor:pointer;">초기화</button>
+          </div>
         </div>
       </div>
+
+      <!-- 추가 요청 + 분석 버튼 -->
       <div style="display:flex;gap:8px;margin-bottom:12px;">
-        <textarea id="wr-ai-context" placeholder="추가 요청사항 (선택, 예: '스피드 위주로 분석해줘', '더블 배틀 기준'...)" style="flex:1;height:60px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--fg);font-size:12px;font-family:'Noto Sans KR',sans-serif;resize:none;"></textarea>
-        <button onclick="runAiAnalysis()" style="background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-weight:600;">🤖 분석</button>
+        <textarea id="wr-ai-context" placeholder="추가 요청사항 (선택, 예: '더블 배틀 기준', '선발 조합 추천'...)" style="flex:1;height:52px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--fg);font-size:12px;font-family:'Noto Sans KR',sans-serif;resize:none;"></textarea>
+        <button onclick="runAiAnalysis()" style="background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-weight:600;white-space:nowrap;">🤖 분석</button>
       </div>
       <div id="wr-ai-loading" style="display:none;text-align:center;padding:30px;color:var(--muted);">
         <div style="font-size:24px;animation:spin 1s linear infinite;display:inline-block;">⚙️</div>
-        <div style="margin-top:8px;font-size:13px;">AI 분석 중...</div>
+        <div style="margin-top:8px;font-size:13px;">AI 승률 분석 중...</div>
       </div>
       <div id="wr-ai-result" style="display:none;"></div>
     </div>
@@ -3026,7 +3050,8 @@ async function loadDoubleStats() {
 let wrCurrentTab = 'matchup';
 let wrMyForm = null;   // 'X','Y','' 메가폼
 let wrOpForm = null;
-let aiParty = [];      // [{id, name, form}]
+let aiParty = [];  // [{id,name,evs:{},item:'',moves:[],openDetail:false}]
+let opParty = [];  // 상대 파티
 
 function switchWrTab(tab, btn) {
   wrCurrentTab = tab;
@@ -3082,10 +3107,17 @@ function selectWrPoke(side, id, name) {
   if (dd) dd.style.display = 'none';
   if (clr) clr.style.display = '';
   if (side === 'ai') {
-    addAiPartyPokeById(id, name);
+    document.getElementById('wr-ai-add-poke').value = id;
+    addAiPartyPoke('my');
     inp.value = '';
     if (clr) clr.style.display = 'none';
-    hidden.value = '';
+    if (hidden) hidden.value = '';
+  } else if (side === 'aop') {
+    document.getElementById('wr-aop-add-poke').value = id;
+    addAiPartyPoke('op');
+    inp.value = '';
+    if (clr) clr.style.display = 'none';
+    if (hidden) hidden.value = '';
   } else {
     updateWrPoke(side);
   }
@@ -3352,50 +3384,148 @@ function calcMatchup() {
 }
 
 // ===== AI 파티 분석 =====
-function addAiPartyPoke() {
-  const hidden = document.getElementById('wr-ai-add-poke');
-  const pid = parseInt(hidden ? hidden.value : 0);
-  if (!pid) return;
-  addAiPartyPokeById(pid, '');
+
+// 도구 목록 (포챔스 기준)
+const AI_ITEMS = ['없음','기합의띠','구애스카프','구애머리띠','구애안경','생명의구슬','돌격조끼',
+  '반짝가루','먹다남은음식','자뭉열매','리샘열매','하양허브','멘탈허브','초점렌즈','저주의부적',
+  '화염구슬','독구슬','진화의휘석','메가돌','힘의머리띠'];
+
+function makePartyEntry(id, name) {
+  return { id, name, evs:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0}, item:'없음', moves:['','','',''], open:false };
 }
 
-function addAiPartyPokeById(pid, name) {
-  if (aiParty.length >= 6) { alert('최대 6마리까지 추가 가능해요!'); return; }
+function addAiPartyPoke(side) {
+  const hiddenId = side === 'op' ? 'wr-aop-add-poke' : 'wr-ai-add-poke';
+  const pid = parseInt(document.getElementById(hiddenId)?.value || 0);
+  if (!pid) return;
+  const arr = side === 'op' ? opParty : aiParty;
+  if (arr.length >= 6) { alert('최대 6마리!'); return; }
   const p = POKEMON_DATA.find(x => x.id === pid);
   if (!p) return;
-  if (aiParty.find(x => x.id === pid)) { alert('이미 추가된 포켓몬이에요!'); return; }
-  aiParty.push({ id: pid, name: p.name });
-  renderAiParty();
+  if (arr.find(x => x.id === pid)) { alert('이미 추가됨!'); return; }
+  arr.push(makePartyEntry(pid, p.name));
+  // 검색창 초기화
+  const searchId = side === 'op' ? 'wr-op-search' : 'wr-ai-search';
+  const dropId = side === 'op' ? 'wr-aop-dropdown' : 'wr-ai-dropdown';
+  document.getElementById(searchId).value = '';
+  document.getElementById(hiddenId).value = '';
+  document.getElementById(dropId).style.display = 'none';
+  renderAiParty(side);
 }
 
-function removeAiParty(idx) {
-  aiParty.splice(idx, 1);
-  renderAiParty();
+function removeAiPartyPoke(side, idx) {
+  if (side === 'op') opParty.splice(idx, 1);
+  else aiParty.splice(idx, 1);
+  renderAiParty(side);
 }
-function clearAiParty() {
-  aiParty = [];
-  renderAiParty();
+
+function clearAiParty(side) {
+  if (side === 'op') opParty = [];
+  else aiParty = [];
+  renderAiParty(side);
   document.getElementById('wr-ai-result').style.display = 'none';
 }
 
-function renderAiParty() {
-  const el = document.getElementById('wr-ai-party');
-  if (!aiParty.length) {
-    el.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0;">포켓몬을 추가해주세요 (최대 6마리)</div>';
+function toggleAiPokeDetail(side, idx) {
+  const arr = side === 'op' ? opParty : aiParty;
+  arr[idx].open = !arr[idx].open;
+  renderAiParty(side);
+}
+
+function setAiPokeEv(side, idx, key, val) {
+  const arr = side === 'op' ? opParty : aiParty;
+  arr[idx].evs[key] = parseInt(val) || 0;
+  // EV 총합 표시 업데이트
+  const total = Object.values(arr[idx].evs).reduce((a,b)=>a+b,0);
+  const totalEl = document.getElementById(`ai-ev-total-${side}-${idx}`);
+  if (totalEl) totalEl.textContent = `합계: ${total}/510`;
+}
+
+function setAiPokeItem(side, idx, val) {
+  const arr = side === 'op' ? opParty : aiParty;
+  arr[idx].item = val;
+}
+
+function setAiPokeMove(side, idx, slot, val) {
+  const arr = side === 'op' ? opParty : aiParty;
+  arr[idx].moves[slot] = val;
+}
+
+function renderAiParty(side) {
+  const arr = side === 'op' ? opParty : aiParty;
+  const containerId = side === 'op' ? 'wr-op-party' : 'wr-ai-party';
+  const countId = side === 'op' ? 'ai-op-count' : 'ai-my-count';
+  const accentColor = side === 'op' ? '#f87171' : 'var(--accent)';
+  const el = document.getElementById(containerId);
+  const countEl = document.getElementById(countId);
+  if (countEl) countEl.textContent = arr.length + '/6';
+
+  if (!arr.length) {
+    el.innerHTML = `<div style="color:var(--muted);font-size:12px;padding:4px 0;">포켓몬을 추가해주세요</div>`;
     return;
   }
-  el.innerHTML = aiParty.map((p, i) => {
+
+  // EV 라벨
+  const evLabels = ['HP','공격','방어','특공','특방','스피드'];
+  const evKeys = ['hp','atk','def','spa','spd','spe'];
+
+  // 기술 목록 datalist
+  const moveKeys = Object.keys(MOVE_DATA || {});
+
+  el.innerHTML = arr.map((p, i) => {
     const sprite = spriteUrl(p.id);
-    return `<div style="position:relative;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:6px;">
-      <img src="${sprite}" style="width:36px;height:36px;object-fit:contain;image-rendering:pixelated;">
-      <span style="font-size:12px;font-weight:600;">${p.name}</span>
-      <button onclick="removeAiParty(${i})" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;background:#f87171;border:none;border-radius:50%;color:#fff;font-size:11px;cursor:pointer;line-height:1;padding:0;">×</button>
+    const total = Object.values(p.evs).reduce((a,b)=>a+b,0);
+    const detailHtml = p.open ? `
+    <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:10px;">
+      <!-- EV -->
+      <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:6px;">
+        능력치 포인트 <span id="ai-ev-total-${side}-${i}" style="color:var(--gold);">합계: ${total}/510</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;">
+        ${evKeys.map((k,ki) => `
+          <div>
+            <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">${evLabels[ki]}</div>
+            <input type="number" min="0" max="252" value="${p.evs[k]}"
+              oninput="setAiPokeEv('${side}',${i},'${k}',this.value)"
+              style="width:100%;box-sizing:border-box;padding:4px 6px;font-size:11px;font-family:var(--mono);background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--fg);">
+          </div>`).join('')}
+      </div>
+      <!-- 도구 -->
+      <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">지닌 도구</div>
+      <select onchange="setAiPokeItem('${side}',${i},this.value)"
+        style="width:100%;margin-bottom:10px;padding:5px 8px;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--fg);">
+        ${AI_ITEMS.map(it => `<option value="${it}" ${p.item===it?'selected':''}>${it}</option>`).join('')}
+      </select>
+      <!-- 기술 4개 -->
+      <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">기술 슬롯</div>
+      <datalist id="ai-moves-dl-${side}-${i}">${moveKeys.map(m=>`<option value="${m}">`).join('')}</datalist>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+        ${[0,1,2,3].map(s => `
+          <input type="text" list="ai-moves-dl-${side}-${i}" value="${p.moves[s]}" placeholder="기술 ${s+1}"
+            oninput="setAiPokeMove('${side}',${i},${s},this.value)"
+            style="padding:5px 7px;font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--fg);">`).join('')}
+      </div>
+    </div>` : '';
+
+    return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 10px;">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <img src="${sprite}" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;" onerror="this.style.display='none'">
+        <span style="font-size:12px;font-weight:600;flex:1;">${p.name}</span>
+        ${p.item !== '없음' ? `<span style="font-size:10px;color:var(--gold);font-family:var(--mono);">${p.item}</span>` : ''}
+        <button onclick="toggleAiPokeDetail('${side}',${i})"
+          style="background:${p.open?'var(--accent)':'var(--surface)'};color:${p.open?'#fff':'var(--muted)'};border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;">
+          ${p.open ? '접기' : '설정'}
+        </button>
+        <button onclick="removeAiPartyPoke('${side}',${i})"
+          style="width:20px;height:20px;background:#f87171;border:none;border-radius:50%;color:#fff;font-size:12px;cursor:pointer;line-height:1;padding:0;flex-shrink:0;">×</button>
+      </div>
+      ${detailHtml}
     </div>`;
   }).join('');
 }
 
 async function runAiAnalysis() {
-  if (aiParty.length === 0) { alert('포켓몬을 최소 1마리 추가해주세요!'); return; }
+  if (aiParty.length === 0) { alert('내 파티 포켓몬을 추가해주세요!'); return; }
 
   const loading = document.getElementById('wr-ai-loading');
   const result = document.getElementById('wr-ai-result');
@@ -3404,32 +3534,47 @@ async function runAiAnalysis() {
   loading.style.display = '';
   result.style.display = 'none';
 
-  // 파티 정보 구성
-  const partyInfo = aiParty.map(p => {
-    const pData = POKEMON_DATA.find(x => x.id === p.id);
-    if (!pData) return p.name;
-    return `${pData.name}(타입:${pData.type.join('/')}, 공:${pData.stats.atk}, 특공:${pData.stats.spa}, 방:${pData.stats.def}, 특방:${pData.stats.spd}, 스피드:${pData.stats.spe}, HP:${pData.stats.hp})`;
-  }).join('\n');
+  function partyStr(arr) {
+    return arr.map(p => {
+      const pData = POKEMON_DATA.find(x => x.id === p.id);
+      if (!pData) return p.name;
+      const evStr = Object.entries(p.evs).filter(([k,v])=>v>0).map(([k,v])=>`${k.toUpperCase()}:${v}`).join(',');
+      const moveStr = p.moves.filter(Boolean).join('/');
+      return `${pData.name}(타입:${pData.type.join('/')}, 종족값합:${pData.stats.hp+pData.stats.atk+pData.stats.def+pData.stats.spa+pData.stats.spd+pData.stats.spe}` +
+        `${evStr?`, EP:${evStr}`:''}` +
+        `${p.item!=='없음'?`, 도구:${p.item}`:''}` +
+        `${moveStr?`, 기술:${moveStr}`:''})`;
+    }).join('\n');
+  }
 
-  // 현재 메타 컨텍스트
-  const metaCtx = `현재 포켓몬 챔피언스 더블 메타 TOP5: 누리레느(54.4%), 포푸니크(45.1%), 한카리아스(37.1%), 사이화차이(34.6%), 대도각참(27.0%)`;
+  const metaCtx = `현재 포챔스 더블 메타 TOP5: 누리레느(54.4%), 포푸니크(45.1%), 한카리아스(37.1%), 그우린차(34.6%), 대도각참(27.0%)`;
 
-  const prompt = `당신은 포켓몬 챔피언스 배틀 전문가입니다. 아래 파티를 분석해주세요.
+  const hasOp = opParty.length > 0;
+  const prompt = `당신은 포켓몬 챔피언스 VGC 배틀 전문가입니다.
 
-파티 구성:
-${partyInfo}
+내 파티:
+${partyStr(aiParty)}
 
+${hasOp ? `상대 파티:
+${partyStr(opParty)}
+` : ''}
 ${metaCtx}
 
-분석 요청:
-1. 파티의 강점과 약점 (타입 상성, 역할 분담)
-2. 현재 메타 TOP5 포켓몬 대비 예상 승률과 이유
-3. 가장 위험한 대면 상황과 대처법
-4. 파티 개선 제안 (1~2가지)
+다음을 분석해주세요:
+${hasOp ? `
+1. **예상 승률** — 내 파티 vs 상대 파티 승률을 퍼센트로 제시하고 근거 설명
+2. **핵심 대면** — 가장 유리한 대면 2개, 불리한 대면 2개
+3. **선발 추천** — 어떤 2마리를 선발로 내보낼지
+4. **주요 전략** — 게임 플랜과 주의사항
+` : `
+1. **파티 강점** — 타입 시너지, 역할 분담
+2. **메타 승률** — TOP5 포켓몬 대비 예상 승률
+3. **취약점** — 가장 위험한 상황
+4. **개선 제안** — 1~2가지
+`}
 ${extra ? `
 추가 요청: ${extra}` : ''}
-
-한국어로 간결하게 분석해주세요. 각 항목은 3~4줄 이내로.`;
+한국어로 간결하게 (각 항목 4줄 이내).`;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -3437,14 +3582,12 @@ ${extra ? `
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
+        max_tokens: 1200,
         messages: [{ role: 'user', content: prompt }]
       })
     });
-
     const data = await response.json();
     const text = data.content?.[0]?.text || '분석 실패';
-
     loading.style.display = 'none';
     result.style.display = '';
     result.innerHTML = `
@@ -3452,7 +3595,7 @@ ${extra ? `
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--gold));"></div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
         <span style="font-size:18px;">🤖</span>
-        <span style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--accent);">AI 파티 분석 결과</span>
+        <span style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--accent);">${opParty.length>0?'AI 승률 분석 결과':'AI 파티 분석 결과'}</span>
         <span style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-left:auto;">Claude Sonnet</span>
       </div>
       <div style="font-size:13px;color:var(--muted2);line-height:1.8;white-space:pre-wrap;">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
@@ -3460,8 +3603,149 @@ ${extra ? `
   } catch (e) {
     loading.style.display = 'none';
     result.style.display = '';
-    result.innerHTML = '<div style="color:#f87171;padding:16px;text-align:center;">API 오류가 발생했어요. 잠시 후 다시 시도해주세요.</div>';
+    result.innerHTML = '<div style="color:#f87171;padding:16px;text-align:center;">API 오류가 발생했어요.</div>';
   }
+}
+
+renderTeam();
+
+function removeFromTeam(id){team=team.filter(p=>p.id!==id);renderTeam();}
+
+function typeEffective(atkType,defTypes){let m=1;defTypes.forEach(dt=>{m*=(TYPE_CHART[atkType]?.[dt]??1);});return m;}
+
+function renderTeam(){
+  document.getElementById('team-count').textContent=team.length+' / 6';
+  const el=document.getElementById('team-list');
+  if(!team.length){el.innerHTML='<div class="empty"><div class="empty-icon">◦</div><p style="font-size:13px;">아직 비어있어요</p></div>';document.getElementById('team-analysis').innerHTML='';return;}
+  el.innerHTML=team.map(p=>`
+    <div class="team-slot">
+      <img class="poke-sprite" src="${spriteUrl(p.id)}" alt="${p.name}" onerror="this.style.opacity=0">
+      <span style="font-family:var(--mono);font-size:11px;color:var(--muted);min-width:36px;">No.${p.id}</span>
+      <span class="name">${p.name}</span>
+      <div class="poke-types">${p.type.map(typeBadge).join('')}</div>
+      <button class="remove-btn" onclick="removeFromTeam(${p.id})">×</button>
+    </div>`).join('');
+  analyzeTeam();
+}
+
+function analyzeTeam(){
+  if(!team.length)return;
+  const allTypes=Object.keys(TYPE_COLORS);
+  // 각 타입별로 파티 전체의 약점/저항 집계
+  // 타입별: 4배 몇마리, 2배 몇마리, 0.5배 몇마리, 0배 몇마리
+  const weakMap4={},weakMap2={},resMap={},immMap={};
+  team.forEach(p=>{
+    allTypes.forEach(t=>{
+      const e=typeEffective(t,p.type);
+      if(e>=4) weakMap4[t]=(weakMap4[t]||0)+1;
+      else if(e>=2) weakMap2[t]=(weakMap2[t]||0)+1;
+      else if(e===0) immMap[t]=(immMap[t]||0)+1;
+      else if(e<1) resMap[t]=(resMap[t]||0)+1;
+    });
+  });
+  // 표시용: 4배 먼저, 2배, 저항, 면역 순
+  const badges=[];
+  allTypes.forEach(t=>{
+    const col=TYPE_COLORS[t]||{bg:'#88888822',text:'#888',border:'#88888855'};
+    if(weakMap4[t]) badges.push({t,label:`×4`,count:weakMap4[t],priority:4,col,extra:'box-shadow:0 0 6px rgba(240,96,96,0.5);border-color:#f06060;'});
+    else if(weakMap2[t]) badges.push({t,label:`×2`,count:weakMap2[t],priority:2,col,extra:''});
+  });
+  badges.sort((a,b)=>b.priority-a.priority||b.count-a.count);
+  // 저항/면역도 표시
+  allTypes.forEach(t=>{
+    const col=TYPE_COLORS[t]||{bg:'#88888822',text:'#888',border:'#88888855'};
+    if(immMap[t]) badges.push({t,label:`×0`,count:immMap[t],priority:-1,col,extra:'opacity:.7;'});
+    else if(resMap[t]) badges.push({t,label:`½`,count:resMap[t],priority:-0.5,col,extra:'opacity:.7;'});
+  });
+  const avg={};
+  ['hp','atk','def','spa','spd','spe'].forEach(k=>{avg[k]=Math.round(team.reduce((s,p)=>s+p.stats[k],0)/team.length);});
+  document.getElementById('team-analysis').innerHTML=`
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title">약점 분석</div>
+      <div class="coverage-grid">${badges.map(b=>{
+        const isWeak=b.priority>=2;
+        const is4x=b.priority>=4;
+        const bg=is4x?'rgba(240,96,96,0.18)':isWeak?b.col.bg+'':'rgba(255,255,255,0.04)';
+        const borderCol=is4x?'#f06060':isWeak?b.col.border:'rgba(255,255,255,0.12)';
+        const textCol=is4x?'#f87171':isWeak?b.col.text:'var(--muted)';
+        return`<span class="badge" style="background:${bg};color:${textCol};border:1px solid ${borderCol};${b.extra}">
+          ${b.t} <span style="font-weight:700;">${b.label}</span><span style="opacity:.6;font-size:10px;margin-left:2px;">${b.count>1?`×${b.count}명`:''}</span>
+        </span>`;
+      }).join('')}</div>
+      <div class="card-title" style="margin-top:16px;">파티 평균 종족값</div>
+      ${renderStatBars(avg)}
+    </div>`;
+}
+
+function buildEPGrid(who){
+  const grid=document.getElementById(who+'-ep-grid');if(!grid)return;
+  const pid=parseInt(document.getElementById(who+'-pokemon').value);
+  const p=POKEMON_DATA.find(x=>x.id===pid);if(!p)return;
+  const statBases=[p.stats.hp,p.stats.atk,p.stats.def,p.stats.spa,p.stats.spd,p.stats.spe];
+  const total=Object.values(calcState[who].ep).reduce((a,b)=>a+b,0);
+  const totalEl=document.getElementById(who+'-ep-total');
+  if(totalEl)totalEl.textContent=`합계: ${total} / 66`;
+  grid.innerHTML=EP_LABELS.map((lbl,i)=>{
+    const key=EP_KEYS[i];const ep=calcState[who].ep[key]||0;const base=statBases[i];
+    const nat=who==='atk'?(key==='atk'||key==='spa'?calcState.atk.natAtk:key==='spe'?calcState.atk.natSpe:'n'):(key==='def'||key==='spd'?calcState.def.natDef:'n');
+    const real=key==='hp'?calcHP(base,ep):calcStat(base,ep,nat);
+    const natColor=nat==='p'?'color:var(--gold)':nat==='m'?'color:#f87171':'';
+    return`<div class="ev-cell">
+      <div class="ev-label">${lbl}</div>
+      <div style="display:flex;align-items:center;gap:2px;">
+        <button onclick="stepEP('${who}','${key}',-1)" style="width:20px;height:28px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--muted2);cursor:pointer;font-size:14px;padding:0;line-height:1;">-</button>
+        <input class="ev-input" type="number" min="0" max="32" value="${ep}"
+          style="width:42px;text-align:center;"
+          onclick="this.select()"
+          onchange="setEP('${who}','${key}',this.value)"
+          onkeydown="if(event.key==='Enter')this.blur()">
+        <button onclick="stepEP('${who}','${key}',1)" style="width:20px;height:28px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--muted2);cursor:pointer;font-size:14px;padding:0;line-height:1;">+</button>
+      </div>
+      <div class="ev-val" style="${natColor}">${real}</div>
+    </div>`;
+  }).join('');
+}
+
+function stepEP(who,key,delta){
+  const cur=calcState[who].ep[key]||0;
+  setEP(who,key,cur+delta);
+  // 버튼 클릭 후 인풋 값도 갱신
+  const grid=document.getElementById(who+'-ep-grid');
+  if(grid){const inputs=grid.querySelectorAll('input[type="number"]');const idx=EP_KEYS.indexOf(key);if(inputs[idx])inputs[idx].value=calcState[who].ep[key];}
+}
+
+function setEP(who,key,val){val=Math.max(0,Math.min(32,parseInt(val)||0));calcState[who].ep[key]=val;buildEPGrid(who);calcAll();}
+
+function setAtkNature(stat,val){
+  if(stat==='atk'){calcState.atk.natAtk=val;['n','p','m'].forEach(v=>{const el=document.getElementById('atk-nat-atk-'+v);if(el)el.classList.toggle('active',v===val);});}
+  else{calcState.atk.natSpe=val;['n','p','m'].forEach(v=>{const el=document.getElementById('atk-nat-spe-'+v);if(el)el.classList.toggle('active',v===val);});}
+  buildEPGrid('atk');calcAll();
+}
+
+function setDefNature(stat,val){
+  calcState.def.natDef=val;['n','p','m'].forEach(v=>{const el=document.getElementById('def-nat-def-'+v);if(el)el.classList.toggle('active',v===val);});
+  buildEPGrid('def');calcAll();
+}
+
+function buildItemGrid(who){
+  const items=who==='atk'?ITEMS.공격:ITEMS.방어;
+  const grid=document.getElementById(who+'-item-grid');if(!grid)return;
+  grid.innerHTML='';
+  items.forEach(item=>{
+    const btn=document.createElement('button');
+    btn.className='item-btn'+(calcState[who].item===item?' active':'');
+    btn.onclick=function(){setItem(who,item);};
+    const imgUrl=ITEM_IMAGE_MAP[item];
+    if(imgUrl){const img=document.createElement('img');img.src=imgUrl;img.style.cssText='width:16px;height:16px;object-fit:contain;image-rendering:pixelated;margin-right:3px;vertical-align:middle;';img.onerror=function(){this.style.display='none';};btn.appendChild(img);}
+    btn.appendChild(document.createTextNode(item));
+    grid.appendChild(btn);
+  });
+}
+
+function setItem(who,item){calcState[who].item=item;buildItemGrid(who);calcAll();}
+
+function buildMovesGrid(){
+  renderMoveSlots();
 }
 
 renderTeam();
@@ -3469,7 +3753,6 @@ initDmg();
 renderAllPokemon();
 initSampleTagFilters();
 renderSamples();
-// stats 초기화는 탭 클릭 시
 </script>
   <script>
     if ('serviceWorker' in navigator) {
