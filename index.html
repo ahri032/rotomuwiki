@@ -4061,7 +4061,7 @@ initSampleTagFilters();
 renderSamples();
 
 
-// ===== AI 싱글배틀 운용 가이드 =====
+// ===== AI 싱글배틀 운용 가이드 (Gemini via Worker) =====
 const WORKER_URL = 'https://rotomuwiki-api.kljjgu02.workers.dev';
 
 async function generateBattleGuide(pokeId) {
@@ -4075,20 +4075,22 @@ async function generateBattleGuide(pokeId) {
   body.innerHTML = '<div style="font-family:var(--mono);color:var(--muted);font-size:11px;padding:8px 0;">AI 분석 중<span class="guide-cursor"></span></div>';
   const st = p.stats;
   const bst = Object.values(st).reduce((a,b)=>a+b,0);
-  const prompt = '['+p.name+'] 포켓몬 챔피언스 싱글배틀 운용 가이드\n\n포켓몬 정보:\n- 이름: '+p.name+'\n- 타입: '+p.type.join('/')+'\n- 종족값: HP'+st.hp+' 공'+st.atk+' 방'+st.def+' 특공'+st.spa+' 특방'+st.spd+' 스'+st.spe+' (합계 '+bst+')\n- 기술: '+(p.moves||[]).join(', ')+'\n- '+p.gen+'세대\n\nJSON만 반환 (설명 없이, 마크다운 없이):\n{"roles":["포지션태그1","포지션태그2"],"strength":"강점 2-3문장","weakness":"약점 2-3문장","moves":["기술1","기술2","기술3","기술4"],"move_reason":"이유 1-2문장","tools":["도구1","도구2"],"ability":"특성과 이유","partner":"파트너와 이유","tip":"운용팁"}';
+  const pokeInfo = '타입: '+p.type.join('/')+'\n종족값: HP'+st.hp+' 공'+st.atk+' 방'+st.def+' 특공'+st.spa+' 특방'+st.spd+' 스'+st.spe+' (합계 '+bst+')\n기술: '+(p.moves||[]).join(', ')+'\n세대: '+p.gen+'세대';
   try {
     const res = await fetch(WORKER_URL, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+      body: JSON.stringify({ pokeName: p.name, pokeInfo })
     });
     const data = await res.json();
-    if (data.error) throw new Error(data.error);
-    if (!data.content || !data.content[0]) throw new Error('응답 없음');
-    const raw = data.content[0].text.replace(/```json/g,'').replace(/```/g,'').trim();
-    let g; try{g=JSON.parse(raw);}catch(e){body.innerHTML='<div class="guide-error">파싱 오류. 다시 시도해주세요.</div>';btn.classList.remove('loading');btn.disabled=false;return;}
-    const rc=r=>{if(['스위퍼','어태커','선봉','클리너','공격','전령'].some(k=>r.includes(k)))return 'atk';if(['탱커','벽','서포터','보조','내구','웰','센터'].some(k=>r.includes(k)))return 'def';return 'role';};
-    body.innerHTML=
+    if (!data.ok) throw new Error(data.error || '오류 발생');
+    const g = data.result;
+    const rc = r => {
+      if (['스위퍼','어태커','선봉','클리너','공격','전령'].some(k=>r.includes(k))) return 'atk';
+      if (['탱커','벽','서포터','보조','내구','웰','센터'].some(k=>r.includes(k))) return 'def';
+      return 'role';
+    };
+    body.innerHTML =
       '<div class="g-block"><div class="g-label">포지션</div><div class="g-tags">'+(g.roles||[]).map(r=>'<span class="g-tag '+rc(r)+'">'+r+'</span>').join('')+'</div></div>'+
       '<div class="g-block"><div class="g-label">강점 분석</div><div class="g-text">'+(g.strength||'')+'</div></div>'+
       '<div class="g-block"><div class="g-label">약점과 대응</div><div class="g-text">'+(g.weakness||'')+'</div></div>'+
@@ -4096,9 +4098,11 @@ async function generateBattleGuide(pokeId) {
       '<div class="g-block"><div class="g-label">추천 도구 · 특성</div><div class="g-tags">'+(g.tools||[]).map(t=>'<span class="g-tag tool">'+t+'</span>').join('')+'</div><div class="g-text" style="margin-top:6px;font-size:11px;color:var(--muted2);">'+(g.ability||'')+'</div></div>'+
       '<div class="g-block"><div class="g-label">시너지 파트너</div><div class="g-text">'+(g.partner||'')+'</div></div>'+
       '<div class="g-block" style="margin-bottom:0;"><div class="g-label">핵심 운용 팁</div><div class="g-text">'+(g.tip||'')+'</div></div>';
-  } catch(err){body.innerHTML='<div class="guide-error">오류: '+err.message+'</div>';}
-  btn.classList.remove('loading'); btn.disabled=false;
-  const bt=btn.querySelector('.btn-text'); if(bt) bt.textContent='재생성';
+  } catch(err) {
+    body.innerHTML = '<div class="guide-error">오류: '+err.message+'</div>';
+  }
+  btn.classList.remove('loading'); btn.disabled = false;
+  const bt = btn.querySelector('.btn-text'); if(bt) bt.textContent = '재생성';
 }
 </script>
   <script>
