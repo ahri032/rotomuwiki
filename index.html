@@ -1986,7 +1986,7 @@ const POKEMON_DATA=[
 {id:675,name:"부란다",type:["격투","악"],gen:6,stats:{hp:95,atk:124,def:78,spa:69,spd:71,spe:58},moves:["암흑파동","불릿펀치","마하펀치","칼춤","불꽃펀치","스톤에지","클로스컴뱃"]},
 {id:676,name:"트리미앙",type:["노말"],gen:6,stats:{hp:75,atk:80,def:60,spa:65,spd:90,spe:102},moves:["하이퍼보이스","화염방사","냉동빔","10만볼트","에너지볼","기합구슬","신속"]},
 {id:678,name:"냐오닉스",type:["에스퍼"],gen:6,stats:{hp:74,atk:48,def:76,spa:83,spd:81,spe:104},moves:["사이코키네시스","기합구슬","섀도볼","냉동빔","달의불빛","환상빔","나쁜음모"]},
-{id:681,name:"킬가르도",type:["강철","고스트"],gen:6,stats:{hp:60,atk:50,def:140,spa:50,spd:140,spe:60},moves:["폴터가이스트","야습","섀도크루","킹쉴드","신성한불꽃","아이언헤드","강철빔"]},
+{id:681,name:"킬가르도",type:["강철","고스트"],gen:6,stats:{hp:60,atk:50,def:150,spa:50,spd:150,spe:60},moves:["폴터가이스트","야습","섀도크루","킹쉴드","신성한불꽃","아이언헤드","강철빔"]},
 {id:683,name:"프레프티르",type:["페어리"],gen:6,stats:{hp:101,atk:72,def:72,spa:99,spd:89,spe:29},moves:["달의불빛","에너지볼","문포스","기합구슬","냉동빔","섀도볼"]},
 {id:685,name:"나루림",type:["페어리"],gen:6,stats:{hp:82,atk:80,def:86,spa:85,spd:75,spe:72},moves:["기합구슬","섀도볼","에너지볼","냉동빔","달의불빛","환상빔"]},
 {id:693,name:"블로스터",type:["물"],gen:6,stats:{hp:71,atk:73,def:88,spa:120,spd:89,spe:59},moves:["폭포오르기","아이언헤드","스톤에지","냉동빔","지진","물대포","분노껍질"]},
@@ -2003,7 +2003,7 @@ const POKEMON_DATA=[
 {id:715,name:"음번",type:["드래곤","비행"],gen:6,stats:{hp:85,atk:70,def:80,spa:97,spd:80,spe:123},moves:["에어슬래시","허리케인","브레이브버드","날개쉬기","날개치기","버그버즈"]},
 {id:724,name:"모크나이퍼",type:["풀","고스트"],gen:7,stats:{hp:78,atk:107,def:75,spa:100,spd:100,spe:70},moves:["잎날가르기","에너지볼","기가드레인","솔라빔","신속","씨폭탄","U턴"]},
 {id:727,name:"어흥염",type:["물"],gen:7,stats:{hp:70,atk:85,def:65,spa:125,spd:65,spe:120},moves:["플레어드라이브","클로스컴뱃","칼춤","불꽃펀치","마하펀치","불릿펀치","스톤에지"]},
-{id:730,name:"누리레느",type:["불꽃","악"],gen:7,stats:{hp:95,atk:115,def:90,spa:80,spd:90,spe:60},moves:["물거품아리아","냉동빔","달의불빛","눈사태","기합구슬","블리자드","물대포"]},
+{id:730,name:"누리레느",type:["물","페어리"],gen:7,stats:{hp:80,atk:74,def:74,spa:126,spd:116,spe:60},moves:["물거품아리아","하이퍼보이스","문포스","아쿠아제트","얼다바람","앙코르","노래하기","달의불빛","냉동빔","사이코노이즈","파도타기"]},
 {id:733,name:"왕큰부리",type:["노말","비행"],gen:7,stats:{hp:80,atk:120,def:75,spa:75,spd:75,spe:60},moves:["브레이브버드","에어슬래시","폭포오르기","하늘갈기","깨물어부수기","스톤에지","스텔스록"]},
 {id:740,name:"모단단게",type:["격투","얼음"],gen:7,stats:{hp:97,atk:132,def:77,spa:62,spd:67,spe:43},moves:["물대포","기합구슬","냉동빔","스톤에지","아쿠아제트","암석봉인"]},
 {id:745,name:"루가루암",type:["바위"],gen:7,stats:{hp:75,atk:115,def:65,spa:55,spd:65,spe:112},moves:["깨물어부수기","폭포오르기","지진","스톤에지","불꽃엄니","얼음엄니","번개엄니","칼춤"]},
@@ -4420,5 +4420,132 @@ async function runAiGuide(pokeId, megaVariant) {
       });
     }
   </script>
+
+<script id="rotomuwiki_v12_patch">
+window.ABILITY_DATA = {
+"까칠한피부":"접촉 공격 받을 시 상대 피해 1/8","촉촉보이스":"소리 기술 타입이 물이 된다","가뭄":"등장 시 날씨를 맑음으로 변경","잔비":"등장 시 날씨를 비로 변경","모래날림":"등장 시 모래바람 발동","모래일으킴":"등장 시 모래바람 발동","눈퍼뜨리기":"등장 시 우박 발동","에어록":"날씨 효과 무효화","날씨부정":"날씨 효과 무효화","프레셔":"상대 PP 소모 증가",
+"옹골참":"풀HP 시 일격에 쓰러지지 않음","오기":"능력 하락 시 공격 2랭크 상승","그림자밟기":"상대 교체 봉쇄","배틀스위치":"공격/변화 시 폼 전환","테크니션":"위력 60 이하 기술 1.5배","침투":"대타출동/스크린 무시","멀티스케일":"풀HP 시 피해 0.5배","부유":"땅 기술 무효","독가시":"접촉 시 독 부여 30%","탈":"1회 공격 무효",
+"심록":"HP 1/3 이하 풀 기술 1.5배","적응력":"자속 기술 위력 2배","위협":"등장 시 상대 공격 1랭크 하락","짓궂은마음":"변화기 우선도 +1","단단한발톱":"접촉 기술 1.3배","메가런처":"파동 기술 1.5배","천하장사":"물리 공격력 2배","철주먹":"주먹 기술 1.2배","페어리스킨":"노말->페어리+20%","일렉트릭스킨":"노말->전기+20%",
+"드래곤스킨":"노말->드래곤+20%","트랜지스터":"전기 기술 1.5배","강철술사":"강철 기술 1.5배","두꺼운지방":"불/얼음 피해 0.5배","저수":"물 기술 무효+회복","건조피부":"물 회복/불 피해 증가","방진":"가루/포자 무효","흡수":"풀 기술 무효+회복","축전":"전기 기술 무효+특공 상승","재앙의검":"상대 방어 3/4",
+"재앙의구슬":"상대 특수방어 3/4","재앙의그릇":"상대 특공 3/4","재앙의목간":"상대 공격 3/4","여왕의위엄":"상대 우선도 기술 무효","질풍날개":"HP풀이면 비행 우선도+1","불면":"잠듦 상태 방지","근성":"상태이상 시 공격 50% 상승","의욕":"물리 1.5배, 명중률 80%","급류":"HP 1/3 이하 물 기술 1.5배","맹화":"HP 1/3 이하 불꽃 1.5배",
+"모래의힘":"모래 시 암석/땅/강철 1.3배","모래숨기":"모래 시 회피율 상승","모래헤치기":"모래 시 스피드 2배","엽록소":"쾌청 시 스피드 2배","꽃피우기":"쾌청 시 편 공격/특공 상승","눈신발":"우박 시 회피율 상승","저주받은몸":"공격 시 30% 기술 봉쇄","트레이스":"등장 시 상대 특성 복사","매직가드":"공격 외 피해 무효","매직미러":"변화기 반사",
+"맑은눈":"명중률 감소 무시","전광기동":"수동 기술 우선도+1","기술달인":"기술 위력 1.5배","변환자재":"사용 기술 타입으로 변환","리베로":"배틀당 첫 기술 타입으로 변환","부자유친":"공격 2회 (2타 80%)","자력":"강철 타입 교체 봉쇄","공유":"같은 편 능력 공유","마술사":"공격 시 상대 도구 탈취","나쁜꿈":"잠든 상대 1/8 피해",
+"순수한힘":"공격 2배","벌레의알림":"HP 1/3 이하 벌레 1.5배","하늘의은총":"부가 효과 확률 2배","스킬링크":"연타 기술 5회 확정","틀깨기":"상대 특성 무시","색안경":"효과없음 시 2배","노가드":"모든 공격 명중","의태":"필드에 따라 타입 변경","이판사판":"반동 기술 1.2배","익숙해지기":"2번째 같은 타입 피해 0.5배",
+"풀솜털":"풀 기술 0 피해","깨끗한몸":"능력 하락 무시","방음":"소리 기술 무효","안개베일":"안개 시 능력 하락 방지","흰서리":"얼음 상태 방지","가속":"매 턴 스피드 상승","재생력":"교체 시 HP 1/3 회복","승기":"상대 능력 상승 시 공격 2랭크","비장의무기":"마지막 기술 확정 급소","고대활성":"부스트에너지 시 최고 능력 상승",
+"쿼크차지":"일렉트릭필드 시 최고 능력 상승","야심가":"같은 편 쓰러지면 공격 상승","페어리오라":"편 페어리 기술 1.33배","다크오라":"편 악 기술 1.33배","오라브레이크":"오라 효과 반전","정전기":"접촉 시 마비 30%","일루전":"파티 마지막 포켓몬으로 변신","무구의마음":"위협 무시","방재생력":"교체 시 방어+1","수월퇴피":"교체 시 HP 1/3 회복",
+"우격다짐":"부가효과 무시+1.3배","한손":"접촉 기술 1.3배","오버코트":"가루/날씨 피해 무효","마이페이스":"혼란/위협 무시","메가솔라":"쾌청 상태에서 기술 사용","관통드릴":"방어 무시 1/4 피해"
+};
+
+function createAutocomplete(input, dataGetter) {
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'position:relative;width:100%;';
+  input.parentNode.insertBefore(wrap, input);
+  wrap.appendChild(input);
+  var dd = document.createElement('div');
+  dd.className = '_ac_dd';
+  dd.style.cssText = 'position:absolute;top:100%;left:0;right:0;max-height:220px;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:6px;z-index:10000;display:none;margin-top:2px;box-shadow:0 6px 18px rgba(0,0,0,.35);';
+  wrap.appendChild(dd);
+  var composing = false;
+  function normalize(s){return (s||'').replace(/\s/g,'').toLowerCase();}
+  function render(q) {
+    var nq = normalize(q);
+    if (!nq) { dd.style.display='none'; return; }
+    var items = dataGetter();
+    var matches = items.filter(function(it){return normalize(it.name).indexOf(nq) !== -1;}).slice(0, 12);
+    if (!matches.length) { dd.style.display='none'; return; }
+    dd.innerHTML = matches.map(function(it){
+      var desc = it.desc ? '<div style="font-size:10px;color:var(--muted2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + it.desc + '</div>' : '';
+      return '<div class="_ac_item" data-name="' + it.name + '" style="padding:6px 10px;cursor:pointer;border-bottom:1px solid var(--border);"><div style="font-size:12px;font-weight:600;">' + it.name + '</div>' + desc + '</div>';
+    }).join('');
+    dd.style.display = 'block';
+    dd.querySelectorAll('._ac_item').forEach(function(el){
+      el.onmouseenter = function(){ this.style.background='var(--surface2)'; };
+      el.onmouseleave = function(){ this.style.background=''; };
+      el.onclick = function(){
+        input.value = this.dataset.name;
+        dd.style.display = 'none';
+        input.dispatchEvent(new Event('change', {bubbles:true}));
+        input.dispatchEvent(new Event('input', {bubbles:true}));
+      };
+    });
+  }
+  input.addEventListener('compositionstart', function(){ composing = true; });
+  input.addEventListener('compositionupdate', function(e){ render(input.value + (e.data||'')); });
+  input.addEventListener('compositionend', function(){ composing = false; render(input.value); });
+  input.addEventListener('input', function(){ if (!composing) render(input.value); });
+  input.addEventListener('focus', function(){ render(input.value); });
+  input.addEventListener('blur', function(){ setTimeout(function(){ dd.style.display='none'; }, 200); });
+}
+
+function applyWinrateUI() {
+  ['wr-my-ability','wr-op-ability'].forEach(function(id){
+    var inp = document.getElementById(id);
+    if (!inp || inp.dataset.acBound) return;
+    inp.dataset.acBound = '1';
+    createAutocomplete(inp, function(){
+      return Object.keys(window.ABILITY_DATA).map(function(n){return {name:n, desc:window.ABILITY_DATA[n]};});
+    });
+  });
+  ['wr-my-move0','wr-my-move1','wr-my-move2','wr-my-move3','wr-op-move0','wr-op-move1','wr-op-move2','wr-op-move3'].forEach(function(id){
+    var inp = document.getElementById(id);
+    if (!inp || inp.dataset.acBound) return;
+    inp.dataset.acBound = '1';
+    inp.removeAttribute('list');
+    createAutocomplete(inp, function(){
+      var dl = document.getElementById('wr-moves-dl');
+      if (!dl) return [];
+      return Array.from(dl.options).map(function(o){
+        var mvd = (typeof MOVE_DATA !== 'undefined' ? MOVE_DATA[o.value] : null);
+        var desc = mvd ? (mvd.type + ' · ' + mvd.cat + ' · 위력 ' + mvd.power) : '';
+        return {name:o.value, desc:desc};
+      });
+    });
+  });
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyWinrateUI);
+else applyWinrateUI();
+var _origSwitchTab = window.switchTab;
+if (typeof _origSwitchTab === 'function') {
+  window.switchTab = function(){ var r = _origSwitchTab.apply(this, arguments); setTimeout(applyWinrateUI, 100); return r; };
+}
+setInterval(applyWinrateUI, 1500);
+
+// KO턴 경고 패치 v2 - <b> 태그를 직접 타겟
+function patchKOTurn() {
+  var winrate = document.getElementById('tab-winrate');
+  if (!winrate) return;
+  // "내가 상대를 X턴 | 상대가 나를 Y턴" 패턴 찾기
+  var all = winrate.querySelectorAll('div, p, span, li');
+  all.forEach(function(n){
+    if (n.dataset.koFixed) return;
+    var html = n.innerHTML;
+    // 패턴: 숫자가 <b>로 감싸여 있고 "턴" 포함
+    if (n.textContent.includes('KO 턴') || n.textContent.includes('예상 KO')) {
+      var boldNodes = n.querySelectorAll('b');
+      var hasHighTurn = false;
+      boldNodes.forEach(function(b){
+        var m = b.textContent.match(/(\d+\.?\d*)턴/);
+        if (m && parseFloat(m[1]) > 50) {
+          b.style.color = '#f59e0b';
+          b.title = '기술 미선택 또는 상성 무효';
+          hasHighTurn = true;
+        }
+      });
+      if (hasHighTurn && !n.dataset.koFixed) {
+        var warnDiv = document.createElement('div');
+        warnDiv.style.cssText = 'margin-top:6px;padding:8px;background:rgba(245,158,11,0.1);border-left:3px solid #f59e0b;border-radius:4px;font-size:12px;color:#f59e0b;';
+        warnDiv.innerHTML = '⚠️ 50턴 이상: 기술 슬롯이 비어있거나 상성 무효(페어리 vs 드래곤 등)일 수 있습니다. 공격 기술을 실제로 선택하세요.';
+        n.appendChild(warnDiv);
+        n.dataset.koFixed = '1';
+      }
+    }
+  });
+}
+setInterval(patchKOTurn, 800);
+
+console.log('[v12] 누리레느/킬가르도 + ABILITY_DATA + autocomplete + KO턴 경고 패치 적용');
+</script>
+
 </body>
 </html>
