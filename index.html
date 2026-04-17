@@ -1996,6 +1996,8 @@ const MOVE_DATA = {
     "type": "얼음",
     "cat": "물리"
   },
+  "얼음뭉치": {"power":40,"type":"얼음","cat":"물리"},
+  "연속자르기": {"power":0,"type":"벌레","cat":"물리"},
   "철벽": {
     "power": 0,
     "type": "강철",
@@ -2813,7 +2815,11 @@ const FORM_SPRITE={
   10571:'https://pkmnchamps.github.io/images/sprites/forms/zoroark-hisui.png',
   10745:'https://pkmnchamps.github.io/images/sprites/forms/lycanroc-dusk.png',
   10724:'https://pkmnchamps.github.io/images/sprites/forms/decidueye-hisui.png',
-};
+
+  10059:'https://pkmnchamps.github.io/images/sprites/forms/arcanine-hisui.png',
+  10618:'https://pkmnchamps.github.io/images/sprites/forms/stunfisk-galar.png',
+  10706:'https://pkmnchamps.github.io/images/sprites/forms/goodra-hisui.png',
+  10713:'https://pkmnchamps.github.io/images/sprites/forms/avalugg-hisui.png',};
 function spriteUrl(id){if(FORM_SPRITE[id]){return FORM_SPRITE[id];}const o=SPRITE_OVERRIDE[id]||id;const pad=String(o).padStart(4,'0');return`https://pkmnchamps.github.io/images/sprites/${pad}_profile.png`;}
 function statColor(v){if(v>=120)return'#5b8af0';if(v>=100)return'#4ade80';if(v>=80)return'#f5c842';if(v>=60)return'#fb923c';return'#f87171';}
 
@@ -3420,6 +3426,11 @@ const POKEMON_DATA = [
 {"id":10571,"name":"조로아크(히스이)","type":["노말","고스트"],"gen":8,"stats":{"hp":55,"atk":100,"def":60,"spa":125,"spd":60,"spe":110},"moves":["하이퍼보이스","섀도볼","나쁜음모","냉동빔","10만볼트","도깨비불","방어","도발"]},
 {"id":10745,"name":"루가루암(황혼)","type":["악","불꽃"],"gen":7,"stats":{"hp":75,"atk":117,"def":65,"spa":60,"spd":65,"spe":110},"moves":["플레어드라이브","깨물어부수기","스톤에지","초고속이동","불꽃엄니","씹어삼키기","방어","도발"]},
 {"id":10724,"name":"모크나이퍼(히스이)","type":["풀","강철"],"gen":8,"stats":{"hp":72,"atk":120,"def":75,"spa":50,"spd":75,"spe":60},"moves":["잎날가르기","아이언테일","칼춤","에너지볼","스텔스록","씨뿌리기","방어","도발"]}
+,
+{"id":10059,"name":"윈디(히스이)","type":["불꽃","바위"],"gen":1,"stats":{"hp":95,"atk":115,"def":80,"spa":95,"spd":80,"spe":90},"moves":["플레어드라이브","스톤샤워","신속","그로우펀치","인파이트","깜짝베기","성스러운불꽃","스톤에지","바위봉인"]},
+{"id":10618,"name":"메더(가라르)","type":["땅","강철"],"gen":5,"stats":{"hp":109,"atk":81,"def":99,"spa":66,"spd":84,"spe":32},"moves":["뇌격","스텔스록","배북","지진","자이로볼","맹독","하품","철벽"]},
+{"id":10706,"name":"미끄래곤(히스이)","type":["강철","드래곤"],"gen":6,"stats":{"hp":80,"atk":100,"def":100,"spa":110,"spd":150,"spe":60},"moves":["용의파동","파동탄","러스터캐논","기합구슬","파워젬","드래곤테일","탁쳐서떨구기","방어"]},
+{"id":10713,"name":"크레베이스(히스이)","type":["얼음","바위"],"gen":6,"stats":{"hp":95,"atk":127,"def":184,"spa":34,"spd":36,"spe":38},"moves":["아이스스피너","눈사태","깨물어부수기","락블레스트","바디프레스","철벽","HP회복","얼음엄니"]}
 ];
 
 
@@ -4505,8 +4516,8 @@ function spriteUrl_fn(id) {
 }
 
 // ===== 싱글/더블 통계 데이터 =====
-const SINGLES_DATA = [{"rank": 1, "dex_id": 445, "kor": "한카리아스", "usage_rate": 0.382, "note": "드래곤/땅 제왕. 모래환경+스카프", "build": {"item": "구애스카프", "ability": "까칠한피부", "nature": "명랑", "role": "물리 스카프 스위퍼"}}, {"rank": 2, "dex_id": 730, "kor": "누리레느", "usage_rate": 0.298, "note": "물/페어리. 한카리아스 카운터", "build": {"item": "자뭉열매", "ability": "촉촉보이스", "nature": "조심", "role": "특수 서포터"}}, {"rank": 3, "dex_id": 6, "kor": "리자몽(메가Y)", "usage_rate": 0.276, "note": "가뭄+오버히트 고화력", "build": {"item": "리자몽나이트Y", "ability": "가뭄", "nature": "조심", "role": "쾌청 특수 에이스"}}, {"rank": 4, "dex_id": 823, "kor": "아머까오", "usage_rate": 0.251, "note": "강철/비행. 미러아머+유턴", "build": {"item": "먹다남은음식", "ability": "프레셔", "nature": "장난꾸러기", "role": "물리 벽 피벗"}}, {"rank": 5, "dex_id": 450, "kor": "하마돈", "usage_rate": 0.239, "note": "모래+스텔스록+하품 기점", "build": {"item": "먹다남은음식", "ability": "모래일으킴", "nature": "대담", "role": "기점 세터"}}, {"rank": 6, "dex_id": 1018, "kor": "브리두라스", "usage_rate": 0.198, "note": "강철/드래곤. 지구력+일렉트로빔", "build": {"item": "먹다남은음식", "ability": "옹골참", "nature": "겁쟁이", "role": "특수 어태커"}}, {"rank": 7, "dex_id": 983, "kor": "대도각참", "usage_rate": 0.187, "note": "강철/악. 총대장 피니셔", "build": {"item": "로플열매", "ability": "오기", "nature": "고집", "role": "물리 피니셔"}}, {"rank": 8, "dex_id": 94, "kor": "팬텀(메가)", "usage_rate": 0.171, "note": "고스피드 오물폭탄+섀도볼", "build": {"item": "팬텀나이트", "ability": "그림자밟기", "nature": "겁쟁이", "role": "특수 스위퍼"}}, {"rank": 9, "dex_id": 681, "kor": "킬가르도", "usage_rate": 0.165, "note": "폴터가이스트+야습 물리", "build": {"item": "기합의띠", "ability": "배틀스위치", "nature": "고집", "role": "물리 칼춤 스윕"}}, {"rank": 10, "dex_id": 212, "kor": "핫삼", "usage_rate": 0.158, "note": "테크니션 불릿펀치+유턴", "build": {"item": "기합의띠", "ability": "테크니션", "nature": "고집", "role": "물리 피벗"}}, {"rank": 11, "dex_id": 887, "kor": "드래펄트", "usage_rate": 0.152, "note": "스피드142 드래곤/고스트", "build": {"item": "기합의띠", "ability": "침투", "nature": "겁쟁이", "role": "고속 어태커"}}, {"rank": 12, "dex_id": 149, "kor": "망나뇽", "usage_rate": 0.143, "note": "멀티스케일+신속", "build": {"item": "기합의띠", "ability": "멀티스케일", "nature": "조심", "role": "특수 어태커"}}, {"rank": 13, "dex_id": 635, "kor": "삼삼드래", "usage_rate": 0.138, "note": "부유+나쁜음모 특수", "build": {"item": "기합의띠", "ability": "부유", "nature": "조심", "role": "특수 나쁜음모"}}, {"rank": 14, "dex_id": 970, "kor": "킬라플로르", "usage_rate": 0.129, "note": "스텔스록+머드샷 기점", "build": {"item": "기합의띠", "ability": "독가시", "nature": "조심", "role": "기점 세터"}}, {"rank": 15, "dex_id": 248, "kor": "마기라스", "usage_rate": 0.121, "note": "모래일으킴+스카프", "build": {"item": "구애스카프", "ability": "모래일으킴", "nature": "명랑", "role": "모래 물리 스위퍼"}}, {"rank": 16, "dex_id": 778, "kor": "따라큐", "usage_rate": 0.118, "note": "변장 물리 스위퍼", "build": {"item": "리샘열매", "ability": "탈", "nature": "고집", "role": "물리 칼춤 스위퍼"}}, {"rank": 17, "dex_id": 908, "kor": "마스카나", "usage_rate": 0.112, "note": "트릭플라워 확정급소", "build": {"item": "기합의띠", "ability": "심록", "nature": "겁쟁이", "role": "고속 피벗"}}, {"rank": 18, "dex_id": 448, "kor": "루카리오(메가)", "usage_rate": 0.107, "note": "적응력 파동탄", "build": {"item": "루카리오나이트", "ability": "적응력", "nature": "고집", "role": "물리 칼춤 스위퍼"}}, {"rank": 19, "dex_id": 130, "kor": "갸라도스", "usage_rate": 0.098, "note": "위협+용의춤", "build": {"item": "자뭉열매", "ability": "위협", "nature": "고집", "role": "물리 용의춤"}}, {"rank": 20, "dex_id": 547, "kor": "엘풍", "usage_rate": 0.094, "note": "짓궂은마음 서포터", "build": {"item": "기합의띠", "ability": "짓궂은마음", "nature": "조심", "role": "선공 서포터"}}];
-const DOUBLES_DATA = [{"rank":1,"dex_id":727,"kor":"어흥염","usage_rate":0.5437,"note":"위협+속이다+드레인펀치 더블 에이스"},{"rank":2,"dex_id":903,"kor":"포푸니크","usage_rate":0.4513,"note":"곡예+흉독조 더블 에이스"},{"rank":3,"dex_id":445,"kor":"한카리아스","usage_rate":0.3715,"note":"지진 광역기 핵심"},{"rank":4,"dex_id":1013,"kor":"그우린차","usage_rate":0.3462,"note":"그래스필드+홈서비스 서포트"},{"rank":5,"dex_id":983,"kor":"대도각참","usage_rate":0.2701,"note":"총대장 클리너"},{"rank":6,"dex_id":902,"kor":"대쓰여너","usage_rate":0.2215,"note":"저승도망+웨이브크래시"},{"rank":7,"dex_id":547,"kor":"엘풍","usage_rate":0.2006,"note":"짓궂은마음+앙코르"},{"rank":8,"dex_id":6,"kor":"리자몽","usage_rate":0.1781,"note":"가뭄팟 메가 에이스"},{"rank":9,"dex_id":670,"kor":"플라엣테","usage_rate":0.1778,"note":"페어리오라 지원형"},{"rank":10,"dex_id":10009,"kor":"워시로토무","usage_rate":0.1603,"note":"전기/물 사이클러"},{"rank":11,"dex_id":279,"kor":"패리퍼","usage_rate":0.16,"note":"잔비+날씨부정"},{"rank":12,"dex_id":248,"kor":"마기라스","usage_rate":0.1544,"note":"모래일으킴+스카프"},{"rank":13,"dex_id":149,"kor":"망나뇽","usage_rate":0.1366,"note":"멀티스케일+신속"},{"rank":14,"dex_id":1018,"kor":"브리두라스","usage_rate":0.1279,"note":"일렉트로빔+옹골참"},{"rank":15,"dex_id":94,"kor":"팬텀","usage_rate":0.1226,"note":"그림자밟기 특수 스위퍼"},{"rank":16,"dex_id":981,"kor":"키링키링","usage_rate":0.116,"note":"방음+갑옷조이기"},{"rank":17,"dex_id":142,"kor":"프테라","usage_rate":0.1101,"note":"암석헤드+스텔스록"},{"rank":18,"dex_id":3,"kor":"이상해꽃","usage_rate":0.1095,"note":"쾌청팟 엽록소 서포트"},{"rank":19,"dex_id":925,"kor":"파밀리쥐","usage_rate":0.1061,"note":"집단구타+엽록소"},{"rank":20,"dex_id":478,"kor":"눈여아","usage_rate":0.0973,"note":"눈퍼뜨리기+냉동빔"}]
+const SINGLES_DATA = [{"rank": 1, "dex_id": 445, "kor": "한카리아스", "usage_rate": 0.382, "note": "드래곤·땅 최상위 물리 에이스. 스카프로 고속 선제공격", "build": {"item": "구애스카프", "ability": "까칠한피부", "nature": "명랑", "role": "물리 스카프 스위퍼"}}, {"rank": 2, "dex_id": 730, "kor": "누리레느", "usage_rate": 0.298, "note": "물/페어리 특수 서포터. 한카리아스를 자연스럽게 카운터", "build": {"item": "자뭉열매", "ability": "촉촉보이스", "nature": "조심", "role": "특수 서포터"}}, {"rank": 3, "dex_id": 6, "kor": "리자몽(메가Y)", "usage_rate": 0.276, "note": "가뭄으로 쾌청을 깔고 오버히트 한 방에 넣는 특수 에이스", "build": {"item": "리자몽나이트Y", "ability": "가뭄", "nature": "조심", "role": "쾌청 특수 에이스"}}, {"rank": 4, "dex_id": 823, "kor": "아머까오", "usage_rate": 0.251, "note": "강철·비행 탱커. 미러아머로 견제 상쇄 후 유턴 사이클", "build": {"item": "먹다남은음식", "ability": "프레셔", "nature": "장난꾸러기", "role": "물리 벽 피벗"}}, {"rank": 5, "dex_id": 450, "kor": "하마돈", "usage_rate": 0.239, "note": "모래·스텔스록·하품으로 초반 판을 세팅하는 스타터", "build": {"item": "먹다남은음식", "ability": "모래일으킴", "nature": "대담", "role": "기점 세터"}}, {"rank": 6, "dex_id": 1018, "kor": "브리두라스", "usage_rate": 0.198, "note": "강철·드래곤 내구형. 전기 기술로 물 타입 녹이기 유리", "build": {"item": "먹다남은음식", "ability": "옹골참", "nature": "겁쟁이", "role": "특수 어태커"}}, {"rank": 7, "dex_id": 983, "kor": "대도각참", "usage_rate": 0.187, "note": "강철·악 피니셔. 총대장 특성으로 후반 클리너", "build": {"item": "로플열매", "ability": "오기", "nature": "고집", "role": "물리 피니셔"}}, {"rank": 8, "dex_id": 94, "kor": "팬텀(메가)", "usage_rate": 0.171, "note": "고속 특수기 에이스. 오물폭탄과 섀도볼로 타입 견제 완벽", "build": {"item": "팬텀나이트", "ability": "그림자밟기", "nature": "겁쟁이", "role": "특수 스위퍼"}}, {"rank": 9, "dex_id": 681, "kor": "킬가르도", "usage_rate": 0.165, "note": "폴터가이스트 고화력. 야습 선공권으로 마무리 가능", "build": {"item": "기합의띠", "ability": "배틀스위치", "nature": "고집", "role": "물리 칼춤 스윕"}}, {"rank": 10, "dex_id": 212, "kor": "핫삼", "usage_rate": 0.158, "note": "테크니션으로 불릿펀치 강화. 유턴으로 사이클 돌리는 피벗", "build": {"item": "기합의띠", "ability": "테크니션", "nature": "고집", "role": "물리 피벗"}}, {"rank": 11, "dex_id": 887, "kor": "드래펄트", "usage_rate": 0.152, "note": "스피드 142 고속 에이스. 드래곤·고스트 타입으로 반감 없음", "build": {"item": "기합의띠", "ability": "침투", "nature": "겁쟁이", "role": "고속 어태커"}}, {"rank": 12, "dex_id": 149, "kor": "망나뇽", "usage_rate": 0.143, "note": "멀티스케일로 풀체력 시 피해 절반. 신속 선공권 활용", "build": {"item": "기합의띠", "ability": "멀티스케일", "nature": "조심", "role": "특수 어태커"}}, {"rank": 13, "dex_id": 635, "kor": "삼삼드래", "usage_rate": 0.138, "note": "부유로 땅 무효, 나쁜음모로 특공을 두 번 올린 뒤 스윕", "build": {"item": "기합의띠", "ability": "부유", "nature": "조심", "role": "특수 나쁜음모"}}, {"rank": 14, "dex_id": 970, "kor": "킬라플로르", "usage_rate": 0.129, "note": "독가시로 상대 교체 부담, 스텔스록으로 판 짜는 세터", "build": {"item": "기합의띠", "ability": "독가시", "nature": "조심", "role": "기점 세터"}}, {"rank": 15, "dex_id": 248, "kor": "마기라스", "usage_rate": 0.121, "note": "모래 특성 자체 발동. 스카프로 고속 물리 스위퍼", "build": {"item": "구애스카프", "ability": "모래일으킴", "nature": "명랑", "role": "모래 물리 스위퍼"}}, {"rank": 16, "dex_id": 778, "kor": "따라큐", "usage_rate": 0.118, "note": "탈 특성으로 공격 한 번 무효화. 칼춤 후 선공 스위퍼", "build": {"item": "리샘열매", "ability": "탈", "nature": "고집", "role": "물리 칼춤 스위퍼"}}, {"rank": 17, "dex_id": 908, "kor": "마스카나", "usage_rate": 0.112, "note": "트릭플라워 확정 급소로 방어 무시. 고속 특수 어태커", "build": {"item": "기합의띠", "ability": "심록", "nature": "겁쟁이", "role": "고속 피벗"}}, {"rank": 18, "dex_id": 448, "kor": "루카리오(메가)", "usage_rate": 0.107, "note": "적응력으로 자속 기술 2배 증폭. 파동탄으로 고화력 특수기", "build": {"item": "루카리오나이트", "ability": "적응력", "nature": "고집", "role": "물리 칼춤 스위퍼"}}, {"rank": 19, "dex_id": 130, "kor": "갸라도스", "usage_rate": 0.098, "note": "위협+용의춤", "build": {"item": "자뭉열매", "ability": "위협", "nature": "고집", "role": "물리 용의춤"}}, {"rank": 20, "dex_id": 547, "kor": "엘풍", "usage_rate": 0.094, "note": "짓궂은마음 서포터", "build": {"item": "기합의띠", "ability": "짓궂은마음", "nature": "조심", "role": "선공 서포터"}}];
+const DOUBLES_DATA = [{"rank":1,"dex_id":727,"kor":"어흥염","usage_rate":0.5437,"note":"위협으로 상대 공격력 낮추고 속이다로 선공. 더블 메타 최상위"},{"rank":2,"dex_id":903,"kor":"포푸니크","usage_rate":0.4513,"note":"악·독 공격수. 흉독조 특성으로 뒷딜러 지원, 곡예 선공"},{"rank":3,"dex_id":445,"kor":"한카리아스","usage_rate":0.3715,"note":"지진 광역기로 상대 2마리 동시 타격. 더블의 단골 어태커"},{"rank":4,"dex_id":1013,"kor":"그우린차","usage_rate":0.3462,"note":"그래스필드로 풀 타입 강화, 홈서비스로 아군 특공 상승"},{"rank":5,"dex_id":983,"kor":"대도각참","usage_rate":0.2701,"note":"총대장 특성으로 아군 쓰러지면 공격력 상승. 후반 클리너"},{"rank":6,"dex_id":902,"kor":"대쓰여너","usage_rate":0.2215,"note":"저승도망 우선도로 생존. 웨이브크래시로 고속 고화력"},{"rank":7,"dex_id":547,"kor":"엘풍","usage_rate":0.2006,"note":"짓궂은마음으로 변화기 선공, 앙코르로 상대 기술 봉쇄"},{"rank":8,"dex_id":6,"kor":"리자몽","usage_rate":0.1781,"note":"가뭄 메가 에이스. 오버히트와 솔라빔으로 쾌청 고화력"},{"rank":9,"dex_id":670,"kor":"플라엣테","usage_rate":0.1778,"note":"페어리오라 지원으로 아군 페어리 기술 강화. 작고 단단함"},{"rank":10,"dex_id":10009,"kor":"워시로토무","usage_rate":0.1603,"note":"전기·물 두 타입 겸비. 유턴으로 사이클 돌리는 서포터"},{"rank":11,"dex_id":279,"kor":"패리퍼","usage_rate":0.16,"note":"잔비로 비 세팅. 날씨부정으로 상대 날씨도 차단"},{"rank":12,"dex_id":248,"kor":"마기라스","usage_rate":0.1544,"note":"모래일으킴으로 모래를 깔고 스카프로 고속 스윕"},{"rank":13,"dex_id":149,"kor":"망나뇽","usage_rate":0.1366,"note":"멀티스케일로 내구 보정. 신속 우선도로 깜짝 선공"},{"rank":14,"dex_id":1018,"kor":"브리두라스","usage_rate":0.1279,"note":"옹골참으로 일격 버티고 일렉트로빔 반격하는 반사형"},{"rank":15,"dex_id":94,"kor":"팬텀","usage_rate":0.1226,"note":"그림자밟기로 상대 교체 차단. 특수 기술로 쓸어담기"},{"rank":16,"dex_id":981,"kor":"키링키링","usage_rate":0.116,"note":"방음 특성으로 소리 기술 무효. 갑옷조이기 연속 딜링"},{"rank":17,"dex_id":142,"kor":"프테라","usage_rate":0.1101,"note":"암석헤드로 반동 무시. 스텔스록 기점 세팅 유리"},{"rank":18,"dex_id":3,"kor":"이상해꽃","usage_rate":0.1095,"note":"쾌청 시 엽록소로 스피드 2배. 솔라빔 즉발 공격"},{"rank":19,"dex_id":925,"kor":"파밀리쥐","usage_rate":0.1061,"note":"집단구타로 수 우위 시 공격력 상승. 엽록소로 속도 보정"},{"rank":20,"dex_id":478,"kor":"눈여아","usage_rate":0.0973,"note":"눈퍼뜨리기로 우박 세팅. 냉동빔으로 4배 약점 공략"}]
 
 let currentStatsMode = 'single';
 
@@ -5903,6 +5914,185 @@ function patchKOTurn() {
 setInterval(patchKOTurn, 800);
 
 console.log('[v12] 누리레느/킬가르도 + ABILITY_DATA + autocomplete + KO턴 경고 패치 적용');
+</script>
+
+
+<script id="rotom_user_builds_patch">
+(function(){
+  const LS_KEY = 'rotomuwiki_user_builds';
+  
+  function loadUserBuilds() {
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); }
+    catch(e) { return []; }
+  }
+  function saveUserBuilds(arr) {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(arr)); } catch(e){}
+  }
+  
+  // SAMPLE_DB 확장 훅 (존재하면)
+  function mergeSamples() {
+    try {
+      const user = loadUserBuilds();
+      if (user.length && typeof window.SAMPLE_DB_EXT !== 'object') {
+        window.SAMPLE_DB_EXT = user;
+      }
+    } catch(e){}
+  }
+  
+  // "새 빌드 추가" 버튼 + 모달 생성
+  function ensureAddButton() {
+    const samplesList = document.getElementById('samples-list');
+    if (!samplesList) return;
+    if (document.getElementById('user-build-add-btn')) return;
+    
+    const btn = document.createElement('button');
+    btn.id = 'user-build-add-btn';
+    btn.textContent = '+ 내 빌드 추가';
+    btn.style.cssText = 'margin-bottom:12px;padding:10px 16px;background:linear-gradient(135deg,#667eea,#10b981);color:white;border:none;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 4px 12px rgba(102,126,234,0.3);font-family:Noto Sans KR,sans-serif;';
+    btn.onclick = openBuildModal;
+    samplesList.parentNode.insertBefore(btn, samplesList);
+    
+    renderUserBuilds();
+  }
+  
+  function renderUserBuilds() {
+    const container = document.getElementById('samples-list');
+    if (!container) return;
+    // 기존 user-build-container 제거
+    const existing = document.getElementById('user-builds-container');
+    if (existing) existing.remove();
+    
+    const user = loadUserBuilds();
+    if (!user.length) return;
+    
+    const wrap = document.createElement('div');
+    wrap.id = 'user-builds-container';
+    wrap.style.cssText = 'margin-bottom:16px;padding:12px;background:rgba(102,126,234,0.05);border:1px solid rgba(102,126,234,0.2);border-radius:10px;';
+    wrap.innerHTML = `<div style="font-size:13px;font-weight:700;color:#a5b4fc;margin-bottom:10px;">⭐ 내가 만든 빌드 (${user.length})</div>`;
+    
+    user.forEach((b, i) => {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;margin-bottom:8px;font-size:12px;color:var(--text);';
+      const stats = (b.ep && typeof b.ep === 'object') ? Object.entries(b.ep).map(([k,v]) => `${k.toUpperCase()}:${v}`).join(' / ') : '';
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <strong style="font-size:14px;">${b.name || '(이름 없음)'}</strong>
+          <div style="display:flex;gap:6px;">
+            <button class="u-edit" data-i="${i}" style="padding:4px 10px;background:#667eea;color:white;border:none;border-radius:6px;font-size:11px;cursor:pointer;">편집</button>
+            <button class="u-del" data-i="${i}" style="padding:4px 10px;background:#ef4444;color:white;border:none;border-radius:6px;font-size:11px;cursor:pointer;">삭제</button>
+          </div>
+        </div>
+        <div style="color:var(--muted2);">📋 기술: ${(b.moves||[]).filter(Boolean).join(', ')}</div>
+        <div style="color:var(--muted2);">🎯 ${b.ability||'-'} / ${b.item||'-'} / ${b.nature||'-'}</div>
+        ${stats ? `<div style="color:var(--muted2);">📊 EP: ${stats}</div>` : ''}
+        ${b.desc ? `<div style="color:var(--muted2);margin-top:4px;font-style:italic;">${b.desc}</div>` : ''}
+      `;
+      wrap.appendChild(card);
+    });
+    
+    container.parentNode.insertBefore(wrap, container);
+    
+    wrap.querySelectorAll('.u-del').forEach(el => el.onclick = () => {
+      if (confirm('삭제하시겠습니까?')) {
+        const arr = loadUserBuilds();
+        arr.splice(+el.dataset.i, 1);
+        saveUserBuilds(arr);
+        renderUserBuilds();
+      }
+    });
+    wrap.querySelectorAll('.u-edit').forEach(el => el.onclick = () => {
+      openBuildModal(+el.dataset.i);
+    });
+  }
+  
+  function openBuildModal(editIdx) {
+    const existing = document.getElementById('user-build-modal');
+    if (existing) existing.remove();
+    
+    const arr = loadUserBuilds();
+    const b = (typeof editIdx === 'number' && arr[editIdx]) ? {...arr[editIdx]} : {
+      name:'', moves:['','','',''], ability:'', item:'', nature:'무보정', ep:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0}, tag:'커스텀', desc:''
+    };
+    
+    const modal = document.createElement('div');
+    modal.id = 'user-build-modal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:99999;display:flex;align-items:center;justify-content:center;font-family:Noto Sans KR,sans-serif;';
+    modal.innerHTML = `
+      <div style="background:#1e1f33;border:2px solid #667eea;border-radius:16px;padding:24px;max-width:540px;width:92%;max-height:88vh;overflow:auto;color:white;">
+        <h2 style="margin:0 0 16px;font-size:18px;">${typeof editIdx==='number'?'빌드 편집':'새 빌드 추가'}</h2>
+        <div style="display:grid;gap:10px;font-size:12px;">
+          <div>
+            <label style="display:block;margin-bottom:4px;color:#a5b4fc;">포켓몬 이름</label>
+            <input id="ub-name" value="${b.name||''}" placeholder="예: 한카리아스" style="width:100%;padding:8px;background:#0f172a;border:1px solid #475569;border-radius:6px;color:white;">
+          </div>
+          <div>
+            <label style="display:block;margin-bottom:4px;color:#a5b4fc;">기술 4개 (쉼표/줄바꿈 구분)</label>
+            <input id="ub-moves" value="${(b.moves||[]).join(', ')}" placeholder="예: 지진, 드래곤크루, 깨물어부수기, 스톤에지" style="width:100%;padding:8px;background:#0f172a;border:1px solid #475569;border-radius:6px;color:white;">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+            <div><label style="display:block;margin-bottom:4px;color:#a5b4fc;">특성</label>
+              <input id="ub-ability" value="${b.ability||''}" placeholder="까칠한피부" style="width:100%;padding:8px;background:#0f172a;border:1px solid #475569;border-radius:6px;color:white;"></div>
+            <div><label style="display:block;margin-bottom:4px;color:#a5b4fc;">도구</label>
+              <input id="ub-item" value="${b.item||''}" placeholder="구애스카프" style="width:100%;padding:8px;background:#0f172a;border:1px solid #475569;border-radius:6px;color:white;"></div>
+            <div><label style="display:block;margin-bottom:4px;color:#a5b4fc;">성격</label>
+              <input id="ub-nature" value="${b.nature||''}" placeholder="명랑" style="width:100%;padding:8px;background:#0f172a;border:1px solid #475569;border-radius:6px;color:white;"></div>
+          </div>
+          <div>
+            <label style="display:block;margin-bottom:4px;color:#a5b4fc;">EP (HP/ATK/DEF/SPA/SPD/SPE)</label>
+            <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;">
+              ${['hp','atk','def','spa','spd','spe'].map(k => `<input type="number" id="ub-ep-${k}" value="${b.ep?.[k]||0}" min="0" max="32" style="padding:6px;background:#0f172a;border:1px solid #475569;border-radius:4px;color:white;text-align:center;font-size:11px;">`).join('')}
+            </div>
+            <div style="font-size:10px;color:#64748b;margin-top:2px;">0~32 (총합 최대 66)</div>
+          </div>
+          <div>
+            <label style="display:block;margin-bottom:4px;color:#a5b4fc;">설명 (전략/핵심)</label>
+            <textarea id="ub-desc" placeholder="예: 모래 세팅 + 지진 광역기로 스윕" style="width:100%;min-height:60px;padding:8px;background:#0f172a;border:1px solid #475569;border-radius:6px;color:white;font-family:inherit;resize:vertical;">${b.desc||''}</textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end;">
+          <button id="ub-cancel" style="padding:10px 16px;background:transparent;border:1px solid #475569;color:#94a3b8;border-radius:8px;cursor:pointer;">취소</button>
+          <button id="ub-save" style="padding:10px 20px;background:#10b981;color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;">저장</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    
+    document.getElementById('ub-cancel').onclick = () => modal.remove();
+    document.getElementById('ub-save').onclick = () => {
+      const newBuild = {
+        name: document.getElementById('ub-name').value.trim(),
+        moves: document.getElementById('ub-moves').value.split(/[,\n]/).map(s=>s.trim()).filter(Boolean).slice(0,4),
+        ability: document.getElementById('ub-ability').value.trim(),
+        item: document.getElementById('ub-item').value.trim(),
+        nature: document.getElementById('ub-nature').value.trim(),
+        ep: {
+          hp: +document.getElementById('ub-ep-hp').value || 0,
+          atk: +document.getElementById('ub-ep-atk').value || 0,
+          def: +document.getElementById('ub-ep-def').value || 0,
+          spa: +document.getElementById('ub-ep-spa').value || 0,
+          spd: +document.getElementById('ub-ep-spd').value || 0,
+          spe: +document.getElementById('ub-ep-spe').value || 0
+        },
+        tag: '커스텀',
+        desc: document.getElementById('ub-desc').value.trim()
+      };
+      if (!newBuild.name) { alert('포켓몬 이름은 필수입니다'); return; }
+      const arr = loadUserBuilds();
+      if (typeof editIdx === 'number') arr[editIdx] = newBuild;
+      else arr.push(newBuild);
+      saveUserBuilds(arr);
+      modal.remove();
+      renderUserBuilds();
+    };
+  }
+  
+  // 주기적으로 sample 탭 체크 → 버튼 주입
+  setInterval(ensureAddButton, 1200);
+  if (document.readyState !== 'loading') ensureAddButton();
+  else document.addEventListener('DOMContentLoaded', ensureAddButton);
+  
+  console.log('[user_builds] 패치 로드됨');
+})();
 </script>
 
 </body>
