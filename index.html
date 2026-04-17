@@ -481,7 +481,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 .guide-body .g-mode{font-family:'Noto Sans KR',sans-serif;font-size:10px;color:var(--muted);margin-bottom:12px;padding:4px 10px;background:var(--surface2);border-radius:4px;display:inline-block;font-weight:500;}
 .guide-body .g-mode.ai{color:var(--accent2);background:rgba(155,109,255,.1);font-weight:600;}
 .guide-body .g-block{margin-bottom:14px;}
-.guide-body .g-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.guide-body .g-label{font-family:'Noto Sans KR',sans-serif;font-size:10px;letter-spacing:2px;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
 .guide-body .g-label::after{content:'';flex:1;height:1px;background:rgba(77,131,245,.15);}
 .guide-body .g-text{font-family:'Noto Sans KR',sans-serif;color:var(--text);font-size:13px;line-height:1.75;}
 .guide-body .g-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
@@ -2044,7 +2044,7 @@ const POKEMON_DATA=[
 {id:908,name:"마스카나",type:["풀","악"],gen:9,stats:{hp:76,atk:110,def:70,spa:81,spd:70,spe:123},moves:["트릭플라워","칼춤","씨폭탄","솔라블레이드","신속","에너지볼","유턴","리프스톰"]},
 {id:911,name:"라우드본",type:["불꽃","고스트"],gen:9,stats:{hp:104,atk:75,def:100,spa:110,spd:75,spe:66},moves:["불기둥","화염방사","오버히트","코어라이더","하이퍼보이스","스파이시엑스트랙트","불꽃엄니"]},
 {id:914,name:"웨이니발",type:["물","격투"],gen:9,stats:{hp:85,atk:120,def:80,spa:85,spd:75,spe:85},moves:["클로스컴뱃","불릿펀치","마하펀치","하드프레스","불꽃펀치","드레인펀치","칼춤"]},
-{id:925,name:"파밀리쥐",type:["노말"],gen:9,stats:{hp:74,atk:75,def:70,spa:65,spd:75,spe:111},moves:["유턴","브레이브버드","강철날개","에어슬래시","아이언헤드","스텔스록","날카롭게하기","방어"]},
+{id:925,name:"파밀리쥐",type:["노말"],gen:9,stats:{hp:74,atk:75,def:70,spa:65,spd:75,spe:111},moves:["찍찍베기","유턴","로킥","도발","앵콜","집단구타","초롱초롱눈동자","방어","하이퍼보이스","치근거리기","더블어택","섀도크루"]},
 {id:930,name:"올리르바",type:["바위"],gen:9,stats:{hp:55,atk:115,def:70,spa:80,spd:70,spe:120},moves:["에너지볼","리프스톰","오물폭탄","달의불빛","기합구슬","씨폭탄"]},
 {id:936,name:"카디나르마",type:["불꽃","에스퍼"],gen:9,stats:{hp:85,atk:60,def:100,spa:125,spd:80,spe:75},moves:["스톤에지","지진","아이언헤드","불꽃엄니","헤비봄버","암석봉인","스텔스록","철벽"]},
 {id:937,name:"파라블레이즈",type:["불꽃","에스퍼"],gen:9,stats:{hp:75,atk:125,def:80,spa:60,spd:100,spe:85},moves:["10만볼트","볼트체인지","전자포","아이언테일","번개","신속"]},
@@ -2059,8 +2059,8 @@ const POKEMON_DATA=[
 {id:983,name:"대도각참",type:["악","강철"],gen:9,stats:{hp:100,atk:135,def:120,spa:60,spd:85,spe:50},moves:["불릿펀치","아이언헤드","클로스컴뱃","칼춤","야습","불꽃엄니","스톤에지"]},
 {id:1013,name:"그우린차",type:["풀","고스트"],gen:9,stats:{hp:71,atk:60,def:106,spa:121,spd:80,spe:70},moves:["솔라블레이드","에너지볼","독찌르기","기합구슬","달의불빛","유턴","리프스톰"]},
 {id:995,name:"무쇠가시",type:["고스트"],gen:9,stats:{hp:100,atk:134,def:110,spa:70,spd:84,spe:72},moves:["폴터가이스트","야습","섀도볼","저주","트릭","섀도크루","냉동빔"]},
-{id:998,name:"드닐레이브",type:["드래곤","얼음"],gen:9,stats:{hp:115,atk:145,def:92,spa:75,spd:86,spe:87},moves:["아이언헤드","드래곤크루","얼음엄니","칼춤","스톤에지","지진","헤비봄버","아이언디펜스"]},
 {id:1017,name:"오거폰",type:["풀","드래곤"],gen:9,stats:{hp:80,atk:120,def:84,spa:60,spd:96,spe:110},moves:["드래곤펄스","에너지볼","기가드레인","냉동빔","솔라빔","리프스톰","달의불빛","드래곤크루","기합구슬"]},
+{id:1018,name:"브리두라스",type:["강철","드래곤"],gen:9,stats:{hp:90,atk:105,def:130,spa:125,spd:65,spe:85},moves:["용의파동","용성군","러스터캐논","일렉트로빔","메테오빔","철제광선","파동탄","드래곤크루","아이언헤드","바디프레스","하드프레스","메탈버스트","스톤에지","역린","스텔스록","칼춤","철벽","방어"]},
 {id:10009,name:"워시로토무",type:["전기","물"],gen:4,stats:{hp:50,atk:65,def:107,spa:105,spd:107,spe:86},moves:["볼트체인지","열탕","냉동빔","섀도볼","번개","10만볼트","방어","트릭","하이드로펌프"]},
 {id:26,name:"라이츄(알로라)",type:["전기","에스퍼"],gen:7,stats:{hp:60,atk:85,def:50,spa:95,spd:85,spe:110},moves:["볼트체인지","사이코쇼크","풀묶기","10만볼트","전기자석파","파동탄","마하펀치","방어"]},
 {id:38,name:"나인테일(알로라)",type:["얼음","페어리"],gen:7,stats:{hp:73,atk:67,def:75,spa:81,spd:100,spe:109},moves:["눈보라","냉동빔","달의불빛","오로라베일","안개","플레이러프","매력","얼음바람"]},
@@ -2830,7 +2830,7 @@ const SAMPLE_DB = [
   {name:'따라큐',id:778,moves:['치근거리기','야습','칼춤','길동무'],ability:'변장',item:'기합의띠',nature:'고집',up:'atk',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'고스트',desc:'변장으로 1회 무조건 버팀. 칼춤 후 스위퍼. 섀도스니크 선공+길동무 길막 병행.'},
   {name:'드래펄트',id:887,moves:['드래곤애로우','섀도볼','용의춤','신속'],ability:'침투',item:'생명의구슬',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'드래곤',desc:'스피드142 최속. 용의춤 후 스위퍼. 드래곤애로우 2발식 연속공격. 신속 선공. 침투로 스크린 무시.'},
   {name:'드래펄트(특수형)',id:887,moves:['드래곤애로우','섀도볼','화염방사','신속'],ability:'침투',item:'구애안경',nature:'조심',up:'spa',down:'atk',ep:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},tag:'드래곤',desc:'구애안경 특수형. 섀도볼+화염방사로 강철/얼음 견제폭 확보. 침투로 서포트 무시.'},
-  {name:'아머까오',id:925,moves:['찍찍베기','유턴','도발','신속'],ability:'미러아머',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'노말',desc:'미러아머로 위협 반사. 강철/비행으로 지진 면역. U턴으로 사이클. 파퓰레이션봄 고화력.'},
+  {name:'아머까오',id:823,moves:['브레이브버드','유턴','아이언헤드','도발'],ability:'미러아머',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'강철',desc:'미러아머로 위협 반사. 강철/비행으로 지진 면역. U턴으로 사이클. 브레이브버드 고화력.'},
   {name:'한카리아스',id:445,moves:['지진','역린','암석봉인','독찌르기'],ability:'모래숨기',item:'구애스카프',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'드래곤',desc:'지진 98.8% 고정. 독찌르기로 메가메가니움 견제. 암석봉인으로 메가리자몽Y 견제. 역린 고점. 스카프로 스피드102 보강.'},
   {name:'핫삼',id:212,moves:['불릿펀치','시저크로스','유턴','칼춤'],ability:'기술달인',item:'기합의띠',nature:'고집',up:'atk',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'벌레',desc:'기술달인으로 불릿펀치+시저크로스 위력 강화. U턴으로 대면조작. 페어리 타입 견제.'},
   {name:'메가리자몽Y',id:6,moves:['화염방사','에어슬래시','태양광선','오버히트'],ability:'가뭄',item:'리자몽나이트Y',nature:'조심',up:'spa',down:'atk',ep:{hp:2,atk:0,def:0,spa:32,spd:0,spe:32},tag:'메가',desc:'가뭄으로 쾌청 자동발동. 화염방사 물타입배제 1.5배. 태양광선 1턴 발동. 채용률 1위 메가진화.'},
@@ -2872,7 +2872,7 @@ const SAMPLE_DB = [
   {name:'엘풍',id:547,moves:['문포스','에너지볼','앵콜','추억의선물'],ability:'짓궂은마음',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:2,atk:0,def:0,spa:32,spd:0,spe:32},tag:'풀',desc:'짓궂은마음+선공앙코르. 추억의선물로 도구탈취. 스피드116 서포터.'},
   {name:'포푸니크',id:903,moves:['인파이트','페이탈클로','속이다','유턴'],ability:'곡예',item:'하양허브',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'격투',desc:'흉독조→능력하락→곡예발동. 기선제압 선공. 유턴 사이클. 하양허브 소모 후 곡예.'},
   {name:'삼삼드래',id:635,moves:['용성군','화염방사','깨물어부수기','나쁜음모'],ability:'부유',item:'생명의구슬',nature:'조심',up:'spa',down:'atk',ep:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},tag:'드래곤',desc:'부유로 지진 면역. 챔피언스 사용률 3위권. 나쁜음모 후 고화력. 화염방사 강철 견제.'},
-  {name:'아머까오',id:925,moves:['찍찍베기','유턴','도발','신속'],ability:'미러아머',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'노말',desc:'미러아머 위협 반사. 지진 면역. 챔피언스 4위권. U턴 사이클.'},
+  {name:'아머까오',id:823,moves:['브레이브버드','유턴','강철날개','도발'],ability:'미러아머',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'강철',desc:'미러아머 위협 반사. 지진 면역. 챔피언스 4위권. U턴 사이클.'},
   {name:'핫삼',id:212,moves:['불릿펀치','시저크로스','유턴','칼춤'],ability:'기술달인',item:'기합의띠',nature:'고집',up:'atk',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'벌레',desc:'기술달인 강화. U턴 사이클. 페어리 견제. 챔피언스 10위권.'},
   {name:'킬라플로르',id:970,moves:['스텔스록','파워젬','머드숏','고속스핀'],ability:'독가시',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:2,atk:0,def:0,spa:32,spd:0,spe:32},tag:'독',desc:'스텔스록 깔이. 머드샷 스피드 하락. 킬러스핀 스텔스록 제거 겸 딜. 독가시 접촉 독.'},
   {name:'마기라스',id:248,moves:['스톤에지','지진','깨물어부수기','스텔스록'],ability:'모래일으킴',item:'구애스카프',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'바위',desc:'모래날림 발생. 스카프로 스피드 보완. 스텔스록 깔이 겸 어태커.'},
@@ -2888,7 +2888,6 @@ const SAMPLE_DB = [
   {name:'포푸니크(곡예형)',id:903,moves:['인파이트','페이탈클로','속이다','마하펀치'],ability:'곡예',item:'하양허브',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'격투',desc:'마하펀치 선공으로 마무리. 기선제압 선공+인파이트 고화력.'},
   {name:'재비고도스',id:784,moves:['드레인펀치','드래곤크루','스톤에지','무릎차기'],ability:'굳센턱',item:'돌격조끼',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'드래곤',desc:'굳센턱으로 엄니류 위력 강화. 돌격조끼로 특방 보완. 드레인펀치 HP 회복.'},
   {name:'대도각참',id:983,moves:['도각참','아이언헤드','대검돌격','칼춤'],ability:'굳건한발톱',item:'구애머리띠',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'악',desc:'굳건한발톱 접촉기 1.3배. 코마린크로 3배 위력. 쥬로라이드로 스피드 상승 가능.'},
-  {name:'드닐레이브',id:996,moves:['아이언헤드','드래곤크루','얼음엄니','칼춤'],ability:'철주먹',item:'구애머리띠',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'강철',desc:'철주먹으로 펀치기 1.2배. 얼음엄니로 드래곤/풀 견제. 머리띠 고화력.'},
 ];
 
 // ===== 샘플 기능 =====
@@ -3152,7 +3151,7 @@ function spriteUrl_fn(id) {
 }
 
 // ===== 싱글/더블 통계 데이터 =====
-const SINGLES_DATA = [{"rank": 1, "dex_id": 445, "kor": "한카리아스", "usage_rate": 0.382, "note": "드래곤/땅 제왕. 모래환경+스카프"}, {"rank": 2, "dex_id": 730, "kor": "누리레느", "usage_rate": 0.298, "note": "물/페어리. 한카리아스 카운터"}, {"rank": 3, "dex_id": 6, "kor": "리자몽(메가Y)", "usage_rate": 0.276, "note": "가뭄+오버히트 고화력"}, {"rank": 4, "dex_id": 925, "kor": "아머까오", "usage_rate": 0.251, "note": "강철/비행. 미러아머+유턴"}, {"rank": 5, "dex_id": 450, "kor": "하마돈", "usage_rate": 0.239, "note": "모래+스텔스록+하품 기점"}, {"rank": 6, "dex_id": 996, "kor": "브리두라스", "usage_rate": 0.198, "note": "강철/드래곤. 지구력+일렉트로빔"}, {"rank": 7, "dex_id": 983, "kor": "대도각참", "usage_rate": 0.187, "note": "강철/악. 총대장 피니셔"}, {"rank": 8, "dex_id": 94, "kor": "팬텀(메가)", "usage_rate": 0.171, "note": "고스피드 오물폭탄+섀도볼"}, {"rank": 9, "dex_id": 681, "kor": "킬가르도", "usage_rate": 0.165, "note": "폴터가이스트+야습 물리"}, {"rank": 10, "dex_id": 212, "kor": "핫삼", "usage_rate": 0.158, "note": "테크니션 불릿펀치+유턴"}, {"rank": 11, "dex_id": 887, "kor": "드래펄트", "usage_rate": 0.152, "note": "스피드142 드래곤/고스트"}, {"rank": 12, "dex_id": 149, "kor": "망나뇽", "usage_rate": 0.143, "note": "멀티스케일+신속"}, {"rank": 13, "dex_id": 635, "kor": "삼삼드래", "usage_rate": 0.138, "note": "부유+나쁜음모 특수"}, {"rank": 14, "dex_id": 970, "kor": "킬라플로르", "usage_rate": 0.129, "note": "스텔스록+머드샷 기점"}, {"rank": 15, "dex_id": 248, "kor": "마기라스", "usage_rate": 0.121, "note": "모래일으킴+스카프"}, {"rank": 16, "dex_id": 778, "kor": "따라큐", "usage_rate": 0.118, "note": "변장 물리 스위퍼"}, {"rank": 17, "dex_id": 908, "kor": "마스카나", "usage_rate": 0.112, "note": "트릭플라워 확정급소"}, {"rank": 18, "dex_id": 448, "kor": "루카리오(메가)", "usage_rate": 0.107, "note": "적응력 파동탄"}, {"rank": 19, "dex_id": 130, "kor": "갸라도스", "usage_rate": 0.098, "note": "위협+용의춤"}, {"rank": 20, "dex_id": 547, "kor": "엘풍", "usage_rate": 0.094, "note": "짓궂은마음 서포터"}];
+const SINGLES_DATA = [{"rank": 1, "dex_id": 445, "kor": "한카리아스", "usage_rate": 0.382, "note": "드래곤/땅 제왕. 모래환경+스카프"}, {"rank": 2, "dex_id": 730, "kor": "누리레느", "usage_rate": 0.298, "note": "물/페어리. 한카리아스 카운터"}, {"rank": 3, "dex_id": 6, "kor": "리자몽(메가Y)", "usage_rate": 0.276, "note": "가뭄+오버히트 고화력"}, {"rank": 4, "dex_id": 823, "kor": "아머까오", "usage_rate": 0.251, "note": "강철/비행. 미러아머+유턴"}, {"rank": 5, "dex_id": 450, "kor": "하마돈", "usage_rate": 0.239, "note": "모래+스텔스록+하품 기점"}, {"rank": 6, "dex_id": 1018, "kor": "브리두라스", "usage_rate": 0.198, "note": "강철/드래곤. 지구력+일렉트로빔"}, {"rank": 7, "dex_id": 983, "kor": "대도각참", "usage_rate": 0.187, "note": "강철/악. 총대장 피니셔"}, {"rank": 8, "dex_id": 94, "kor": "팬텀(메가)", "usage_rate": 0.171, "note": "고스피드 오물폭탄+섀도볼"}, {"rank": 9, "dex_id": 681, "kor": "킬가르도", "usage_rate": 0.165, "note": "폴터가이스트+야습 물리"}, {"rank": 10, "dex_id": 212, "kor": "핫삼", "usage_rate": 0.158, "note": "테크니션 불릿펀치+유턴"}, {"rank": 11, "dex_id": 887, "kor": "드래펄트", "usage_rate": 0.152, "note": "스피드142 드래곤/고스트"}, {"rank": 12, "dex_id": 149, "kor": "망나뇽", "usage_rate": 0.143, "note": "멀티스케일+신속"}, {"rank": 13, "dex_id": 635, "kor": "삼삼드래", "usage_rate": 0.138, "note": "부유+나쁜음모 특수"}, {"rank": 14, "dex_id": 970, "kor": "킬라플로르", "usage_rate": 0.129, "note": "스텔스록+머드샷 기점"}, {"rank": 15, "dex_id": 248, "kor": "마기라스", "usage_rate": 0.121, "note": "모래일으킴+스카프"}, {"rank": 16, "dex_id": 778, "kor": "따라큐", "usage_rate": 0.118, "note": "변장 물리 스위퍼"}, {"rank": 17, "dex_id": 908, "kor": "마스카나", "usage_rate": 0.112, "note": "트릭플라워 확정급소"}, {"rank": 18, "dex_id": 448, "kor": "루카리오(메가)", "usage_rate": 0.107, "note": "적응력 파동탄"}, {"rank": 19, "dex_id": 130, "kor": "갸라도스", "usage_rate": 0.098, "note": "위협+용의춤"}, {"rank": 20, "dex_id": 547, "kor": "엘풍", "usage_rate": 0.094, "note": "짓궂은마음 서포터"}];
 const DOUBLES_DATA = [{"rank": 1, "dex_id": 730, "kor": "누리레느", "usage_rate": 0.5437, "note": "더블 54.4% 독보적 1위"}, {"rank": 2, "dex_id": 903, "kor": "포푸니크", "usage_rate": 0.4513, "note": "곡예+흉독조 더블 에이스"}, {"rank": 3, "dex_id": 445, "kor": "한카리아스", "usage_rate": 0.3715, "note": "지진 광역기 핵심"}, {"rank": 4, "dex_id": 1013, "kor": "사이화차이", "usage_rate": 0.3462, "note": "분차+홈서비스 서포트"}, {"rank": 5, "dex_id": 983, "kor": "대도각참", "usage_rate": 0.2701, "note": "총대장 클리너"}, {"rank": 6, "dex_id": 902, "kor": "데스여너", "usage_rate": 0.2215, "note": "저승도망+웨이브크래시"}, {"rank": 7, "dex_id": 547, "kor": "엘풍", "usage_rate": 0.2006, "note": "짓궂은마음+앙코르"}, {"rank": 8, "dex_id": 6, "kor": "리자몽", "usage_rate": 0.1781, "note": "가뭄팟 에이스"}, {"rank": 9, "dex_id": 670, "kor": "메가플라엣테", "usage_rate": 0.1778, "note": "페어리오라 지원형"}, {"rank": 10, "dex_id": 10009, "kor": "워시로토무", "usage_rate": 0.1603, "note": "전기자석파+볼트체인지"}, {"rank": 11, "dex_id": 248, "kor": "마기라스", "usage_rate": 0.1512, "note": "모래날림 세터"}, {"rank": 12, "dex_id": 279, "kor": "패리퍼", "usage_rate": 0.1489, "note": "비바라기 날씨팟"}, {"rank": 13, "dex_id": 142, "kor": "프테라(메가)", "usage_rate": 0.1401, "note": "암석헤드 헤드스매시"}, {"rank": 14, "dex_id": 478, "kor": "눈여아(메가)", "usage_rate": 0.1389, "note": "눈퍼트리기 우박팟"}, {"rank": 15, "dex_id": 887, "kor": "드래펄트", "usage_rate": 0.1298, "note": "스피드142 드래곤"}, {"rank": 16, "dex_id": 681, "kor": "킬가르도", "usage_rate": 0.1245, "note": "강철/고스트 사이클"}, {"rank": 17, "dex_id": 450, "kor": "하마돈", "usage_rate": 0.1198, "note": "모래+스텔스록"}, {"rank": 18, "dex_id": 130, "kor": "갸라도스(메가)", "usage_rate": 0.1156, "note": "용의춤 스위퍼"}, {"rank": 19, "dex_id": 149, "kor": "망나뇽(메가)", "usage_rate": 0.1098, "note": "멀티스케일 특수형"}, {"rank": 20, "dex_id": 730, "kor": "누리레느", "usage_rate": 0.1045, "note": "페어리 서포터"}];
 
 let currentStatsMode = 'single';
@@ -4258,6 +4257,69 @@ function runFreeGuide(pokeId, megaVariant) {
     return 'role';
   };
 
+  // ===== 싱글 상위권 매치업 분석 (STAB 타입 기준) =====
+  // 타입 상성 계산: 공격타입(atk)이 수비타입 배열(defTypes)에게 주는 배수
+  const typeMult = (atk, defTypes) => {
+    let mult = 1;
+    for (const dt of defTypes) {
+      if ((typeImmuneMap[dt] || []).includes(atk)) return 0;
+      const w = typeWeakMap[dt] || {};
+      if (w[atk]) mult *= w[atk];
+    }
+    return mult;
+  };
+
+  const matchups = (typeof SINGLES_DATA !== 'undefined' ? SINGLES_DATA : []).map(sd => {
+    // 이름에서 (메가...), (알로라) 등 suffix 제거 후 POKEMON_DATA 우선 조회, 실패 시 dex_id fallback
+    const baseName = sd.kor.replace(/\s*\([^)]+\)\s*$/, '').trim();
+    let opp = POKEMON_DATA.find(x => x.name === baseName);
+    if (!opp) opp = POKEMON_DATA.find(x => x.id === sd.dex_id);
+    if (!opp) return null; // POKEMON_DATA에 없는 경우 스킵 (안전장치)
+    if (opp.id === p.id) return null; // 자기 자신 제외
+
+    let oppTypes = opp.type;
+    // 메가 표기 처리
+    const mm = sd.kor.match(/메가([XY]?)\)/);
+    if (mm) {
+      const mi = MEGA_DATA[opp.id];
+      if (mi) {
+        const variant = mm[1];
+        const md = (variant === 'X' || variant === 'Y') ? mi[variant] : (mi.type ? mi : null);
+        if (md && md.type) oppTypes = md.type;
+      }
+    }
+
+    // myOff: 내 STAB 타입으로 상대에게 주는 최대 배수
+    const myOff = Math.max.apply(null, displayType.map(t => typeMult(t, oppTypes)));
+    // oppOff: 상대 STAB 타입으로 내가 받는 최대 배수
+    const oppOff = Math.max.apply(null, oppTypes.map(t => typeMult(t, displayType)));
+
+    // 스코어: log2(myOff/oppOff). 무효 처리 포함.
+    let score;
+    if (myOff === 0 && oppOff === 0) score = 0;
+    else if (myOff === 0) score = -99;
+    else if (oppOff === 0) score = 99;
+    else score = Math.log2(myOff / oppOff);
+
+    return { name: sd.kor, score: score, myOff: myOff, oppOff: oppOff };
+  }).filter(Boolean);
+
+  matchups.sort((a, b) => b.score - a.score);
+  const easyList = matchups.filter(m => m.score > 0).slice(0, 5);
+  const hardList = matchups.filter(m => m.score < 0).slice(-5).reverse();
+
+  const buildMatchupBlock = (label, list, tagClass) => {
+    if (!list.length) return '<div class="g-block"><div class="g-label">' + label + '</div><div class="g-text" style="font-size:12px;color:var(--muted2);">해당 없음 (상위권 내 중립 매치업)</div></div>';
+    return '<div class="g-block"><div class="g-label">' + label + '</div><div class="g-tags">' +
+      list.map(m => '<span class="g-tag ' + tagClass + '">' + m.name + '</span>').join('') +
+      '</div></div>';
+  };
+
+  const matchupHtml = (matchups.length ?
+    buildMatchupBlock('상대하기 쉬운 상위권 포켓몬', easyList, 'def') +
+    buildMatchupBlock('상대하기 어려운 상위권 포켓몬', hardList, 'weak')
+    : '');
+
   const modeLabel = megaVariant ? '&#128196; 자동 분석 · ' + megaName : '&#128196; 자동 분석';
 
   body.innerHTML =
@@ -4272,6 +4334,7 @@ function runFreeGuide(pokeId, megaVariant) {
     '<div class="g-tags" style="margin-bottom:4px;">' + displayType.map(t=>'<span class="g-tag role">'+t+'</span>').join('') + '</div>' +
     '<div class="g-tags">' + (weakTypes.length ? weakTypes.map(w=>'<span class="g-tag weak">'+w+' 약점</span>').join('') : '<span class="g-tag">없음</span>') + '</div></div>' +
     '<div class="g-block"><div class="g-label">추천 기술 (' + (isPhysical?'물리형':'특수형') + ')</div><div class="g-tags">' + recMoves.map(m=>'<span class="g-tag move">'+m+'</span>').join('') + '</div></div>' +
+    matchupHtml +
     '<div class="guide-apikey-hint">&#10024; Claude API 키를 등록하면 더 상세한 AI 운용 가이드를 받을 수 있어요. <a href="#" onclick="openApiKeyModal();return false;" style="color:var(--accent);">키 등록하기</a></div>';
 }
 
