@@ -550,10 +550,50 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
           </div>
           <input type="hidden" id="wr-my-poke" value="">
           <div id="wr-my-mega" style="margin-bottom:8px;display:none;"></div>
-          <div id="wr-my-info" style="display:flex;gap:10px;align-items:center;min-height:80px;">
-            <img id="wr-my-sprite" src="" style="width:72px;height:72px;object-fit:contain;image-rendering:pixelated;display:none;">
+          <div id="wr-my-info" style="display:flex;gap:10px;align-items:center;min-height:60px;">
+            <img id="wr-my-sprite" src="" style="width:60px;height:60px;object-fit:contain;image-rendering:pixelated;display:none;">
             <div id="wr-my-stats" style="font-size:11px;font-family:var(--mono);color:var(--muted2);line-height:1.8;"></div>
           </div>
+          <!-- 상세 설정 -->
+          <div id="wr-my-detail" style="display:none;border-top:1px solid var(--border);margin-top:10px;padding-top:10px;">
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:6px;">특성</div>
+            <input id="wr-my-ability" type="text" placeholder="특성 입력..." style="width:100%;box-sizing:border-box;font-size:12px;margin-bottom:8px;">
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">성격 보정</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+              <div>
+                <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">공격/특공</div>
+                <select id="wr-my-nat-atk" onchange="recalcWrStats('my')" style="width:100%;font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);padding:3px;">
+                  <option value="n">없음</option><option value="p">▲ +10%</option><option value="m">▼ -10%</option>
+                </select>
+              </div>
+              <div>
+                <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">스피드</div>
+                <select id="wr-my-nat-spe" onchange="recalcWrStats('my')" style="width:100%;font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);padding:3px;">
+                  <option value="n">없음</option><option value="p">▲ +10%</option><option value="m">▼ -10%</option>
+                </select>
+              </div>
+            </div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">EP <span id="wr-my-ep-total" style="color:var(--gold);">합계: 0/66</span></div>
+            <div id="wr-my-ep-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:8px;"></div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">지닌 도구</div>
+            <select id="wr-my-item" onchange="recalcWrStats('my')" style="width:100%;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--fg);padding:5px;margin-bottom:8px;">
+              <option value="없음">없음</option>
+              <option value="기합의띠">기합의띠</option><option value="구애스카프">구애스카프 (스피드×1.5)</option>
+              <option value="먹다남은음식">먹다남은음식</option><option value="하양허브">하양허브</option>
+              <option value="초점렌즈">초점렌즈</option><option value="멘탈허브">멘탈허브</option>
+              <option value="자뭉열매">자뭉열매</option><option value="리샘열매">리샘열매</option>
+              <option value="반짝가루">반짝가루</option>
+            </select>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">기술 슬롯</div>
+            <datalist id="wr-moves-dl"></datalist>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+              <input type="text" list="wr-moves-dl" id="wr-my-move0" placeholder="기술1" style="font-size:11px;padding:4px 6px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);">
+              <input type="text" list="wr-moves-dl" id="wr-my-move1" placeholder="기술2" style="font-size:11px;padding:4px 6px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);">
+              <input type="text" list="wr-moves-dl" id="wr-my-move2" placeholder="기술3" style="font-size:11px;padding:4px 6px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);">
+              <input type="text" list="wr-moves-dl" id="wr-my-move3" placeholder="기술4" style="font-size:11px;padding:4px 6px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);">
+            </div>
+          </div>
+          <button onclick="toggleWrDetail('my')" id="wr-my-detail-btn" style="display:none;width:100%;margin-top:8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:5px;font-size:11px;color:var(--muted);cursor:pointer;">⚙ 상세 설정</button>
         </div>
 
         <!-- VS -->
@@ -574,10 +614,49 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
           </div>
           <input type="hidden" id="wr-op-poke" value="">
           <div id="wr-op-mega" style="margin-bottom:8px;display:none;"></div>
-          <div id="wr-op-info" style="display:flex;gap:10px;align-items:center;min-height:80px;">
-            <img id="wr-op-sprite" src="" style="width:72px;height:72px;object-fit:contain;image-rendering:pixelated;display:none;">
+          <div id="wr-op-info" style="display:flex;gap:10px;align-items:center;min-height:60px;">
+            <img id="wr-op-sprite" src="" style="width:60px;height:60px;object-fit:contain;image-rendering:pixelated;display:none;">
             <div id="wr-op-stats" style="font-size:11px;font-family:var(--mono);color:var(--muted2);line-height:1.8;"></div>
           </div>
+          <!-- 상세 설정 -->
+          <div id="wr-op-detail" style="display:none;border-top:1px solid var(--border);margin-top:10px;padding-top:10px;">
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:6px;">특성</div>
+            <input id="wr-op-ability" type="text" placeholder="특성 입력..." style="width:100%;box-sizing:border-box;font-size:12px;margin-bottom:8px;">
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">성격 보정</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+              <div>
+                <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">공격/특공</div>
+                <select id="wr-op-nat-atk" onchange="recalcWrStats('op')" style="width:100%;font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);padding:3px;">
+                  <option value="n">없음</option><option value="p">▲ +10%</option><option value="m">▼ -10%</option>
+                </select>
+              </div>
+              <div>
+                <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">스피드</div>
+                <select id="wr-op-nat-spe" onchange="recalcWrStats('op')" style="width:100%;font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);padding:3px;">
+                  <option value="n">없음</option><option value="p">▲ +10%</option><option value="m">▼ -10%</option>
+                </select>
+              </div>
+            </div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">EP <span id="wr-op-ep-total" style="color:var(--gold);">합계: 0/66</span></div>
+            <div id="wr-op-ep-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:8px;"></div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">지닌 도구</div>
+            <select id="wr-op-item" onchange="recalcWrStats('op')" style="width:100%;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--fg);padding:5px;margin-bottom:8px;">
+              <option value="없음">없음</option>
+              <option value="기합의띠">기합의띠</option><option value="구애스카프">구애스카프 (스피드×1.5)</option>
+              <option value="먹다남은음식">먹다남은음식</option><option value="하양허브">하양허브</option>
+              <option value="초점렌즈">초점렌즈</option><option value="멘탈허브">멘탈허브</option>
+              <option value="자뭉열매">자뭉열매</option><option value="리샘열매">리샘열매</option>
+              <option value="반짝가루">반짝가루</option>
+            </select>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">기술 슬롯</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+              <input type="text" list="wr-moves-dl" id="wr-op-move0" placeholder="기술1" style="font-size:11px;padding:4px 6px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);">
+              <input type="text" list="wr-moves-dl" id="wr-op-move1" placeholder="기술2" style="font-size:11px;padding:4px 6px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);">
+              <input type="text" list="wr-moves-dl" id="wr-op-move2" placeholder="기술3" style="font-size:11px;padding:4px 6px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);">
+              <input type="text" list="wr-moves-dl" id="wr-op-move3" placeholder="기술4" style="font-size:11px;padding:4px 6px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);">
+            </div>
+          </div>
+          <button onclick="toggleWrDetail('op')" id="wr-op-detail-btn" style="display:none;width:100%;margin-top:8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:5px;font-size:11px;color:var(--muted);cursor:pointer;">⚙ 상세 설정</button>
         </div>
       </div>
 
@@ -3179,6 +3258,80 @@ function updateWrPoke(side) {
   }
 
   renderWrStats(side, p, null);
+  // 상세 설정 패널 초기화
+  buildWrEpGrid(side, p);
+  // 기술 자동완성 datalist 채우기 (한 번만)
+  const dl = document.getElementById('wr-moves-dl');
+  if (dl && !dl.childElementCount) {
+    dl.innerHTML = Object.keys(MOVE_DATA||{}).map(m=>`<option value="${m}">`).join('');
+  }
+  // 설정 버튼 표시
+  const detailBtn = document.getElementById('wr-'+side+'-detail-btn');
+  if (detailBtn) detailBtn.style.display = '';
+}
+
+function buildWrEpGrid(side, p) {
+  const grid = document.getElementById('wr-'+side+'-ep-grid');
+  if (!grid) return;
+  const labels = ['HP','공격','방어','특공','특방','스피드'];
+  const keys = ['hp','atk','def','spa','spd','spe'];
+  grid.innerHTML = keys.map((k,i) => `
+    <div>
+      <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">${labels[i]}</div>
+      <input type="number" min="0" max="32" value="0" id="wr-${side}-ep-${k}"
+        oninput="updateWrEpTotal('${side}')"
+        style="width:100%;box-sizing:border-box;padding:3px 5px;font-size:11px;font-family:var(--mono);background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);">
+    </div>`).join('');
+}
+
+function updateWrEpTotal(side) {
+  const keys = ['hp','atk','def','spa','spd','spe'];
+  const total = keys.reduce((s,k) => s + (parseInt(document.getElementById('wr-'+side+'-ep-'+k)?.value)||0), 0);
+  const el = document.getElementById('wr-'+side+'-ep-total');
+  if (el) { el.textContent = `합계: ${total}/66`; el.style.color = total > 66 ? '#f87171' : 'var(--gold)'; }
+  recalcWrStats(side);
+}
+
+function toggleWrDetail(side) {
+  const detail = document.getElementById('wr-'+side+'-detail');
+  const btn = document.getElementById('wr-'+side+'-detail-btn');
+  if (!detail) return;
+  const open = detail.style.display === '';
+  detail.style.display = open ? 'none' : '';
+  if (btn) btn.textContent = open ? '⚙ 상세 설정' : '▲ 접기';
+}
+
+function recalcWrStats(side) {
+  const pid = parseInt(document.getElementById('wr-'+side+'-poke')?.value||0);
+  const p = POKEMON_DATA.find(x=>x.id===pid);
+  if (!p) return;
+  const form = side==='my' ? wrMyForm : wrOpForm;
+  let md = null;
+  if (form && MEGA_DATA[pid]) {
+    md = (form==='X'||form==='Y') ? MEGA_DATA[pid][form] : MEGA_DATA[pid];
+  }
+  renderWrStats(side, p, md||null);
+}
+
+function getWrConfig(side) {
+  const keys = ['hp','atk','def','spa','spd','spe'];
+  const ep = {};
+  keys.forEach(k => { ep[k] = parseInt(document.getElementById('wr-'+side+'-ep-'+k)?.value||0)||0; });
+  return {
+    ep,
+    item: document.getElementById('wr-'+side+'-item')?.value || '없음',
+    ability: document.getElementById('wr-'+side+'-ability')?.value || '',
+    natAtk: document.getElementById('wr-'+side+'-nat-atk')?.value || 'n',
+    natSpe: document.getElementById('wr-'+side+'-nat-spe')?.value || 'n',
+    moves: [0,1,2,3].map(i => document.getElementById('wr-'+side+'-move'+i)?.value||'').filter(Boolean),
+  };
+}
+
+function calcWrRealStat(base, ep, nature, isHp) {
+  if (isHp) return base + 75 + ep;
+  const raw = base + 20 + ep;
+  const mult = nature==='p'?1.1:nature==='m'?0.9:1;
+  return Math.floor(raw * mult);
 }
 
 function setWrMega(side, form) {
@@ -3219,176 +3372,208 @@ function renderWrStats(side, p, megaData) {
     `HP ${st.hp} / 공${st.atk} / 방${st.def}<br>특공${st.spa} / 특방${st.spd} / 속${st.spe}`;
 }
 
-// ===== 1:1 승률 계산 =====
+// ===== 1:1 승률 계산 (EP/도구/성격/특성/기술 반영) =====
 function calcMatchup() {
   const myId = parseInt((document.getElementById('wr-my-poke')||{}).value||0);
   const opId = parseInt((document.getElementById('wr-op-poke')||{}).value||0);
   if (!myId || !opId) { alert('두 포켓몬을 모두 선택해주세요!'); return; }
 
-  const myBase = POKEMON_DATA.find(x => x.id === myId);
-  const opBase = POKEMON_DATA.find(x => x.id === opId);
+  const myBase = POKEMON_DATA.find(x=>x.id===myId);
+  const opBase = POKEMON_DATA.find(x=>x.id===opId);
 
-  // 메가 적용
-  const getStats = (base, form) => {
-    if (!form || !MEGA_DATA[base.id]) return { stats: base.stats, type: base.type, name: base.name };
-    const md = (form === 'X' || form === 'Y') ? MEGA_DATA[base.id][form] : MEGA_DATA[base.id];
-    return md ? { stats: md.stats, type: md.type, name: md.name } : { stats: base.stats, type: base.type, name: base.name };
+  // 메가진화 적용
+  const applyMega = (base, form) => {
+    if (!form || !MEGA_DATA[base.id]) return { stats:{...base.stats}, type:[...base.type], name:base.name };
+    const md = (form==='X'||form==='Y') ? MEGA_DATA[base.id][form] : MEGA_DATA[base.id];
+    return md ? { stats:{...md.stats}, type:[...md.type], name:md.name } : { stats:{...base.stats}, type:[...base.type], name:base.name };
   };
 
-  const my = getStats(myBase, wrMyForm);
-  const op = getStats(opBase, wrOpForm);
+  const myMega = applyMega(myBase, wrMyForm);
+  const opMega = applyMega(opBase, wrOpForm);
 
-  // 타입 상성 계산
+  // EP/성격/도구 설정 가져오기
+  const myCfg = getWrConfig('my');
+  const opCfg = getWrConfig('op');
+
+  // 실수치 계산 (포챔스 기준: EP최대32, 합66)
+  const realStat = (base, ep, nat, isHp) => {
+    ep = Math.min(ep||0, 32);
+    if (isHp) return base + 75 + ep;
+    const raw = base + 20 + ep;
+    return Math.floor(raw * (nat==='p'?1.1:nat==='m'?0.9:1));
+  };
+
+  // 내 실수치
+  const mySt = myMega.stats;
+  const myHP  = realStat(mySt.hp,  myCfg.ep.hp,  'n',  true);
+  const myAtk = realStat(mySt.atk, myCfg.ep.atk, myCfg.natAtk, false);
+  const myDef = realStat(mySt.def, myCfg.ep.def, 'n',  false);
+  const mySpa = realStat(mySt.spa, myCfg.ep.spa, myCfg.natAtk, false);
+  const mySpd = realStat(mySt.spd, myCfg.ep.spd, 'n',  false);
+  const mySpe = realStat(mySt.spe, myCfg.ep.spe, myCfg.natSpe, false);
+
+  // 상대 실수치
+  const opSt = opMega.stats;
+  const opHP  = realStat(opSt.hp,  opCfg.ep.hp,  'n',  true);
+  const opAtk = realStat(opSt.atk, opCfg.ep.atk, opCfg.natAtk, false);
+  const opDef = realStat(opSt.def, opCfg.ep.def, 'n',  false);
+  const opSpa = realStat(opSt.spa, opCfg.ep.spa, opCfg.natAtk, false);
+  const opSpd = realStat(opSt.spd, opCfg.ep.spd, 'n',  false);
+  const opSpe = realStat(opSt.spe, opCfg.ep.spe, opCfg.natSpe, false);
+
+  // 도구 효과 적용
+  const applyItemSpe = (spe, item) => item==='구애스카프' ? Math.floor(spe*1.5) : spe;
+  const mySpeEff = applyItemSpe(mySpe, myCfg.item);
+  const opSpeEff = applyItemSpe(opSpe, opCfg.item);
+
+  // 타입 상성
   const typeEff = (atkTypes, defTypes) => {
-    let mult = 1;
-    atkTypes.forEach(at => {
-      defTypes.forEach(dt => {
-        const row = TYPE_CHART[at];
-        if (row && row[dt] !== undefined) mult *= row[dt];
-      });
-    });
+    let mult=1;
+    atkTypes.forEach(at => defTypes.forEach(dt => {
+      mult *= (TYPE_CHART[at]?.[dt] ?? 1);
+    }));
     return mult;
   };
 
-  const myEffOnOp = typeEff(my.type, op.type);  // 내 타입이 상대에게
-  const opEffOnMy = typeEff(op.type, my.type);  // 상대 타입이 나에게
+  // 기술 기반 최적 상성 계산
+  const getBestTypeEff = (moves, atkTypes, defTypes) => {
+    let best = typeEff(atkTypes, defTypes); // 타입 기반 기본
+    if (moves && moves.length) {
+      moves.forEach(mv => {
+        const mdata = MOVE_DATA?.[mv];
+        if (mdata && mdata.type) {
+          const eff = typeEff([mdata.type], defTypes);
+          if (eff > best) best = eff;
+        }
+      });
+    }
+    return best;
+  };
 
-  // 선공 유무 (스피드 비교)
-  const myFirst = my.stats.spe > op.stats.spe;
-  const speedTie = my.stats.spe === op.stats.spe;
+  const myEffOnOp = getBestTypeEff(myCfg.moves, myMega.type, opMega.type);
+  const opEffOnMy = getBestTypeEff(opCfg.moves, opMega.type, myMega.type);
 
-  // 간단한 예상 데미지 배율 (공격 vs 방어 종족값 기반)
-  // 물리 공격 기준: 공격 × 타입상성 / 방어
-  const myPhysDmg = (my.stats.atk / op.stats.def) * myEffOnOp;
-  const mySpeDmg  = (my.stats.spa / op.stats.spd) * myEffOnOp;
+  // 데미지 추정 (위력90 STAB 자속 기준)
+  const PWR = 90;
+  const myPhysDmg = Math.floor(((myAtk * PWR * 1.5 * myEffOnOp) / opDef) / 50);
+  const mySpeDmg  = Math.floor(((mySpa * PWR * 1.5 * myEffOnOp) / opSpd) / 50);
   const myBestDmg = Math.max(myPhysDmg, mySpeDmg);
 
-  const opPhysDmg = (op.stats.atk / my.stats.def) * opEffOnMy;
-  const opSpeDmg  = (op.stats.spa / my.stats.spd) * opEffOnMy;
+  const opPhysDmg = Math.floor(((opAtk * PWR * 1.5 * opEffOnMy) / myDef) / 50);
+  const opSpeDmg  = Math.floor(((opSpa * PWR * 1.5 * opEffOnMy) / mySpd) / 50);
   const opBestDmg = Math.max(opPhysDmg, opSpeDmg);
 
-  // HP 대비 몇 턴 버티는지 추정
-  // 실수치 추정 (EP 0 기준): HP = base+75, 공/방/특공/특방 = base+20
-  const myHpReal = my.stats.hp + 75;
-  const opHpReal = op.stats.hp + 75;
-  const myDefReal = my.stats.def + 20;
-  const opDefReal = op.stats.def + 20;
-  const mySpdReal = my.stats.spd + 20;
-  const opSpdReal = op.stats.spd + 20;
-  const myAtkReal = my.stats.atk + 20;
-  const opAtkReal = op.stats.atk + 20;
-  const mySpaReal = my.stats.spa + 20;
-  const opSpaReal = op.stats.spa + 20;
+  // KO 턴수 (0이면 1/0 방지)
+  const myKOTurns = opBestDmg>0 ? opHP / opBestDmg : 99;
+  const opKOTurns = myBestDmg>0 ? myHP / myBestDmg : 99;
 
-  // 실제 데미지 추정 (위력 90 기준 STAB 포함)
-  const MOVE_PWR = 90;
-  const myRawDmg = Math.max(
-    (myAtkReal / opDefReal) * myEffOnOp * MOVE_PWR * 1.5 / 50,
-    (mySpaReal / opSpdReal) * myEffOnOp * MOVE_PWR * 1.5 / 50
-  );
-  const opRawDmg = Math.max(
-    (opAtkReal / myDefReal) * opEffOnMy * MOVE_PWR * 1.5 / 50,
-    (opSpaReal / mySpdReal) * opEffOnMy * MOVE_PWR * 1.5 / 50
-  );
+  // 기합의띠 보정
+  const myHasKion = myCfg.item==='기합의띠';
+  const opHasKion = opCfg.item==='기합의띠';
+  // 기합의띠: 확정1타인 경우 2턴으로 연장
+  const myEffKO = opHasKion && opKOTurns < 1.5 ? Math.max(opKOTurns, 1.5) : opKOTurns;
+  const opEffKO = myHasKion && myKOTurns < 1.5 ? Math.max(myKOTurns, 1.5) : myKOTurns;
 
-  // 몇 턴에 쓰러뜨리는지
-  const myKOTurns = opHpReal / myRawDmg;
-  const opKOTurns = myHpReal / opRawDmg;
+  // 선공 판단
+  const myFirst = mySpeEff > opSpeEff;
+  const speedTie = mySpeEff === opSpeEff;
 
-  // 선공 고려 승률 계산
-  let myScore = 0;
-  // 선공이면 +20점 기본
-  if (myFirst) myScore += 20;
-  else if (!speedTie) myScore -= 20;
+  // 승률 점수 계산
+  let myScore = 50;
+  // 선공 보정
+  myScore += myFirst ? 18 : speedTie ? 0 : -18;
+  // KO 턴수 우위
+  const koAdv = (opEffKO - myEffKO) * 14;
+  myScore += Math.max(-30, Math.min(30, koAdv));
+  // 타입상성 우위
+  if (myEffOnOp === 0) myScore -= 45;
+  else if (myEffOnOp >= 4) myScore += 22;
+  else if (myEffOnOp >= 2) myScore += 13;
+  else if (myEffOnOp <= 0.25) myScore -= 18;
+  else if (myEffOnOp <= 0.5) myScore -= 8;
 
-  // 빨리 쓰러뜨릴수록 유리
-  const koAdvantage = (opKOTurns - myKOTurns) * 15;
-  myScore += koAdvantage;
+  if (opEffOnMy === 0) myScore += 45;
+  else if (opEffOnMy >= 4) myScore -= 22;
+  else if (opEffOnMy >= 2) myScore -= 13;
+  else if (opEffOnMy <= 0.25) myScore += 18;
+  else if (opEffOnMy <= 0.5) myScore += 8;
 
-  // 타입상성 보너스
-  if (myEffOnOp > opEffOnMy) myScore += 15;
-  else if (myEffOnOp < opEffOnMy) myScore -= 15;
-
-  // 0배 면역 체크 (즉시 불리)
-  if (myEffOnOp === 0) myScore -= 40;
-  if (opEffOnMy === 0) myScore += 40;
-
-  // 4배 약점 체크
-  if (myEffOnOp >= 4) myScore += 20;
-  if (opEffOnMy >= 4) myScore -= 20;
-
-  // 정규화 (0~100)
-  const myWinPct = Math.min(95, Math.max(5, 50 + myScore));
+  const myWinPct = Math.min(96, Math.max(4, Math.round(myScore)));
   const opWinPct = 100 - myWinPct;
 
-  // 판정
-  const verdict = myWinPct >= 65 ? '유리' : myWinPct >= 55 ? '약간 유리' : myWinPct >= 45 ? '호각' : myWinPct >= 35 ? '약간 불리' : '불리';
-  const verdictColor = myWinPct >= 65 ? '#4ade80' : myWinPct >= 55 ? '#a3e635' : myWinPct >= 45 ? '#f5c842' : myWinPct >= 35 ? '#fb923c' : '#f87171';
+  const verdict = myWinPct>=70?'크게 유리':myWinPct>=60?'유리':myWinPct>=55?'약간 유리':myWinPct>=45?'호각':myWinPct>=40?'약간 불리':myWinPct>=30?'불리':'크게 불리';
+  const vColor = myWinPct>=65?'#4ade80':myWinPct>=55?'#a3e635':myWinPct>=45?'#f5c842':myWinPct>=35?'#fb923c':'#f87171';
 
   // 분석 포인트
-  const points = [];
-  if (myEffOnOp === 0) points.push(`❌ ${op.name}은 ${my.name}의 공격에 <b>면역</b>`);
-  if (opEffOnMy === 0) points.push(`✅ ${my.name}은 ${op.name}의 공격에 <b>면역</b>`);
-  if (myEffOnOp >= 4) points.push(`✅ ${my.name} 타입이 ${op.name}에 <b>4배 효과</b>`);
-  if (opEffOnMy >= 4) points.push(`❌ ${op.name} 타입이 ${my.name}에 <b>4배 효과</b>`);
-  if (myEffOnOp === 2) points.push(`✅ ${my.name} 타입이 ${op.name}에 <b>2배 효과</b>`);
-  if (opEffOnMy === 2) points.push(`❌ ${op.name} 타입이 ${my.name}에 <b>2배 효과</b>`);
-  if (myEffOnOp === 0.5 || myEffOnOp === 0.25) points.push(`⚠️ ${my.name} 타입이 ${op.name}에 <b>반감/4분의1</b>`);
-  if (opEffOnMy === 0.5 || opEffOnMy === 0.25) points.push(`✅ ${op.name} 타입이 ${my.name}에 <b>반감</b>`);
-  if (myFirst) points.push(`✅ ${my.name}이 <b>선공</b> (속도 ${my.stats.spe} vs ${op.stats.spe})`);
-  else if (!speedTie) points.push(`❌ ${op.name}이 <b>선공</b> (속도 ${op.stats.spe} vs ${my.stats.spe})`);
-  else points.push(`➡️ 속도 동일 (${my.stats.spe}) — 먼저 쓰러뜨리는 쪽이 유리`);
-  points.push(`📊 예상 KO 턴수: ${my.name} ${myKOTurns.toFixed(1)}턴 / ${op.name} ${opKOTurns.toFixed(1)}턴`);
+  const pts = [];
+  if (myEffOnOp===0) pts.push(`❌ <b>${opMega.name}</b>은 내 타입/기술에 <b>면역</b>`);
+  if (opEffOnMy===0) pts.push(`✅ <b>${myMega.name}</b>은 상대 타입/기술에 <b>면역</b>`);
+  if (myEffOnOp>=4) pts.push(`✅ 내 공격이 ${opMega.name}에게 <b>4배 효과</b>`);
+  if (opEffOnMy>=4) pts.push(`❌ 상대 공격이 ${myMega.name}에게 <b>4배 효과</b>`);
+  if (myEffOnOp===2) pts.push(`✅ 내 공격이 ${opMega.name}에게 <b>2배 효과</b>`);
+  if (opEffOnMy===2) pts.push(`❌ 상대 공격이 ${myMega.name}에게 <b>2배 효과</b>`);
 
-  // 결과 렌더링
+  pts.push(myFirst
+    ? `✅ <b>내가 선공</b> — 스피드 ${mySpeEff}${myCfg.item==='구애스카프'?' (스카프)':''} vs 상대 ${opSpeEff}${opCfg.item==='구애스카프'?' (스카프)':''}`
+    : speedTie
+    ? `➡️ 스피드 동일 (${mySpeEff}) — 선공 예측 불가`
+    : `❌ <b>상대 선공</b> — 스피드 ${opSpeEff}${opCfg.item==='구애스카프'?' (스카프)':''} vs 내 ${mySpeEff}${myCfg.item==='구애스카프'?' (스카프)':''}`);
+
+  pts.push(`📊 예상 데미지: 내가 ${opBestDmg}/${opHP}HP → <b>${(opBestDmg/opHP*100).toFixed(0)}%</b> | 상대가 ${myBestDmg}/${myHP}HP → <b>${(myBestDmg/myHP*100).toFixed(0)}%</b>`);
+  pts.push(`⏱ 예상 KO 턴: 내가 상대를 <b>${myEffKO.toFixed(1)}턴</b> | 상대가 나를 <b>${opEffKO.toFixed(1)}턴</b>`);
+
+  if (myHasKion) pts.push(`🎗 내 포켓몬 <b>기합의띠</b> 장착 — 확정1타 방어`);
+  if (opHasKion) pts.push(`⚠️ 상대 포켓몬 <b>기합의띠</b> 장착 — 1타 KO 주의`);
+  if (myCfg.ability) pts.push(`💡 내 특성 <b>${myCfg.ability}</b>`);
+  if (opCfg.ability) pts.push(`⚠️ 상대 특성 <b>${opCfg.ability}</b>`);
+
+  // 실수치 표 생성
+  const statTable = (name, hp, atk, def, spa, spd, spe, item, moves) => `
+    <div style="font-size:10px;font-family:var(--mono);color:var(--muted2);line-height:1.9;">
+      <b style="color:var(--fg);">${name}${item&&item!=='없음'?' @ '+item:''}</b><br>
+      HP <b style="color:var(--fg);">${hp}</b> | 공 <b>${atk}</b> | 방 <b>${def}</b> | 특공 <b>${spa}</b> | 특방 <b>${spd}</b> | 속 <b style="color:var(--accent);">${spe}${item==='구애스카프'?'→'+applyItemSpe(spe,'구애스카프'):''}</b>
+      ${moves&&moves.length?'<br>기술: '+moves.join(' / '):''}
+    </div>`;
+
   const resultEl = document.getElementById('wr-result');
   resultEl.style.display = '';
   resultEl.innerHTML = `
-  <div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,${verdictColor},transparent);"></div>
-
+  <div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,${vColor},transparent);"></div>
     <div style="text-align:center;margin-bottom:16px;">
-      <div style="font-family:var(--display);font-size:18px;font-weight:700;color:${verdictColor};margin-bottom:4px;">${my.name} — ${verdict}</div>
-      <div style="font-size:12px;color:var(--muted);">타입상성 + 스피드 + 종족값 기반 추정</div>
-    </div>
-
-    <!-- 승률 바 -->
-    <div style="display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;gap:8px;margin-bottom:16px;">
-      <div>
-        <div style="font-size:12px;color:var(--accent);margin-bottom:4px;font-weight:600;">${my.name}</div>
-        <div style="background:rgba(255,255,255,0.05);border-radius:6px;height:22px;overflow:hidden;position:relative;">
-          <div style="height:22px;width:${myWinPct}%;background:${verdictColor};border-radius:6px;transition:width .6s;"></div>
-          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;">${myWinPct.toFixed(0)}%</div>
+      <div style="display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:10px;">
+        <div style="text-align:right;">
+          <div style="font-weight:700;font-size:14px;">${myMega.name}</div>
+          <div style="font-size:22px;font-weight:900;font-family:var(--mono);color:${vColor};">${myWinPct}%</div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);font-family:var(--mono);">VS</div>
+        <div style="text-align:left;">
+          <div style="font-weight:700;font-size:14px;">${opMega.name}</div>
+          <div style="font-size:22px;font-weight:900;font-family:var(--mono);color:var(--muted);">${opWinPct}%</div>
         </div>
       </div>
-      <div style="text-align:center;font-family:var(--mono);font-size:12px;color:var(--muted);">승률</div>
-      <div>
-        <div style="font-size:12px;color:#f87171;margin-bottom:4px;font-weight:600;text-align:right;">${op.name}</div>
-        <div style="background:rgba(255,255,255,0.05);border-radius:6px;height:22px;overflow:hidden;position:relative;">
-          <div style="height:22px;width:${opWinPct}%;background:#f87171;border-radius:6px;float:right;transition:width .6s;"></div>
-          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;">${opWinPct.toFixed(0)}%</div>
-        </div>
+      <!-- 승률 바 -->
+      <div style="height:10px;background:var(--surface2);border-radius:5px;overflow:hidden;margin-bottom:8px;">
+        <div style="height:100%;width:${myWinPct}%;background:${vColor};border-radius:5px;transition:width .4s;"></div>
+      </div>
+      <div style="font-size:15px;font-weight:700;color:${vColor};">${verdict}</div>
+    </div>
+    <!-- 실수치 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--accent)30;">
+        ${statTable(myMega.name,myHP,myAtk,myDef,mySpa,mySpd,mySpe,myCfg.item,myCfg.moves)}
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid #f8717130;">
+        ${statTable(opMega.name,opHP,opAtk,opDef,opSpa,opSpd,opSpe,opCfg.item,opCfg.moves)}
       </div>
     </div>
-
     <!-- 분석 포인트 -->
-    <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:12px;">
-      <div style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:2px;margin-bottom:8px;">ANALYSIS</div>
-      ${points.map(p => `<div style="font-size:12px;margin-bottom:5px;color:var(--muted2);">${p}</div>`).join('')}
-    </div>
-
-    <div style="text-align:center;margin-top:12px;font-size:10px;color:var(--muted);font-family:var(--mono);">
-      ⚠️ EP 0 기준 / 위력 90 STAB 추정 — 실제와 다를 수 있어요
+    <div style="font-size:12px;line-height:2;color:var(--muted2);">
+      ${pts.map(p=>`<div>${p}</div>`).join('')}
     </div>
   </div>`;
 }
 
-// ===== AI 파티 분석 =====
-
-// 도구 목록 (포챔스 기준)
-const AI_ITEMS = ['없음','기합의띠','구애스카프','구애머리띠','구애안경','생명의구슬','돌격조끼',
-  '반짝가루','먹다남은음식','자뭉열매','리샘열매','하양허브','멘탈허브','초점렌즈','저주의부적',
-  '화염구슬','독구슬','진화의휘석','메가돌','힘의머리띠'];
 
 function makePartyEntry(id, name) {
   return { id, name, evs:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0}, item:'없음', moves:['','','',''], open:false };
@@ -3547,34 +3732,115 @@ async function runAiAnalysis() {
     }).join('\n');
   }
 
-  const metaCtx = `현재 포챔스 더블 메타 TOP5: 누리레느(54.4%), 포푸니크(45.1%), 한카리아스(37.1%), 그우린차(34.6%), 대도각참(27.0%)`;
-
   const hasOp = opParty.length > 0;
+
+  // ===== 포챔스 전문 지식 베이스 =====
+  const expertKnowledge = `
+[포켓몬 챔피언스 배틀 전문 지식 - REG M-A 기준]
+
+■ 포챔스 고유 시스템
+- EP(능력포인트): 각 스탯 0~32, 합계 66 (SV 노력치와 다름, 최대 2~3개 스탯에만 집중)
+- 개체값 없음, 모든 포켓몬 동일 기반 능력치
+- 방어PP 최대 8 → TOD 전략 불가, 공격 위주 운영
+- 사용 불가 도구: 구애안경, 구애머리띠, 생명의구슬, 돌격조끼, 울퉁불퉁멧, 은밀망토, 속임수주사위
+- 유효 도구: 기합의띠(확정1타 버팀), 구애스카프(스피드1.5배), 하양허브(능력하락1회 복구), 먹다남은음식(매턴1/16회복), 초점렌즈(명중+10%), 멘탈허브(풀죽음 무효), 자뭉열매(물리절반회복), 리샘열매(상태이상 자연치유), 반짝가루(명중회피+10%)
+- 메가진화 사용 불가: 메타그로스, 입치트, 보만다, 대짱이
+
+■ 현재 메타 사용률 (더블 기준)
+누리레느 54.4% | 특성:촉촉보이스(소리기술→물타입) | 기술:물거품아리아/사이코노이즈/앙코르/파도타기 | 도구:반짝가루/먹다남은음식 | 물/페어리 | HP80/공격65/방67/특공95/특방115/스피드60
+포푸니크 45.1% | 특성:곡예(도구 없어지면 공격2배) | 기술:인파이트/섀도클로/전광석화/페이탈클로 | 도구:하양허브(위협→곡예 발동) | 격투/독 | HP80/공130/방60/특40/특방80/스피드120
+한카리아스 37.1% | 특성:까칠한피부(접촉기술 1/8피해) | 기술:지진/스케일샷/칼춤/암석봉인 | 도구:구애스카프 | 드래곤/땅 | HP108/공130/방95/특80/특방85/스피드102
+그우린차 34.6% | 특성:분리여과/자연회복 | 기술:기력흡수/그래스필드/홈서비스/앙코르 | 도구:먹다남은음식 | 풀/고스트 | HP71/공60/방106/특121/특방80/스피드70
+대도각참 27.0% | 특성:절대무적(강철타입기술위력1.5배) | 기술:번개무릎차기/냉동펀치/드레인펀치/대타출동 | 도구:구애스카프 | 격투/강철 | HP100/공130/방115/특70/특방115/스피드65
+워시로토무 16% | 특성:부유(땅면역) | 기술:전기자석파/볼트체인지/열탕/섀도볼 | 도구:먹다남은음식 | 전기/물
+엘풍 20% | 특성:짓궂은마음 | 기술:순풍/앙코르/오기/배꼽씨앗 | 도구:먹다남은음식 | 풀/비행
+드래펄트 15.3% | 특성:무구의마음/맑은눈 | 기술:섀도볼/드래곤다이브/유턴/방어 | 도구:구애스카프 | 드래곤/고스트 | 스피드142
+
+■ 주요 메가진화 역할
+메가리자몽Y(가뭄) | 특공159 비행/불꽃 | 열풍+솔라빔(1턴)+웨더볼+도깨비불 | 쾌청팟 에이스
+메가플라엣테(페어리오라) | 페어리기술1.3배 | 문포스+달의불빛+트릭룸+도우미 | 트릭룸 세터+페어리오라 서포터
+메가가디안(페어리스킨) | 특공165 하이퍼보이스→페어리화+1.2배 | 하이퍼보이스+사이코쇼크+명상+매지컬플레임 | 특수핵
+메가눈여아(눈퍼뜨리기) | 우박자동+오로라베일1턴설치 | 눈보라+오로라베일+섀도볼+도발 | 우박팟 세터
+메가팬텀(그림자밟기) | 특공170 스피드130 교체봉쇄 | 섀도볼+깹불+최면술+길동무 | 납치전략 기점 확보
+메가갸라도스(이자크로) | 악/물 위협사라짐 | 폭포오르기+지진+용의춤+타오르는불꽃 | 용의춤 스위퍼
+메가캥카(부자유친) | 모든 기술 2회히트 | 이판사판태클+번개펀치+불꽃펀치+속이기 | 대면최강급
+
+■ 핵심 시너지 조합
+쾌청팟: 메가리자몽Y + 이상해꽃(엽록소스피드2배) + 한카리아스/누리레느
+모래팟: 마기라스(모래일으키기) + 하마돈(모래의힘지진강화) + 몰드류
+방전+지진 콤보: 워시로토무 + 한카리아스 (로토무는 부유로 지진면역)
+페어리오라: 메가플라엣테 + 누리레느/메가가디안 (드래곤기술 무효화)
+트릭룸: 메가플라엣테/잠만보 + 메가캥카/대도각참(느린어태커)
+곡예: 포푸니크 + 위협포켓몬(한카리아스/어흥염) 또는 하양허브
+
+■ 타입 상성 핵심
+- 누리레느 약점: 전기2배, 풀2배 → 워시로토무, 그우린차에 위험
+- 한카리아스 약점: 얼음4배, 드래곤2배, 페어리2배 → 메가플라엣테, 누리레느 문포스 주의
+- 포푸니크 약점: 에스퍼2배, 비행2배 → 에브이(에스퍼), 가디안 위험
+- 메가리자몽Y 약점: 바위4배, 물2배, 전기2배 → 마기라스, 워시로토무 치명
+- 메가가디안 약점: 독2배, 강철2배 → 한카리아스(독없음 무관), 킬가르도
+- 드래펄트 약점: 고스트2배, 악2배, 드래곤2배, 얼음2배 → 마기라스, 팬텀, 한카리아스
+
+■ 스피드 실수치 기준 (EP0, Lv50)
+- 142: 드래펄트 / 130: 메가팬텀, 포푸니라 / 120: 포푸니크 / 110: 윈디
+- 102: 한카리아스(스카프 시 153) / 100: 리자몽 / 95: 후딘
+- 60: 누리레느 / 50 이하: 잠만보(30), 메가캥카(100→트릭룸수혜)
+- 트릭룸 시 스피드 역전 → 스피드 50 이하가 최고속
+
+■ EP 분배 기준 (합계 66)
+- 스카프형: 스피드32+공격32+내구2 / 화력형: 공격32+스피드32+내구2
+- 내구형: HP32+방어32+나머지2 / 균형형: 공격22+스피드22+HP22`;
+
   const prompt = `당신은 포켓몬 챔피언스 VGC 배틀 전문가입니다.
 
-내 파티:
+${expertKnowledge}
+
+━━━━━━━━━━━━━━━━━━
+분석 대상
+━━━━━━━━━━━━━━━━━━
+【내 파티】
 ${partyStr(aiParty)}
-
-${hasOp ? `상대 파티:
-${partyStr(opParty)}
-` : ''}
-${metaCtx}
-
-다음을 분석해주세요:
 ${hasOp ? `
-1. **예상 승률** — 내 파티 vs 상대 파티 승률을 퍼센트로 제시하고 근거 설명
-2. **핵심 대면** — 가장 유리한 대면 2개, 불리한 대면 2개
-3. **선발 추천** — 어떤 2마리를 선발로 내보낼지
-4. **주요 전략** — 게임 플랜과 주의사항
-` : `
-1. **파티 강점** — 타입 시너지, 역할 분담
-2. **메타 승률** — TOP5 포켓몬 대비 예상 승률
-3. **취약점** — 가장 위험한 상황
-4. **개선 제안** — 1~2가지
-`}
+【상대 파티】
+${partyStr(opParty)}` : ''}
+
+━━━━━━━━━━━━━━━━━━
+${hasOp ? `승부 예측 분석을 수행하세요. 반드시 아래 5개 항목을 모두 수치 근거와 함께 작성하세요.
+
+**1. 예상 승률 (%)와 핵심 근거 3가지**
+- 종족값/EP 기반 실수치, 도구 효과, 타입 상성, 기술 범위를 종합
+- 예시: "상대 한카리아스 스피드163 vs 내 한카리아스 스피드153(스카프 없음) → 상대가 선공" 같은 구체적 수치 근거 필수
+- "~할 것 같다" 대신 "~이므로 선공 확보/불가능" 형태로 단정
+
+**2. 핵심 대면 분석**
+- 유리한 대면 2개: 내 포켓몬A vs 상대 포켓몬B → 어떤 기술로 몇 배 데미지, 왜 유리한지
+- 불리한 대면 2개: 내 포켓몬C vs 상대 포켓몬D → 어떤 기술에 몇 배 피해, 왜 불리한지
+
+**3. 추천 선발 조합**
+- 내 파티에서 선발할 2마리 + 이유 (상대 예상 선발 대비, 도구/기술 시너지 포함)
+
+**4. 턴1 행동 플랜**
+- 선발 2마리 각각 첫 턴에 어떤 기술을 쓸지, 왜 그 기술인지 (도구 발동 조건 포함)
+
+**5. 가장 위험한 상대 포켓몬과 구체적 대처법**
+- 해당 포켓몬의 어떤 기술/도구/특성이 위협적인지, 내 어떤 포켓몬으로 어떻게 대처하는지` : `파티 단독 정밀 분석을 수행하세요. 반드시 아래 4개 항목을 수치 근거와 함께 작성하세요.
+
+**1. 각 포켓몬 역할 적합성**
+- 포켓몬별 역할(어태커/서포터/세터/클리너) + 현재 EP분배와 도구가 해당 역할에 최적인지
+- 비효율적인 부분은 구체적 대안 제시 (예: "스카프 없이 스피드32EP면 한카리아스 스피드121 → 드래펄트(142)보다 느려서 선공 불가")
+
+**2. 현재 메타 TOP5 대응력 (%)**
+- 누리레느/포푸니크/한카리아스/그우린차/대도각참 각각에 대해 내 파티의 승률 간략 평가
+
+**3. 파티 전체 공통 약점**
+- 가장 많이 겹치는 타입 약점, 가장 위험한 상황
+
+**4. 기술배치/도구 개선 제안 (최대 2가지)**
+- 지금 설정에서 바꾸면 좋을 구체적 부분`}
 ${extra ? `
 추가 요청: ${extra}` : ''}
-한국어로 간결하게 (각 항목 4줄 이내).`;
+
+⚠️ 경고: 종족값, EP, 도구 효과, 기술 타입상성 중 하나라도 빠뜨린 분석은 무가치합니다. 모든 판단에 반드시 구체적 수치를 동반하세요. 한국어로 작성.`;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
