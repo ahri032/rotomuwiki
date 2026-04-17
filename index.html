@@ -784,10 +784,18 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
         </div>
       </div>
 
-      <!-- 추가 요청 + 분석 버튼 -->
+      <!-- 액션 바: 매치업 계산 / TOP6 / AI 분석 -->
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center;">
+        <button onclick="runPartyMatchup()" style="background:linear-gradient(135deg,#667eea,#a855f7);color:#fff;border:none;border-radius:10px;padding:11px 18px;font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-weight:700;white-space:nowrap;box-shadow:0 4px 12px rgba(102,126,234,0.3);">🎯 매치업 계산</button>
+        <button onclick="loadTop6Opponent()" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;">📥 상대 파티에 TOP 6 불러오기</button>
+        <button onclick="clearAiParty('my');clearAiParty('op');document.getElementById('wr-matchup-result').innerHTML='';document.getElementById('wr-matchup-result').style.display='none';" style="background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;">초기화</button>
+      </div>
+      <!-- 매치업 계산 결과 (빠른, AI 호출 없음) -->
+      <div id="wr-matchup-result" style="display:none;margin-bottom:14px;"></div>
+      <!-- 추가 요청 + AI 분석 버튼 -->
       <div style="display:flex;gap:8px;margin-bottom:12px;">
-        <textarea id="wr-ai-context" placeholder="추가 요청사항 (선택, 예: '더블 배틀 기준', '선발 조합 추천'...)" style="flex:1;height:52px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--fg);font-size:12px;font-family:'Noto Sans KR',sans-serif;resize:none;"></textarea>
-        <button onclick="runAiAnalysis()" style="background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-weight:600;white-space:nowrap;">🤖 분석</button>
+        <textarea id="wr-ai-context" placeholder="추가 요청사항 (선택, 예: '선발 조합 추천', '견제폭 보완책'...)" style="flex:1;height:52px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--fg);font-size:12px;font-family:'Noto Sans KR',sans-serif;resize:none;"></textarea>
+        <button onclick="runAiAnalysis()" style="background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-weight:600;white-space:nowrap;">🤖 AI 분석</button>
       </div>
       <div id="wr-ai-loading" style="display:none;text-align:center;padding:30px;color:var(--muted);">
         <div style="font-size:24px;animation:spin 1s linear infinite;display:inline-block;">⚙️</div>
@@ -4601,7 +4609,8 @@ function switchWrTab(tab, btn) {
 
 function initWinRate() {
   // 검색 드롭다운 방식 - 별도 초기화 불필요
-  renderAiParty();
+  renderAiParty('my');
+  renderAiParty('op');
   // 외부 클릭시 드롭다운 닫기
   document.addEventListener('click', function(e) {
     ['my','op','ai'].forEach(side => {
@@ -5034,8 +5043,20 @@ function calcMatchup() {
 }
 
 
+// AI 파티 분석용 상수
+const AI_ITEMS = ['없음','기합의띠','구애스카프','구애안경','구애머리띠','먹다남은음식','하양허브','초점렌즈','멘탈허브','자뭉열매','리샘열매','반짝가루','생명의구슬','돌격조끼','진화의휘석','흑안경','독바늘','얼음의돌조각','알랑이구슬','대상풍새깃털','빛의점토','풍선','기적의씨','은수저'];
+
 function makePartyEntry(id, name) {
-  return { id, name, evs:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0}, item:'없음', moves:['','','',''], open:false };
+  return {
+    id, name,
+    evs:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},
+    item:'없음',
+    moves:['','','',''],
+    open:false,
+    natAtk:'n',  // n=없음, p=+10%, m=-10% (공격/특공 보정)
+    natSpe:'n',  // 스피드 보정
+    ability:''
+  };
 }
 
 function addAiPartyPoke(side) {
@@ -5095,6 +5116,27 @@ function setAiPokeMove(side, idx, slot, val) {
   arr[idx].moves[slot] = val;
 }
 
+function setAiPokeNature(side, idx, kind, val) {
+  // kind: 'atk' or 'spe'
+  const arr = side === 'op' ? opParty : aiParty;
+  if (kind === 'atk') arr[idx].natAtk = val;
+  else if (kind === 'spe') arr[idx].natSpe = val;
+}
+
+function setAiPokeAbility(side, idx, val) {
+  const arr = side === 'op' ? opParty : aiParty;
+  arr[idx].ability = val;
+}
+
+// 기존 데이터(localStorage 등)에 새 필드가 없을 수 있으므로 보정
+function normalizePartyEntry(p) {
+  if (!p) return p;
+  if (p.natAtk === undefined) p.natAtk = 'n';
+  if (p.natSpe === undefined) p.natSpe = 'n';
+  if (p.ability === undefined) p.ability = '';
+  return p;
+}
+
 function renderAiParty(side) {
   const arr = side === 'op' ? opParty : aiParty;
   const containerId = side === 'op' ? 'wr-op-party' : 'wr-ai-party';
@@ -5102,6 +5144,9 @@ function renderAiParty(side) {
   const accentColor = side === 'op' ? '#f87171' : 'var(--accent)';
   const el = document.getElementById(containerId);
   const countEl = document.getElementById(countId);
+  if (!el) return;
+  // 기존 데이터 보정
+  arr.forEach(normalizePartyEntry);
   if (countEl) countEl.textContent = arr.length + '/6';
 
   if (!arr.length) {
@@ -5113,14 +5158,66 @@ function renderAiParty(side) {
   const evLabels = ['HP','공격','방어','특공','특방','스피드'];
   const evKeys = ['hp','atk','def','spa','spd','spe'];
 
-  // 기술 목록 datalist
-  const moveKeys = Object.keys(MOVE_DATA || {});
+  // 전체 기술 목록 (보조용)
+  const allMoveKeys = Object.keys(typeof MOVE_DATA !== 'undefined' ? MOVE_DATA : {});
 
   el.innerHTML = arr.map((p, i) => {
     const sprite = spriteUrl(p.id);
     const total = Object.values(p.evs).reduce((a,b)=>a+b,0);
+
+    // 포켓몬 종족값 / 학습 가능 기술 (POKEMON_DATA에서 조회)
+    const pData = (typeof POKEMON_DATA !== 'undefined') ? POKEMON_DATA.find(x => x.id === p.id && x.name === p.name) || POKEMON_DATA.find(x => x.id === p.id) : null;
+    const baseStats = pData?.stats || null;
+    const learnMoves = pData?.moves || [];
+    // 기술 datalist: 해당 포켓몬 기술 우선 + 전체
+    const moveDlOptions = [
+      ...learnMoves.map(m => `<option value="${m}">★ ${m}</option>`),
+      ...allMoveKeys.filter(m => !learnMoves.includes(m)).map(m => `<option value="${m}">${m}</option>`)
+    ].join('');
+
+    const natureSelectHtml = (kind, val) => {
+      const cur = val || 'n';
+      return `
+        <select onchange="setAiPokeNature('${side}',${i},'${kind}',this.value)"
+          style="width:100%;font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--fg);padding:4px;font-family:'Noto Sans KR',sans-serif;">
+          <option value="n" ${cur==='n'?'selected':''}>없음</option>
+          <option value="p" ${cur==='p'?'selected':''}>▲ +10%</option>
+          <option value="m" ${cur==='m'?'selected':''}>▼ -10%</option>
+        </select>`;
+    };
+
+    // 종족값 표시
+    const baseStatsHtml = baseStats ? `
+      <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">종족값 <span style="color:var(--muted);">합계: ${Object.values(baseStats).reduce((a,b)=>a+b,0)}</span></div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-bottom:10px;">
+        ${evKeys.map((k,ki) => `
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:4px 2px;text-align:center;">
+            <div style="font-size:9px;color:var(--muted);">${evLabels[ki]}</div>
+            <div style="font-size:12px;font-weight:700;font-family:var(--mono);color:${baseStats[k]>=100?'var(--accent)':baseStats[k]>=80?'var(--fg)':'var(--muted2)'};">${baseStats[k]}</div>
+          </div>`).join('')}
+      </div>` : `<div style="font-size:10px;color:var(--muted);margin-bottom:8px;">종족값 정보 없음</div>`;
+
     const detailHtml = p.open ? `
     <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:10px;">
+      <!-- 종족값 -->
+      ${baseStatsHtml}
+      <!-- 특성 -->
+      <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">특성</div>
+      <input type="text" value="${p.ability || ''}" placeholder="특성 입력..."
+        oninput="setAiPokeAbility('${side}',${i},this.value)"
+        style="width:100%;box-sizing:border-box;padding:5px 8px;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--fg);margin-bottom:10px;font-family:'Noto Sans KR',sans-serif;">
+      <!-- 성격 보정 -->
+      <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">성격 보정</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
+        <div>
+          <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">공격/특공</div>
+          ${natureSelectHtml('atk', p.natAtk)}
+        </div>
+        <div>
+          <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">스피드</div>
+          ${natureSelectHtml('spe', p.natSpe)}
+        </div>
+      </div>
       <!-- EV -->
       <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:6px;">
         능력치 포인트 <span id="ai-ev-total-${side}-${i}" style="color:var(--gold);">합계: ${total}/510</span>
@@ -5137,35 +5234,252 @@ function renderAiParty(side) {
       <!-- 도구 -->
       <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">지닌 도구</div>
       <select onchange="setAiPokeItem('${side}',${i},this.value)"
-        style="width:100%;margin-bottom:10px;padding:5px 8px;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--fg);">
+        style="width:100%;margin-bottom:10px;padding:5px 8px;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--fg);font-family:'Noto Sans KR',sans-serif;">
         ${AI_ITEMS.map(it => `<option value="${it}" ${p.item===it?'selected':''}>${it}</option>`).join('')}
       </select>
       <!-- 기술 4개 -->
-      <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">기술 슬롯</div>
-      <datalist id="ai-moves-dl-${side}-${i}">${moveKeys.map(m=>`<option value="${m}">`).join('')}</datalist>
+      <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;">기술 슬롯 <span style="color:var(--muted);font-size:9px;">(★ = 해당 포켓몬 주력기)</span></div>
+      <datalist id="ai-moves-dl-${side}-${i}">${moveDlOptions}</datalist>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
         ${[0,1,2,3].map(s => `
           <input type="text" list="ai-moves-dl-${side}-${i}" value="${p.moves[s]}" placeholder="기술 ${s+1}"
             oninput="setAiPokeMove('${side}',${i},${s},this.value)"
-            style="padding:5px 7px;font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--fg);">`).join('')}
+            style="padding:5px 7px;font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--fg);font-family:'Noto Sans KR',sans-serif;">`).join('')}
       </div>
     </div>` : '';
 
+    // 요약 뱃지: 특성/도구 간단 표시
+    const summaryBadges = [];
+    if (p.ability) summaryBadges.push(`<span style="font-size:10px;color:var(--accent);font-family:var(--mono);">${p.ability}</span>`);
+    if (p.item && p.item !== '없음') summaryBadges.push(`<span style="font-size:10px;color:var(--gold);font-family:var(--mono);">${p.item}</span>`);
+
     return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 10px;">
-      <div style="display:flex;align-items:center;gap:6px;">
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
         <img src="${sprite}" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;" onerror="this.style.display='none'">
-        <span style="font-size:12px;font-weight:600;flex:1;">${p.name}</span>
-        ${p.item !== '없음' ? `<span style="font-size:10px;color:var(--gold);font-family:var(--mono);">${p.item}</span>` : ''}
+        <span style="font-size:12px;font-weight:600;">${p.name}</span>
+        ${summaryBadges.join(' · ')}
+        <div style="flex:1;"></div>
         <button onclick="toggleAiPokeDetail('${side}',${i})"
-          style="background:${p.open?'var(--accent)':'var(--surface)'};color:${p.open?'#fff':'var(--muted)'};border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;">
-          ${p.open ? '접기' : '설정'}
+          style="background:${p.open?'var(--accent)':'var(--surface)'};color:${p.open?'#fff':'var(--muted)'};border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">
+          ${p.open ? '접기' : '⚙ 설정'}
         </button>
         <button onclick="removeAiPartyPoke('${side}',${i})"
-          style="width:20px;height:20px;background:#f87171;border:none;border-radius:50%;color:#fff;font-size:12px;cursor:pointer;line-height:1;padding:0;flex-shrink:0;">×</button>
+          style="width:22px;height:22px;background:#f87171;border:none;border-radius:50%;color:#fff;font-size:12px;cursor:pointer;line-height:1;padding:0;flex-shrink:0;">×</button>
       </div>
       ${detailHtml}
     </div>`;
   }).join('');
+}
+
+// ===== 파티 매치업 계산 (빠른, AI 호출 없음) =====
+
+// 엔트리의 포켓몬 데이터 + 효과 능력치 계산
+function getEntryEffective(entry) {
+  if (!entry || typeof POKEMON_DATA === 'undefined') return null;
+  // 이름 + id 정확 매칭 우선, 없으면 id만
+  let p = POKEMON_DATA.find(x => x.id === entry.id && x.name === entry.name);
+  if (!p) p = POKEMON_DATA.find(x => x.id === entry.id);
+  if (!p || !p.stats) return null;
+  const s = Object.assign({}, p.stats);
+  // EV 반영 (대략, 레벨 50 기준: EV 252 ≈ +31)
+  const evBonus = (ev) => Math.floor((ev || 0) / 8);
+  if (entry.evs) {
+    s.hp  += evBonus(entry.evs.hp);
+    s.atk += evBonus(entry.evs.atk);
+    s.def += evBonus(entry.evs.def);
+    s.spa += evBonus(entry.evs.spa);
+    s.spd += evBonus(entry.evs.spd);
+    s.spe += evBonus(entry.evs.spe);
+  }
+  // 성격 보정 (공격/특공, 스피드)
+  if (entry.natAtk === 'p') { s.atk = Math.floor(s.atk * 1.1); s.spa = Math.floor(s.spa * 1.1); }
+  else if (entry.natAtk === 'm') { s.atk = Math.floor(s.atk * 0.9); s.spa = Math.floor(s.spa * 0.9); }
+  if (entry.natSpe === 'p') s.spe = Math.floor(s.spe * 1.1);
+  else if (entry.natSpe === 'm') s.spe = Math.floor(s.spe * 0.9);
+  // 도구 보정
+  if (entry.item === '구애스카프') s.spe = Math.floor(s.spe * 1.5);
+  if (entry.item === '구애머리띠') s.atk = Math.floor(s.atk * 1.5);
+  if (entry.item === '구애안경') s.spa = Math.floor(s.spa * 1.5);
+  if (entry.item === '돌격조끼') s.spd = Math.floor(s.spd * 1.5);
+  return { stats: s, type: p.type || [], pokeData: p };
+}
+
+function quickWinRate(meEntry, opEntry) {
+  const me = getEntryEffective(meEntry);
+  const op = getEntryEffective(opEntry);
+  if (!me || !op) return 50;
+  let score = 50;
+
+  // 타입 상성: 내가 상대에게
+  try {
+    const myOffs = me.type.map(t => op.type.reduce((acc, ot) => {
+      const row = (typeof TYPE_CHART !== 'undefined') ? TYPE_CHART[t] : null;
+      return row && typeof row[ot] === 'number' ? acc * row[ot] : acc;
+    }, 1));
+    const maxMyOff = myOffs.length ? Math.max.apply(null, myOffs) : 1;
+    if (maxMyOff >= 4) score += 30;
+    else if (maxMyOff >= 2) score += 15;
+    else if (maxMyOff === 0) score -= 30;
+    else if (maxMyOff < 1) score -= 15;
+
+    // 상대가 내게
+    const opOffs = op.type.map(t => me.type.reduce((acc, mt) => {
+      const row = (typeof TYPE_CHART !== 'undefined') ? TYPE_CHART[t] : null;
+      return row && typeof row[mt] === 'number' ? acc * row[mt] : acc;
+    }, 1));
+    const maxOpOff = opOffs.length ? Math.max.apply(null, opOffs) : 1;
+    if (maxOpOff >= 4) score -= 30;
+    else if (maxOpOff >= 2) score -= 15;
+    else if (maxOpOff === 0) score += 30;
+    else if (maxOpOff < 1) score += 15;
+  } catch(e) {}
+
+  // 스피드 우선도
+  if (me.stats.spe > op.stats.spe) score += 5;
+  else if (me.stats.spe < op.stats.spe) score -= 5;
+
+  // 공격력(주력) vs 상대 방어력 평균
+  const myAtk = Math.max(me.stats.atk, me.stats.spa);
+  const opDef = (op.stats.def + op.stats.spd) / 2;
+  if (myAtk > opDef + 30) score += 8;
+  else if (myAtk < opDef - 30) score -= 8;
+
+  // 도구 효과 (간이)
+  if (meEntry.item === '기합의띠') score += 3;
+  if (meEntry.item === '생명의구슬') score += 4;
+  if (meEntry.item === '먹다남은음식') score += 2;
+
+  // 특성 (대표적인 것만 간이)
+  const myAb = (meEntry.ability || '').trim();
+  const opAb = (opEntry.ability || '').trim();
+  if (myAb === '멀티스케일') score += 5;
+  if (myAb === '적응력') score += 4;
+  if (myAb === '위협') score += 3;
+  if (myAb === '부유' && op.type.includes('땅')) score += 6;
+  if (opAb === '위협') score -= 3;
+  if (opAb === '멀티스케일') score -= 5;
+  if (opAb === '부유' && me.type.includes('땅')) score -= 6;
+
+  return Math.max(2, Math.min(98, Math.round(score)));
+}
+
+function matchupCellColor(v) {
+  if (v >= 70) return 'background:rgba(34,197,94,0.25);color:#4ade80;';
+  if (v >= 55) return 'background:rgba(132,204,22,0.18);color:#a3e635;';
+  if (v >= 45) return 'background:rgba(100,116,139,0.15);color:#cbd5e1;';
+  if (v >= 30) return 'background:rgba(234,88,12,0.18);color:#fb923c;';
+  return 'background:rgba(239,68,68,0.25);color:#f87171;';
+}
+
+function runPartyMatchup() {
+  const el = document.getElementById('wr-matchup-result');
+  if (!el) return;
+  el.style.display = 'block';
+
+  if (aiParty.length === 0 || opParty.length === 0) {
+    el.innerHTML = '<div style="padding:14px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:10px;color:#fbbf24;text-align:center;font-size:13px;">⚠️ 내 파티와 상대 파티 모두 추가해주세요 (각 1마리 이상)</div>';
+    return;
+  }
+
+  // 매트릭스 계산
+  const matrix = aiParty.map(me =>
+    opParty.map(op => quickWinRate(me, op))
+  );
+
+  const totalCells = matrix.length * (matrix[0]?.length || 0);
+  const sum = matrix.reduce((a, r) => a + r.reduce((b, v) => b + v, 0), 0);
+  const avg = totalCells ? Math.round(sum / totalCells) : 50;
+
+  const myAvgs = matrix.map(r => Math.round(r.reduce((a,v) => a+v, 0) / r.length));
+  const opAvgs = opParty.map((_, j) => {
+    const col = matrix.map(r => r[j]);
+    return Math.round(col.reduce((a,v) => a+v, 0) / col.length);
+  });
+
+  const verdict = avg >= 65 ? '🏆 매우 유리'
+                : avg >= 55 ? '✅ 유리'
+                : avg >= 45 ? '⚖️ 호각'
+                : avg >= 35 ? '⚠️ 불리'
+                : '💀 매우 불리';
+  const avgColor = avg >= 55 ? '#4ade80' : avg <= 45 ? '#f87171' : '#cbd5e1';
+
+  let html = '';
+  html += '<div style="background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:12px;padding:18px;border:1px solid rgba(168,85,247,0.3);">';
+  html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:12px;">';
+  html += '<div>';
+  html += `<div style="font-size:12px;color:#94a3b8;margin-bottom:3px;">총 ${totalCells}개 매치업 평균</div>`;
+  html += `<div style="font-size:30px;font-weight:900;color:${avgColor};font-family:'Noto Sans KR',sans-serif;">${avg}% <span style="font-size:13px;font-weight:600;color:#94a3b8;">승률</span></div>`;
+  html += '</div>';
+  html += `<div style="font-size:16px;font-weight:700;padding:9px 18px;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);border-radius:10px;color:#d8b4fe;font-family:'Noto Sans KR',sans-serif;">${verdict}</div>`;
+  html += '</div>';
+
+  // 매트릭스 테이블
+  html += '<div style="overflow-x:auto;"><table style="border-collapse:separate;border-spacing:4px;font-size:11px;margin:0 auto;font-family:\'Noto Sans KR\',sans-serif;">';
+  // 헤더
+  html += '<tr><th style="padding:6px;"></th>';
+  for (let j = 0; j < opParty.length; j++) {
+    html += `<th style="padding:6px 8px;background:rgba(248,113,113,0.15);color:#f87171;border-radius:6px;font-size:10px;min-width:64px;">${opParty[j].name}</th>`;
+  }
+  html += '<th style="padding:6px 8px;background:rgba(168,85,247,0.2);color:#c084fc;border-radius:6px;">평균</th>';
+  html += '</tr>';
+
+  for (let i = 0; i < aiParty.length; i++) {
+    html += `<tr><th style="padding:6px 8px;background:rgba(99,102,241,0.18);color:#a5b4fc;border-radius:6px;font-size:10px;text-align:right;">${aiParty[i].name}</th>`;
+    for (let j = 0; j < opParty.length; j++) {
+      const v = matrix[i][j];
+      html += `<td style="padding:8px;text-align:center;font-weight:700;border-radius:6px;${matchupCellColor(v)}font-family:'Noto Sans KR',sans-serif;">${v}%</td>`;
+    }
+    html += `<td style="padding:8px;text-align:center;font-weight:900;${matchupCellColor(myAvgs[i])}border-radius:6px;">${myAvgs[i]}%</td>`;
+    html += '</tr>';
+  }
+  // 하단 평균 (상대 관점 → 100 - opAvgs = 내 관점에서 각 상대에 대한 평균)
+  html += '<tr><th style="padding:6px 8px;background:rgba(168,85,247,0.2);color:#c084fc;border-radius:6px;text-align:right;">평균</th>';
+  for (let j = 0; j < opParty.length; j++) {
+    html += `<td style="padding:8px;text-align:center;font-weight:900;${matchupCellColor(opAvgs[j])}border-radius:6px;">${opAvgs[j]}%</td>`;
+  }
+  html += '<td style="padding:8px;text-align:center;font-weight:900;background:rgba(168,85,247,0.2);color:#d8b4fe;border-radius:6px;">-</td>';
+  html += '</tr></table></div>';
+
+  // 범례
+  html += '<div style="margin-top:12px;padding:8px;background:rgba(15,23,42,0.5);border-radius:8px;font-size:10px;color:#94a3b8;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;font-family:\'Noto Sans KR\',sans-serif;">';
+  html += '<span><span style="display:inline-block;width:12px;height:12px;background:rgba(34,197,94,0.4);border-radius:3px;vertical-align:middle;"></span> 70%+ 크게 유리</span>';
+  html += '<span><span style="display:inline-block;width:12px;height:12px;background:rgba(132,204,22,0.3);border-radius:3px;vertical-align:middle;"></span> 55%+ 유리</span>';
+  html += '<span><span style="display:inline-block;width:12px;height:12px;background:rgba(100,116,139,0.3);border-radius:3px;vertical-align:middle;"></span> 45-55% 호각</span>';
+  html += '<span><span style="display:inline-block;width:12px;height:12px;background:rgba(234,88,12,0.3);border-radius:3px;vertical-align:middle;"></span> 30%- 불리</span>';
+  html += '<span><span style="display:inline-block;width:12px;height:12px;background:rgba(239,68,68,0.4);border-radius:3px;vertical-align:middle;"></span> 30%미만 매우 불리</span>';
+  html += '</div>';
+  html += '<div style="margin-top:8px;font-size:10px;color:#64748b;text-align:center;font-family:\'Noto Sans KR\',sans-serif;">※ 타입 상성·스피드·공격/방어·도구·특성 기반 간이 계산. 정확한 1:1 계산은 상단 [1:1 대면 승률] 탭 이용</div>';
+  html += '</div>';
+
+  el.innerHTML = html;
+}
+
+// TOP 6 상대 파티 불러오기 (SINGLES_DATA 상위 6)
+function loadTop6Opponent() {
+  if (typeof SINGLES_DATA === 'undefined' || !SINGLES_DATA.length) {
+    alert('실전 사용률 데이터가 없습니다.');
+    return;
+  }
+  if (opParty.length > 0) {
+    if (!confirm('상대 파티를 TOP 6으로 교체하시겠습니까?')) return;
+  }
+  opParty = [];
+  SINGLES_DATA.slice(0, 6).forEach(d => {
+    if (typeof POKEMON_DATA === 'undefined') return;
+    const baseName = (d.kor || '').replace(/\(.*?\)/g, '').trim();
+    let p = POKEMON_DATA.find(x => x.id === d.dex_id && x.name === d.kor);
+    if (!p) p = POKEMON_DATA.find(x => x.id === d.dex_id && x.name === baseName);
+    if (!p) p = POKEMON_DATA.find(x => x.id === d.dex_id);
+    if (!p) return;
+    const entry = makePartyEntry(p.id, p.name);
+    // SINGLES_DATA의 빌드 정보(도구/특성) 반영
+    if (d.build) {
+      if (d.build.item && AI_ITEMS.includes(d.build.item)) entry.item = d.build.item;
+      if (d.build.ability) entry.ability = d.build.ability;
+    }
+    opParty.push(entry);
+  });
+  renderAiParty('op');
 }
 
 async function runAiAnalysis() {
@@ -6241,287 +6555,5 @@ console.log('[v12] 누리레느/킬가르도 + ABILITY_DATA + autocomplete + KO�
   console.log('[pokepaste_import] 로드됨');
 })();
 </script>
-
-
-<script id="party_vs_party_patch">
-(function(){
-  var LS_KEY_MY = 'rotom_pvp_my_party';
-  var LS_KEY_OP = 'rotom_pvp_op_party';
-  
-  function loadParty(key) { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { return []; } }
-  function saveParty(key, arr) { try { localStorage.setItem(key, JSON.stringify(arr)); } catch(e){} }
-  
-  // 간단 승률 계산 (타입 상성 + 스피드 + 기술 위력 기반)
-  function quickWinRate(meP, opP) {
-    if (!meP || !opP) return 50;
-    var score = 50;
-    // 타입 상성
-    var myTypes = meP.type || [];
-    var opTypes = opP.type || [];
-    // 내 공격 효율 (간략화: type chart 참조 없이 기본값)
-    try {
-      if (typeof TYPE_CHART !== 'undefined' && Array.isArray(opTypes)) {
-        var myOff = myTypes.map(function(t){
-          return opTypes.reduce(function(acc, ot){
-            var idx = TYPE_CHART[t];
-            if (idx && typeof idx[ot] === 'number') return acc * idx[ot];
-            return acc;
-          }, 1);
-        });
-        var maxMyOff = Math.max.apply(null, myOff);
-        if (maxMyOff >= 4) score += 30;
-        else if (maxMyOff >= 2) score += 15;
-        else if (maxMyOff < 1) score -= 15;
-        else if (maxMyOff === 0) score -= 30;
-        
-        var opOff = opTypes.map(function(t){
-          return myTypes.reduce(function(acc, mt){
-            var idx = TYPE_CHART[t];
-            if (idx && typeof idx[mt] === 'number') return acc * idx[mt];
-            return acc;
-          }, 1);
-        });
-        var maxOpOff = Math.max.apply(null, opOff);
-        if (maxOpOff >= 4) score -= 30;
-        else if (maxOpOff >= 2) score -= 15;
-        else if (maxOpOff < 1) score += 15;
-        else if (maxOpOff === 0) score += 30;
-      }
-    } catch(e){}
-    
-    // 스피드 비교
-    var mySpe = meP.stats?.spe || meP.spe || 80;
-    var opSpe = opP.stats?.spe || opP.spe || 80;
-    if (mySpe > opSpe) score += 5;
-    else if (mySpe < opSpe) score -= 5;
-    
-    // 공격/특공 평균 vs 상대 방어/특방 평균
-    var myAtk = Math.max(meP.stats?.atk||80, meP.stats?.spa||80);
-    var opDef = (opP.stats?.def||80 + opP.stats?.spd||80) / 2;
-    if (myAtk > opDef + 30) score += 8;
-    else if (myAtk < opDef - 30) score -= 8;
-    
-    return Math.max(2, Math.min(98, Math.round(score)));
-  }
-  
-  function findPokemon(name) {
-    if (!name) return null;
-    name = name.trim();
-    // POKEMON_DATA에서 검색
-    try {
-      if (typeof POKEMON_DATA !== 'undefined') {
-        return POKEMON_DATA.find(function(p){ return p.name === name; }) || null;
-      }
-    } catch(e){}
-    return null;
-  }
-  
-  // PvP 탭 DOM 생성 & 기존 서브탭에 추가
-  function ensurePvPTab() {
-    var tab = document.getElementById('tab-winrate');
-    if (!tab) return;
-    if (document.getElementById('wr-tab-pvp-btn')) return;
-    
-    // 서브탭 버튼 영역 찾기
-    var btnsArea = tab.querySelector('div[style*="display:flex"]');
-    if (!btnsArea) return;
-    
-    var newBtn = document.createElement('button');
-    newBtn.id = 'wr-tab-pvp-btn';
-    newBtn.className = 'tab';
-    newBtn.style.cssText = 'flex:1;font-size:13px;';
-    newBtn.innerHTML = '⚔️ 파티 vs 파티';
-    newBtn.onclick = function(){
-      // 기존 서브탭 숨기기
-      ['wr-matchup','wr-ai','wr-pvp'].forEach(function(id){
-        var el = document.getElementById(id);
-        if (el) el.style.display = 'none';
-      });
-      document.querySelectorAll('#tab-winrate .tab').forEach(function(b){ b.classList.remove('active'); });
-      newBtn.classList.add('active');
-      var pvp = document.getElementById('wr-pvp');
-      if (pvp) pvp.style.display = 'block';
-    };
-    btnsArea.appendChild(newBtn);
-    
-    // 본문 컨테이너 생성
-    if (document.getElementById('wr-pvp')) return;
-    var pvpDiv = document.createElement('div');
-    pvpDiv.id = 'wr-pvp';
-    pvpDiv.style.cssText = 'display:none;padding:12px 0;';
-    pvpDiv.innerHTML = `
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
-        <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:12px;">
-          <div style="color:#f87171;font-weight:700;font-size:13px;margin-bottom:8px;">🔴 내 파티 (최대 6)</div>
-          <textarea id="pvp-my" placeholder="한 줄에 하나씩 포켓몬 이름 입력
-예:
-한카리아스
-누리레느
-리자몽
-아머까오
-하마돈
-대도각참" style="width:100%;min-height:140px;padding:8px;background:#0f172a;border:1px solid #475569;border-radius:6px;color:white;font-family:monospace;font-size:12px;resize:vertical;"></textarea>
-        </div>
-        <div style="background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.3);border-radius:10px;padding:12px;">
-          <div style="color:#60a5fa;font-weight:700;font-size:13px;margin-bottom:8px;">🔵 상대 파티 (최대 6)</div>
-          <textarea id="pvp-op" placeholder="한 줄에 하나씩 포켓몬 이름 입력
-예:
-어흥염
-포푸니크
-팬텀
-엘풍
-플라엣테
-워시로토무" style="width:100%;min-height:140px;padding:8px;background:#0f172a;border:1px solid #475569;border-radius:6px;color:white;font-family:monospace;font-size:12px;resize:vertical;"></textarea>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px;">
-        <button id="pvp-calc" style="padding:12px 32px;background:linear-gradient(135deg,#667eea,#a855f7);color:white;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 4px 12px rgba(102,126,234,0.3);">🎯 매치업 계산</button>
-        <button id="pvp-load-top" style="padding:12px 20px;background:#475569;color:white;border:none;border-radius:10px;font-size:12px;cursor:pointer;">TOP 6 불러오기</button>
-        <button id="pvp-clear" style="padding:12px 20px;background:transparent;border:1px solid #475569;color:#94a3b8;border-radius:10px;font-size:12px;cursor:pointer;">초기화</button>
-      </div>
-      <div id="pvp-result"></div>
-    `;
-    tab.appendChild(pvpDiv);
-    
-    // 저장된 파티 복원
-    var my = loadParty(LS_KEY_MY);
-    var op = loadParty(LS_KEY_OP);
-    if (my.length) document.getElementById('pvp-my').value = my.join('\n');
-    if (op.length) document.getElementById('pvp-op').value = op.join('\n');
-    
-    document.getElementById('pvp-calc').onclick = runMatchup;
-    document.getElementById('pvp-clear').onclick = function(){
-      document.getElementById('pvp-my').value = '';
-      document.getElementById('pvp-op').value = '';
-      document.getElementById('pvp-result').innerHTML = '';
-      saveParty(LS_KEY_MY, []);
-      saveParty(LS_KEY_OP, []);
-    };
-    document.getElementById('pvp-load-top').onclick = function(){
-      try {
-        var top6 = (typeof SINGLES_DATA !== 'undefined' ? SINGLES_DATA : []).slice(0,6).map(function(d){ return d.kor.replace(/\(.*?\)/g,'').trim(); });
-        document.getElementById('pvp-op').value = top6.join('\n');
-      } catch(e){}
-    };
-  }
-  
-  function runMatchup() {
-    var myLines = document.getElementById('pvp-my').value.split(/\n/).map(function(s){return s.trim();}).filter(Boolean).slice(0,6);
-    var opLines = document.getElementById('pvp-op').value.split(/\n/).map(function(s){return s.trim();}).filter(Boolean).slice(0,6);
-    
-    saveParty(LS_KEY_MY, myLines);
-    saveParty(LS_KEY_OP, opLines);
-    
-    if (!myLines.length || !opLines.length) {
-      document.getElementById('pvp-result').innerHTML = '<div style="padding:20px;background:#7f1d1d;color:white;border-radius:10px;text-align:center;">⚠️ 양쪽 파티 모두 입력해주세요</div>';
-      return;
-    }
-    
-    // 각 파티 포켓몬 매칭
-    var myPokes = myLines.map(function(n){ return {name:n, data:findPokemon(n)}; });
-    var opPokes = opLines.map(function(n){ return {name:n, data:findPokemon(n)}; });
-    
-    var notFound = [].concat(myPokes, opPokes).filter(function(p){return !p.data;}).map(function(p){return p.name;});
-    
-    // 매트릭스 계산
-    var matrix = []; // matrix[i][j] = me[i] vs op[j] 승률
-    for (var i = 0; i < myPokes.length; i++) {
-      var row = [];
-      for (var j = 0; j < opPokes.length; j++) {
-        row.push(quickWinRate(myPokes[i].data, opPokes[j].data));
-      }
-      matrix.push(row);
-    }
-    
-    // 평균 승률
-    var totalCells = matrix.length * (matrix[0]?.length || 0);
-    var sum = matrix.reduce(function(a,r){return a + r.reduce(function(b,v){return b+v;},0);}, 0);
-    var avg = totalCells ? Math.round(sum / totalCells) : 50;
-    
-    // 행별 평균 (내 포켓몬별 vs 전체 상대)
-    var myAvgs = matrix.map(function(r){ return Math.round(r.reduce(function(a,v){return a+v;},0) / r.length); });
-    // 열별 평균 (상대 포켓몬별 vs 내 전체)
-    var opAvgs = opPokes.map(function(_, j){
-      var col = matrix.map(function(r){ return r[j]; });
-      return Math.round(col.reduce(function(a,v){return a+v;},0) / col.length);
-    });
-    
-    // 색상 함수
-    function cellColor(v) {
-      if (v >= 70) return 'background:rgba(34,197,94,0.25);color:#4ade80;';
-      if (v >= 55) return 'background:rgba(132,204,22,0.18);color:#a3e635;';
-      if (v >= 45) return 'background:rgba(100,116,139,0.15);color:#cbd5e1;';
-      if (v >= 30) return 'background:rgba(234,88,12,0.18);color:#fb923c;';
-      return 'background:rgba(239,68,68,0.25);color:#f87171;';
-    }
-    
-    // 렌더
-    var html = '';
-    html += '<div style="background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:12px;padding:20px;border:1px solid rgba(168,85,247,0.3);">';
-    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;">';
-    html += '<div>';
-    html += '<div style="font-size:13px;color:#94a3b8;margin-bottom:4px;">총 ' + totalCells + '개 매치업 평균</div>';
-    html += '<div style="font-size:34px;font-weight:900;' + (avg >= 55 ? 'color:#4ade80' : avg <= 45 ? 'color:#f87171' : 'color:#cbd5e1') + ';">' + avg + '% ';
-    html += '<span style="font-size:14px;font-weight:600;color:#94a3b8;">승률</span></div>';
-    html += '</div>';
-    var verdict = avg >= 65 ? '🏆 매우 유리' : avg >= 55 ? '✅ 유리' : avg >= 45 ? '⚖️ 호각' : avg >= 35 ? '⚠️ 불리' : '💀 매우 불리';
-    html += '<div style="font-size:18px;font-weight:700;padding:10px 20px;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);border-radius:10px;color:#d8b4fe;">' + verdict + '</div>';
-    html += '</div>';
-    
-    if (notFound.length) {
-      html += '<div style="background:rgba(245,158,11,0.1);border-left:3px solid #f59e0b;padding:8px;border-radius:4px;font-size:12px;color:#fbbf24;margin-bottom:12px;">⚠️ 데이터 없음: ' + notFound.join(', ') + ' (기본 추정값 사용)</div>';
-    }
-    
-    // 매트릭스 테이블
-    html += '<div style="overflow-x:auto;"><table style="border-collapse:separate;border-spacing:4px;font-size:11px;margin:0 auto;">';
-    // 헤더 (상대 포켓몬)
-    html += '<tr><th style="padding:6px;"></th>';
-    for (var j = 0; j < opPokes.length; j++) {
-      html += '<th style="padding:6px 8px;background:rgba(59,130,246,0.15);color:#60a5fa;border-radius:6px;font-size:10px;min-width:60px;">' + opPokes[j].name + '</th>';
-    }
-    html += '<th style="padding:6px 8px;background:rgba(168,85,247,0.2);color:#c084fc;border-radius:6px;">평균</th>';
-    html += '</tr>';
-    
-    for (var i = 0; i < myPokes.length; i++) {
-      html += '<tr><th style="padding:6px 8px;background:rgba(239,68,68,0.15);color:#f87171;border-radius:6px;font-size:10px;text-align:right;">' + myPokes[i].name + '</th>';
-      for (var j = 0; j < opPokes.length; j++) {
-        var v = matrix[i][j];
-        html += '<td style="padding:8px;text-align:center;font-weight:700;border-radius:6px;' + cellColor(v) + '">' + v + '%</td>';
-      }
-      html += '<td style="padding:8px;text-align:center;font-weight:900;' + cellColor(myAvgs[i]) + 'border-radius:6px;">' + myAvgs[i] + '%</td>';
-      html += '</tr>';
-    }
-    // 하단 평균 행
-    html += '<tr><th style="padding:6px 8px;background:rgba(168,85,247,0.2);color:#c084fc;border-radius:6px;text-align:right;">평균</th>';
-    for (var j = 0; j < opPokes.length; j++) {
-      var oa = 100 - opAvgs[j]; // 상대 입장에선 나의 승률 반대
-      html += '<td style="padding:8px;text-align:center;font-weight:900;' + cellColor(oa) + 'border-radius:6px;">' + oa + '%</td>';
-    }
-    html += '<td style="padding:8px;text-align:center;font-weight:900;background:rgba(168,85,247,0.2);color:#d8b4fe;border-radius:6px;">-</td>';
-    html += '</tr></table></div>';
-    
-    // 범례
-    html += '<div style="margin-top:14px;padding:8px;background:rgba(15,23,42,0.5);border-radius:8px;font-size:10px;color:#94a3b8;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">';
-    html += '<span><span style="display:inline-block;width:12px;height:12px;background:rgba(34,197,94,0.4);border-radius:3px;vertical-align:middle;"></span> 70%+ 크게 유리</span>';
-    html += '<span><span style="display:inline-block;width:12px;height:12px;background:rgba(132,204,22,0.3);border-radius:3px;vertical-align:middle;"></span> 55%+ 유리</span>';
-    html += '<span><span style="display:inline-block;width:12px;height:12px;background:rgba(100,116,139,0.3);border-radius:3px;vertical-align:middle;"></span> 45-55% 호각</span>';
-    html += '<span><span style="display:inline-block;width:12px;height:12px;background:rgba(234,88,12,0.3);border-radius:3px;vertical-align:middle;"></span> 30%- 불리</span>';
-    html += '<span><span style="display:inline-block;width:12px;height:12px;background:rgba(239,68,68,0.4);border-radius:3px;vertical-align:middle;"></span> 30% 미만 크게 불리</span>';
-    html += '</div>';
-    
-    html += '<div style="margin-top:10px;font-size:10px;color:#64748b;text-align:center;">※ 타입 상성·스피드·공격/방어 기반 간이 계산. 정확한 계산은 1:1 대면 승률 탭 이용</div>';
-    html += '</div>';
-    
-    document.getElementById('pvp-result').innerHTML = html;
-  }
-  
-  setInterval(ensurePvPTab, 1000);
-  if (document.readyState !== 'loading') ensurePvPTab();
-  else document.addEventListener('DOMContentLoaded', ensurePvPTab);
-  
-  console.log('[pvp] 파티 vs 파티 패치 로드됨');
-})();
-</script>
-
 </body>
 </html>
