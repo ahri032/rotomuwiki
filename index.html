@@ -4315,12 +4315,24 @@ function runFreeGuide(pokeId, megaVariant) {
     if (!list.length) return '<div class="g-block"><div class="g-label">' + label + '</div><div class="g-text" style="font-size:12px;color:var(--muted2);">해당 없음 (상위권 내 중립 매치업)</div></div>';
     return '<div class="g-block"><div class="g-label">' + label + '</div><div class="g-tags" style="gap:8px;">' +
       list.map(m => {
+        // 타입 컬러 점
+        var baseName = m.name.replace(/\s*\([^)]+\)\s*$/, '').trim();
+        var oppP = POKEMON_DATA.find(function(x){return x.name === baseName;});
+        var oppTypes = oppP ? oppP.type : [];
+        var mm = m.name.match(/메가([XY]?)\)/);
+        if (mm && oppP && MEGA_DATA[oppP.id]) {
+          var variant = mm[1];
+          var md = (variant==='X'||variant==='Y') ? MEGA_DATA[oppP.id][variant] : (MEGA_DATA[oppP.id].type ? MEGA_DATA[oppP.id] : null);
+          if (md && md.type) oppTypes = md.type;
+        }
+        var typeDots = oppTypes.map(function(t){var tc=TYPE_COLORS[t];return tc?'<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:'+tc.text+';box-shadow:0 0 3px '+tc.text+'88;" title="'+t+'"></span>':'';}).join('');
+        var typeWrap = typeDots ? '<span style="display:inline-flex;gap:3px;margin-right:6px;vertical-align:middle;">'+typeDots+'</span>' : '';
         const buildLine = m.build ?
           '<span style="font-size:10px;opacity:.68;margin-top:3px;display:block;font-weight:400;letter-spacing:.2px;line-height:1.3;">'
             + m.build.item + ' · ' + m.build.ability + '<br><span style="opacity:.7;">' + m.build.nature + ' · ' + m.build.role + '</span>'
           + '</span>' : '';
         return '<span class="g-tag ' + tagClass + '" style="flex-direction:column;align-items:flex-start;padding:6px 10px;">'
-          + '<span style="font-weight:600;">' + m.name + '</span>'
+          + '<span style="font-weight:600;">' + typeWrap + m.name + '</span>'
           + buildLine
           + '</span>';
       }).join('') +
@@ -4343,9 +4355,9 @@ function runFreeGuide(pokeId, megaVariant) {
       ' &nbsp;|&nbsp; 스피드 ' + st.spe +
     '</div></div>' +
     '<div class="g-block"><div class="g-label">타입 · 약점</div>' +
-    '<div class="g-tags" style="margin-bottom:4px;">' + displayType.map(t=>'<span class="g-tag role">'+t+'</span>').join('') + '</div>' +
-    '<div class="g-tags">' + (weakTypes.length ? weakTypes.map(w=>'<span class="g-tag weak">'+w+' 약점</span>').join('') : '<span class="g-tag">없음</span>') + '</div></div>' +
-    '<div class="g-block"><div class="g-label">추천 기술 (' + (isPhysical?'물리형':'특수형') + ')</div><div class="g-tags">' + recMoves.map(m=>'<span class="g-tag move">'+m+'</span>').join('') + '</div></div>' +
+    '<div class="g-tags" style="margin-bottom:4px;">' + displayType.map(function(t){var tc=TYPE_COLORS[t];var style=tc?'background:'+tc.bg+';border-color:'+tc.border+';color:'+tc.text+';font-weight:600;':'';return '<span class="g-tag role" style="'+style+'">'+t+'</span>';}).join('') + '</div>' +
+    '<div class="g-tags">' + (weakTypes.length ? weakTypes.map(function(w){var tN=w.replace(' 4배','').trim();var tc=TYPE_COLORS[tN];var style=tc?'background:'+tc.bg+';border-color:'+tc.border+';color:'+tc.text+';font-weight:600;':'';return '<span class="g-tag weak" style="'+style+'">⚠️ '+w+' 약점</span>';}).join('') : '<span class="g-tag">없음</span>') + '</div></div>' +
+    '<div class="g-block"><div class="g-label">추천 기술 (' + (isPhysical?'물리형':'특수형') + ')</div><div class="g-tags">' + recMoves.map(function(m){var mv=MOVE_DATA[m];var tc=mv?TYPE_COLORS[mv.type]:null;var style=tc?'background:'+tc.bg+';border-color:'+tc.border+';color:'+tc.text+';font-weight:600;':'';var dot=tc?'<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+tc.text+';margin-right:6px;vertical-align:middle;box-shadow:0 0 4px '+tc.text+'55;"></span>':'';return '<span class="g-tag move" style="'+style+'">'+dot+m+'</span>';}).join('') + '</div></div>' +
     matchupHtml +
     '<div class="guide-apikey-hint">&#10024; Claude API 키를 등록하면 더 상세한 AI 운용 가이드를 받을 수 있어요. <a href="#" onclick="openApiKeyModal();return false;" style="color:var(--accent);">키 등록하기</a></div>';
 }
