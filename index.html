@@ -1,17 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko
-
-    <!-- AI 싱글배틀 운용 가이드 -->
-    <div class="guide-section" id="guide-section-${p.id}">
-      <div class="guide-header">
-        <span class="guide-title">⚔️ 싱글배틀 운용 가이드</span>
-        <button class="guide-gen-btn" id="guide-btn-${p.id}" onclick="generateBattleGuide(${p.id})">
-          <div class="btn-spinner"></div>
-          <span class="btn-text">✨ AI 가이드 생성</span>
-        </button>
-      </div>
-      <div class="guide-body" id="guide-body-${p.id}"></div>
-    </div>" data-theme="dark">
+<html lang="ko" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -473,35 +461,6 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
 /* REG M-A ë²í¼ */
 .reg-btn{position:fixed;top:16px;right:16px;background:linear-gradient(135deg,var(--gold),#e8a020);color:#000;font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;z-index:100;box-shadow:0 4px 16px rgba(240,194,51,.3);}
-
-/* ===== AI 배틀 운용 가이드 ===== */
-.guide-section{background:linear-gradient(135deg,rgba(77,131,245,0.06),rgba(155,109,255,0.04));border:1px solid rgba(77,131,245,0.2);border-radius:var(--radius);padding:20px;margin-top:16px;position:relative;overflow:hidden;}
-.guide-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(77,131,245,0.4),transparent);}
-.guide-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-.guide-title{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;}
-.guide-gen-btn{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s;box-shadow:0 2px 10px rgba(77,131,245,.3);}
-.guide-gen-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(77,131,245,.4);}
-.guide-gen-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
-.guide-gen-btn .btn-spinner{width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
-.guide-gen-btn.loading .btn-spinner{display:block;}
-.guide-gen-btn.loading .btn-text{display:none;}
-@keyframes spin{to{transform:rotate(360deg)}}
-.guide-body{display:none;font-size:13.5px;line-height:1.8;color:var(--muted2);}
-.guide-body.visible{display:block;}
-.guide-body .g-block{margin-bottom:14px;}
-.guide-body .g-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--accent);margin-bottom:5px;display:flex;align-items:center;gap:5px;}
-.guide-body .g-label::after{content:'';flex:1;height:1px;background:rgba(77,131,245,.15);}
-.guide-body .g-text{color:var(--text);font-size:13px;line-height:1.75;}
-.guide-body .g-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
-.guide-body .g-tag{font-size:11px;padding:3px 9px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);color:var(--muted2);font-family:var(--mono);}
-.guide-body .g-tag.atk{border-color:rgba(240,96,96,.3);color:#f08080;background:rgba(240,96,96,.08);}
-.guide-body .g-tag.def{border-color:rgba(61,214,140,.3);color:#3dd68c;background:rgba(61,214,140,.08);}
-.guide-body .g-tag.tool{border-color:rgba(240,194,51,.3);color:var(--gold);background:rgba(240,194,51,.08);}
-.guide-body .g-tag.move{border-color:rgba(155,109,255,.3);color:#b08fff;background:rgba(155,109,255,.08);}
-.guide-body .g-tag.role{border-color:rgba(77,131,245,.3);color:#7eb4ff;background:rgba(77,131,245,.08);}
-.guide-cursor{display:inline-block;width:2px;height:14px;background:var(--accent);animation:blink .7s step-end infinite;vertical-align:middle;margin-left:2px;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.guide-error{color:var(--red);font-size:12px;padding:10px;background:rgba(240,96,96,.08);border-radius:6px;border:1px solid rgba(240,96,96,.2);}
 
 /* ===== AI 배틀 운용 가이드 ===== */
 .guide-section{background:linear-gradient(135deg,rgba(77,131,245,0.06),rgba(155,109,255,0.04));border:1px solid rgba(77,131,245,0.2);border-radius:var(--radius);padding:20px;margin-top:16px;position:relative;overflow:hidden;}
@@ -4100,6 +4059,40 @@ initDmg();
 renderAllPokemon();
 initSampleTagFilters();
 renderSamples();
+
+
+// ===== AI 싱글배틀 운용 가이드 =====
+async function generateBattleGuide(pokeId) {
+  const p = POKEMON_DATA.find(x => x.id === pokeId);
+  if (!p) return;
+  const btn = document.getElementById('guide-btn-' + pokeId);
+  const body = document.getElementById('guide-body-' + pokeId);
+  if (!btn || !body) return;
+  btn.classList.add('loading'); btn.disabled = true;
+  body.classList.add('visible');
+  body.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0;">AI 분석 중<span class="guide-cursor"></span></div>';
+  const st = p.stats;
+  const bst = Object.values(st).reduce((a,b)=>a+b,0);
+  const prompt = '['+p.name+'] 포켓몬 챔피언스 싱글배틀 운용 가이드\n\n포켓몬 정보:\n- 이름: '+p.name+'\n- 타입: '+p.type.join('/')+'\n- 종족값: HP'+st.hp+' 공'+st.atk+' 방'+st.def+' 특공'+st.spa+' 특방'+st.spd+' 스'+st.spe+' (합계 '+bst+')\n- 기술: '+(p.moves||[]).join(', ')+'\n- '+p.gen+'세대\n\nJSON만 반환 (설명 없이, 마크다운 없이):\n{"roles":["포지션태그1","포지션태그2"],"strength":"강점 2-3문장","weakness":"약점 2-3문장","moves":["기술1","기술2","기술3","기술4"],"move_reason":"이유 1-2문장","tools":["도구1","도구2"],"ability":"특성과 이유","partner":"파트너와 이유","tip":"운용팁"}';
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const data = await res.json();
+    if(!data.content||!data.content[0]) throw new Error('응답 없음');
+    const raw = data.content[0].text.replace(/```json/g,'').replace(/```/g,'').trim();
+    let g; try{g=JSON.parse(raw);}catch(e){body.innerHTML='<div class="guide-error">⚠️ 파싱 오류. 다시 시도해주세요.</div>';btn.classList.remove('loading');btn.disabled=false;return;}
+    const rc=r=>{if(['스위퍼','어태커','선봉','클리너','공격','전령'].some(k=>r.includes(k)))return 'atk';if(['탱커','벽','서포터','보조','내구','웰','센터'].some(k=>r.includes(k)))return 'def';return 'role';};
+    body.innerHTML=
+      '<div class="g-block"><div class="g-label">포지션</div><div class="g-tags">'+(g.roles||[]).map(r=>'<span class="g-tag '+rc(r)+'">'+r+'</span>').join('')+'</div></div>'+
+      '<div class="g-block"><div class="g-label">강점 분석</div><div class="g-text">'+(g.strength||'')+'</div></div>'+
+      '<div class="g-block"><div class="g-label">약점과 대응</div><div class="g-text">'+(g.weakness||'')+'</div></div>'+
+      '<div class="g-block"><div class="g-label">추천 기술 구성</div><div class="g-tags">'+(g.moves||[]).map(m=>'<span class="g-tag move">'+m+'</span>').join('')+'</div><div class="g-text" style="margin-top:6px;font-size:12px;color:var(--muted2);">'+(g.move_reason||'')+'</div></div>'+
+      '<div class="g-block"><div class="g-label">추천 도구 · 특성</div><div class="g-tags">'+(g.tools||[]).map(t=>'<span class="g-tag tool">'+t+'</span>').join('')+'</div><div class="g-text" style="margin-top:6px;font-size:12px;color:var(--muted2);">'+(g.ability||'')+'</div></div>'+
+      '<div class="g-block"><div class="g-label">시너지 파트너</div><div class="g-text">'+(g.partner||'')+'</div></div>'+
+      '<div class="g-block" style="margin-bottom:0;"><div class="g-label">핵심 운용 팁</div><div class="g-text">'+(g.tip||'')+'</div></div>';
+  } catch(err){body.innerHTML='<div class="guide-error">⚠️ 오류: '+err.message+'</div>';}
+  btn.classList.remove('loading'); btn.disabled=false;
+  const bt=btn.querySelector('.btn-text'); if(bt) bt.textContent='🔄 재생성';
+}
 </script>
   <script>
     if ('serviceWorker' in navigator) {
@@ -4213,40 +4206,6 @@ async function generateBattleGuide(pokeId) {
   btn.disabled = false;
   const btnText = btn.querySelector('.btn-text');
   if(btnText) btnText.textContent = '🔄 재생성';
-}
-
-
-// ===== AI 싱글배틀 운용 가이드 =====
-async function generateBattleGuide(pokeId) {
-  const p = POKEMON_DATA.find(x => x.id === pokeId);
-  if (!p) return;
-  const btn = document.getElementById('guide-btn-' + pokeId);
-  const body = document.getElementById('guide-body-' + pokeId);
-  if (!btn || !body) return;
-  btn.classList.add('loading'); btn.disabled = true;
-  body.classList.add('visible');
-  body.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0;">AI 분석 중<span class="guide-cursor"></span></div>';
-  const st = p.stats;
-  const bst = Object.values(st).reduce((a,b)=>a+b,0);
-  const prompt = '['+p.name+'] 포켓몬 챔피언스 싱글배틀 운용 가이드\n\n포켓몬 정보:\n- 이름: '+p.name+'\n- 타입: '+p.type.join('/')+'\n- 종족값: HP'+st.hp+' 공'+st.atk+' 방'+st.def+' 특공'+st.spa+' 특방'+st.spd+' 스'+st.spe+' (합계 '+bst+')\n- 기술: '+(p.moves||[]).join(', ')+'\n- '+p.gen+'세대\n\nJSON만 반환 (설명 없이, 마크다운 없이):\n{"roles":["포지션태그1","포지션태그2"],"strength":"강점 2-3문장","weakness":"약점 2-3문장","moves":["기술1","기술2","기술3","기술4"],"move_reason":"이유 1-2문장","tools":["도구1","도구2"],"ability":"특성과 이유","partner":"파트너와 이유","tip":"운용팁"}';
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
-    const data = await res.json();
-    if(!data.content||!data.content[0]) throw new Error('응답 없음');
-    const raw = data.content[0].text.replace(/```json/g,'').replace(/```/g,'').trim();
-    let g; try{g=JSON.parse(raw);}catch(e){body.innerHTML='<div class="guide-error">⚠️ 파싱 오류. 다시 시도해주세요.</div>';btn.classList.remove('loading');btn.disabled=false;return;}
-    const rc=r=>{if(['스위퍼','어태커','선봉','클리너','공격','전령'].some(k=>r.includes(k)))return 'atk';if(['탱커','벽','서포터','보조','내구','웰','센터'].some(k=>r.includes(k)))return 'def';return 'role';};
-    body.innerHTML=
-      '<div class="g-block"><div class="g-label">포지션</div><div class="g-tags">'+(g.roles||[]).map(r=>'<span class="g-tag '+rc(r)+'">'+r+'</span>').join('')+'</div></div>'+
-      '<div class="g-block"><div class="g-label">강점 분석</div><div class="g-text">'+(g.strength||'')+'</div></div>'+
-      '<div class="g-block"><div class="g-label">약점과 대응</div><div class="g-text">'+(g.weakness||'')+'</div></div>'+
-      '<div class="g-block"><div class="g-label">추천 기술 구성</div><div class="g-tags">'+(g.moves||[]).map(m=>'<span class="g-tag move">'+m+'</span>').join('')+'</div><div class="g-text" style="margin-top:6px;font-size:12px;color:var(--muted2);">'+(g.move_reason||'')+'</div></div>'+
-      '<div class="g-block"><div class="g-label">추천 도구 · 특성</div><div class="g-tags">'+(g.tools||[]).map(t=>'<span class="g-tag tool">'+t+'</span>').join('')+'</div><div class="g-text" style="margin-top:6px;font-size:12px;color:var(--muted2);">'+(g.ability||'')+'</div></div>'+
-      '<div class="g-block"><div class="g-label">시너지 파트너</div><div class="g-text">'+(g.partner||'')+'</div></div>'+
-      '<div class="g-block" style="margin-bottom:0;"><div class="g-label">핵심 운용 팁</div><div class="g-text">'+(g.tip||'')+'</div></div>';
-  } catch(err){body.innerHTML='<div class="guide-error">⚠️ 오류: '+err.message+'</div>';}
-  btn.classList.remove('loading'); btn.disabled=false;
-  const bt=btn.querySelector('.btn-text'); if(bt) bt.textContent='🔄 재생성';
 }
 </script>
 </body>
