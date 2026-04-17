@@ -466,7 +466,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 .guide-section{background:linear-gradient(135deg,rgba(77,131,245,0.06),rgba(155,109,255,0.04));border:1px solid rgba(77,131,245,0.2);border-radius:var(--radius);padding:20px;margin-top:16px;position:relative;overflow:hidden;}
 .guide-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(77,131,245,0.4),transparent);}
 .guide-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
-.guide-title{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;}
+.guide-title{font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--accent);opacity:.9;}
 .guide-btns{display:flex;gap:6px;align-items:center;}
 .guide-free-btn{display:flex;align-items:center;gap:5px;background:var(--surface2);color:var(--muted2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s;}
 .guide-free-btn:hover{border-color:var(--accent);color:var(--accent);}
@@ -481,7 +481,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 .guide-body .g-mode{font-family:'Noto Sans KR',sans-serif;font-size:10px;color:var(--muted);margin-bottom:12px;padding:4px 10px;background:var(--surface2);border-radius:4px;display:inline-block;font-weight:500;}
 .guide-body .g-mode.ai{color:var(--accent2);background:rgba(155,109,255,.1);font-weight:600;}
 .guide-body .g-block{margin-bottom:14px;}
-.guide-body .g-label{font-family:'Noto Sans KR',sans-serif;font-size:10px;letter-spacing:2px;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.guide-body .g-label{font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:600;letter-spacing:.3px;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px;opacity:.9;}
 .guide-body .g-label::after{content:'';flex:1;height:1px;background:rgba(77,131,245,.15);}
 .guide-body .g-text{font-family:'Noto Sans KR',sans-serif;color:var(--text);font-size:13px;line-height:1.75;}
 .guide-body .g-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
@@ -1538,18 +1538,13 @@ const ITEM_IMAGE_MAP = {
   '조개껍질방울': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/shell-bell.png',
   '기합의띠': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/focus-sash.png',
   '구애스카프': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/choice-scarf.png',
-  '구애안경': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/choice-specs.png',
-  '구애머리띠': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/choice-band.png',
-  '생명의구슬': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/life-orb.png',
-  '돌격조끼': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/assault-vest.png',
-  '진화의휘석': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/eviolite.png',
   '은빛가루': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/silver-powder.png',
   '금속코트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/metal-coat.png',
   '부드러운모래': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/soft-sand.png',
   '딱딱한돌': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/hard-stone.png',
   '기적의씨': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/miracle-seed.png',
   '검은안경': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/black-glasses.png',
-  '검은피': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poison-barb.png',
+  '검은띠': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/black-belt.png',
   '자석': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/magnet.png',
   '신비의물방울': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mystic-water.png',
   '예리한부리': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/sharp-beak.png',
@@ -1563,7 +1558,7 @@ const ITEM_IMAGE_MAP = {
   '요정의깃털': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/fairy-feather.png',
   '오카열매': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/berries/occa-berry.png',
   '꼬시개열매': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/berries/passho-berry.png',
-  '조나열매': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/berries/wacan-berry.png',
+  '초나열매': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/berries/wacan-berry.png',
   '린드열매': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/berries/rindo-berry.png',
   '플카열매': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/berries/yache-berry.png',
   '로플열매': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/berries/chople-berry.png',
@@ -1671,11 +1666,6 @@ const ITEM_DB=[
   {name:'기합의띠',cat:'소지품',tags:['일격 생존 (HP 1)','HP 최대 시','소모'],icon:'🎗️',desc:'HP 최대일 때 일격에 해당하는 공격을 반드시 HP 1로 버틴다. 소모품.',price:10},
   // 스카프/안경/밴드
   {name:'구애스카프',cat:'스카프/안경/밴드',tags:['스피드 ×1.5','기술 고정'],icon:'🧣',desc:'스피드가 1.5배가 된다. 단, 처음 사용한 기술밖에 쓸 수 없다.',price:10,effect:{spe:1.5}},
-  {name:'구애안경',cat:'스카프/안경/밴드',tags:['특공 ×1.5','기술 고정'],icon:'👓',desc:'특수공격이 1.5배가 된다. 단, 처음 사용한 기술밖에 쓸 수 없다.',price:10,effect:{spa:1.5}},
-  {name:'구애머리띠',cat:'스카프/안경/밴드',tags:['공격 ×1.5','기술 고정'],icon:'🎀',desc:'물리공격이 1.5배가 된다. 단, 처음 사용한 기술밖에 쓸 수 없다.',price:10,effect:{atk:1.5}},
-  {name:'생명의구슬',cat:'스카프/안경/밴드',tags:['전 데미지 ×1.3','반동'],icon:'🔮',desc:'모든 기술의 데미지가 1.3배가 된다. 매 턴 HP의 10%를 소모한다.',price:10,effect:{all:1.3}},
-  {name:'돌격조끼',cat:'스카프/안경/밴드',tags:['특방 ×1.5','변화기 불가'],icon:'🦺',desc:'특수방어가 1.5배가 된다. 대신 변화기를 쓸 수 없다.',price:10,effect:{spd:1.5}},
-  {name:'진화의휘석',cat:'스카프/안경/밴드',tags:['방어 ×1.5','특방 ×1.5'],icon:'💎',desc:'미진화 포켓몬의 방어와 특수방어가 1.5배가 된다.',price:10,effect:{def:1.5,spd:1.5}},
   // 타입강화
   {name:'은빛가루',cat:'타입강화',tags:['데미지 +20%'],icon:'🪲',type:'벌레',desc:'벌레 타입 기술의 데미지가 20% 올라간다.',price:10,effect:{typeMult:1.2,forType:'벌레'}},
   {name:'금속코트',cat:'타입강화',tags:['데미지 +20%'],icon:'🔩',type:'강철',desc:'강철 타입 기술의 데미지가 20% 올라간다.',price:30,effect:{typeMult:1.2,forType:'강철'}},
@@ -1683,7 +1673,7 @@ const ITEM_DB=[
   {name:'딱딱한돌',cat:'타입강화',tags:['데미지 +20%'],icon:'🪨',type:'바위',desc:'바위 타입 기술의 데미지가 20% 올라간다.',price:100,effect:{typeMult:1.2,forType:'바위'}},
   {name:'기적의씨',cat:'타입강화',tags:['데미지 +20%'],icon:'🌱',type:'풀',desc:'풀 타입 기술의 데미지가 20% 올라간다.',price:30,effect:{typeMult:1.2,forType:'풀'}},
   {name:'검은안경',cat:'타입강화',tags:['데미지 +20%'],icon:'🕶️',type:'악',desc:'악 타입 기술의 데미지가 20% 올라간다.',price:30,effect:{typeMult:1.2,forType:'악'}},
-  {name:'검은피',cat:'타입강화',tags:['데미지 +20%'],icon:'🫀',type:'독',desc:'독 타입 기술의 데미지가 20% 올라간다.',price:30,effect:{typeMult:1.2,forType:'독'}},
+  {name:'검은띠',cat:'타입강화',tags:['데미지 +20%'],icon:'🥋',type:'격투',desc:'격투 타입 기술의 데미지가 20% 올라간다.',price:30,effect:{typeMult:1.2,forType:'격투'}},
   {name:'자석',cat:'타입강화',tags:['데미지 +20%'],icon:'🧲',type:'전기',desc:'전기 타입 기술의 데미지가 20% 올라간다.',price:30,effect:{typeMult:1.2,forType:'전기'}},
   {name:'신비의물방울',cat:'타입강화',tags:['데미지 +20%'],icon:'💧',type:'물',desc:'물 타입 기술의 데미지가 20% 올라간다.',price:30,effect:{typeMult:1.2,forType:'물'}},
   {name:'예리한부리',cat:'타입강화',tags:['데미지 +20%'],icon:'🦅',type:'비행',desc:'비행 타입 기술의 데미지가 20% 올라간다.',price:50,effect:{typeMult:1.2,forType:'비행'}},
@@ -1698,7 +1688,7 @@ const ITEM_DB=[
   // 타입방어 열매
   {name:'오카열매',cat:'타입방어',tags:['데미지 ×0.5','소모'],icon:'🍓',type:'불꽃',desc:'불꽃 타입 기술의 데미지를 0.5배로 줄인다. 소모품.',price:10},
   {name:'꼬시개열매',cat:'타입방어',tags:['데미지 ×0.5','소모'],icon:'🍇',type:'물',desc:'물 타입 기술의 데미지를 0.5배로 줄인다. 소모품.',price:10},
-  {name:'조나열매',cat:'타입방어',tags:['데미지 ×0.5','소모'],icon:'🍋',type:'전기',desc:'전기 타입 기술의 데미지를 0.5배로 줄인다. 소모품.',price:10},
+  {name:'초나열매',cat:'타입방어',tags:['데미지 ×0.5','소모'],icon:'🍋',type:'전기',desc:'전기 타입 기술의 데미지를 0.5배로 줄인다. 소모품.',price:10},
   {name:'린드열매',cat:'타입방어',tags:['데미지 ×0.5','소모'],icon:'🥝',type:'풀',desc:'풀 타입 기술의 데미지를 0.5배로 줄인다. 소모품.',price:10},
   {name:'플카열매',cat:'타입방어',tags:['데미지 ×0.5','소모'],icon:'🫐',type:'얼음',desc:'얼음 타입 기술의 데미지를 0.5배로 줄인다. 소모품.',price:10},
   {name:'로플열매',cat:'타입방어',tags:['데미지 ×0.5','소모'],icon:'🍎',type:'격투',desc:'격투 타입 기술의 데미지를 0.5배로 줄인다. 소모품.',price:10},
@@ -2194,7 +2184,7 @@ function showDetail(id,megaVariant){
           <img class="poke-sprite-lg" src="${megaSprite}" alt="${megaName}" onerror="this.src='${spriteUrl(p.id)}'">
           <div>
             <div style="font-size:20px;font-weight:400;font-family:'Black Han Sans','Noto Sans KR',sans-serif;letter-spacing:.5px;">${megaName}${isMega?` <span style="font-size:13px;color:var(--accent);vertical-align:middle;">MEGA</span>`:''}</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:2px;font-family:var(--mono);">No.${p.id} · ${p.gen}세대</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;font-family:'Noto Sans KR',sans-serif;letter-spacing:.3px;font-weight:500;">No.${p.id} · ${p.gen}세대</div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">${displayP.type.map(typeBadge).join('')}</div>
             ${megaBtns}
           </div>
@@ -2324,12 +2314,11 @@ function calcStat(base,ep,nature){const raw=base+20+ep;const mult=nature==='p'?1
 function calcHP(base,ep){return base+75+ep;}
 
 const ITEMS={
-  공격:['없음','구애안경','구애머리띠','생명의구슬','돌격조끼','진화의휘석'],
-  방어:['없음','돌격조끼','진화의휘석','구애스카프','기합의띠'],
+  공격:['없음','구애스카프','기합의띠','먹다남은음식','자뭉열매'],
+  방어:['없음','기합의띠','먹다남은음식','자뭉열매','로플열매','구애스카프'],
 };
 const ITEM_MULT={
-  '구애안경':{spa:1.5},'구애머리띠':{atk:1.5},'구애스카프':{spe:1.5},
-  '생명의구슬':{all:1.3},'돌격조끼':{spd:1.5},'진화의휘석':{def:1.5,spd:1.5},
+  '구애스카프':{spe:1.5},
 };
 const EP_LABELS=['HP','공격','방어','특공','특방','스피드'];
 const EP_KEYS=['hp','atk','def','spa','spd','spe'];
@@ -2624,16 +2613,23 @@ function calcOneDmg(atkP,defP,moveName,atkRank,defRank){
   const defItemMult=ITEM_MULT[calcState.def.item]||{};
   if(isSpecial&&defItemMult.spd)defStat=Math.floor(defStat*defItemMult.spd);
   else if(!isSpecial&&defItemMult.def)defStat=Math.floor(defStat*defItemMult.def);
-  if(calcState.def.item==='돌격조끼'&&isSpecial)defStat=Math.floor(defStat*1.5);
+  // 챔피언스에는 돌격조끼/생명의구슬이 없음 - 타입강화 도구(+20%)와 구애스카프(스피드1.5)만 반영
   const defHpEp=calcState.def.hpEp||0;
   const defHP=calcHP(defP.stats.hp,defHpEp);
   const atkMult=RANK_MULTS[atkRank+6],defMult=RANK_MULTS[defRank+6];
   const base=Math.floor(Math.floor(22*move.power*Math.round(atkStat*atkMult)/Math.round(defStat*defMult)/50)+2);
   const stab=atkP.type.includes(move.type)?1.5:1;
   let typeEff=1;defP.type.forEach(dt=>{typeEff*=(TYPE_CHART[move.type]?.[dt]??1);});
-  const lifeOrb=calcState.atk.item==='생명의구슬'?1.3:1;
-  const minDmg=Math.round(base*stab*typeEff*lifeOrb*0.85);
-  const maxDmg=Math.round(base*stab*typeEff*lifeOrb);
+  // 타입강화 도구 (+20% = 1.2배) 반영
+  const itemTypeBoost = (() => {
+    const itm = calcState.atk.item;
+    if (!itm || itm === '없음') return 1;
+    const dbItem = (typeof ITEM_DB !== 'undefined' ? ITEM_DB.find(i => i.name === itm) : null);
+    if (dbItem && dbItem.cat === '타입강화' && dbItem.type === move.type) return 1.2;
+    return 1;
+  })();
+  const minDmg=Math.round(base*stab*typeEff*itemTypeBoost*0.85);
+  const maxDmg=Math.round(base*stab*typeEff*itemTypeBoost);
   const hpMin=Math.min(999,Math.round(minDmg/defHP*100));
   const hpMax=Math.min(999,Math.round(maxDmg/defHP*100));
   return{moveName,move,minDmg,maxDmg,hpMin,hpMax,stab,typeEff,defHP,atkStat,defStat};
@@ -2828,8 +2824,8 @@ const SAMPLE_DB = [
   // 사용률 TOP 확인된 포켓몬들
   {name:'하마돈',id:450,moves:['지진','스텔스록','하품','암석봉인'],ability:'모래일으킴',item:'먹다남은음식',nature:'대담',up:'def',down:'atk',ep:{hp:32,atk:0,def:32,spa:0,spd:2,spe:0},tag:'땅',desc:'출장시 모래날림 → 상대 기합의띠 무력화. 스텔스록 깔기. 하품으로 강제 교체. 지진+암석봉인으로 딜.'},
   {name:'따라큐',id:778,moves:['치근거리기','야습','칼춤','길동무'],ability:'변장',item:'기합의띠',nature:'고집',up:'atk',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'고스트',desc:'변장으로 1회 무조건 버팀. 칼춤 후 스위퍼. 섀도스니크 선공+길동무 길막 병행.'},
-  {name:'드래펄트',id:887,moves:['드래곤애로우','섀도볼','용의춤','신속'],ability:'침투',item:'생명의구슬',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'드래곤',desc:'스피드142 최속. 용의춤 후 스위퍼. 드래곤애로우 2발식 연속공격. 신속 선공. 침투로 스크린 무시.'},
-  {name:'드래펄트(특수형)',id:887,moves:['드래곤애로우','섀도볼','화염방사','신속'],ability:'침투',item:'구애안경',nature:'조심',up:'spa',down:'atk',ep:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},tag:'드래곤',desc:'구애안경 특수형. 섀도볼+화염방사로 강철/얼음 견제폭 확보. 침투로 서포트 무시.'},
+  {name:'드래펄트',id:887,moves:['드래곤애로우','섀도볼','용의춤','신속'],ability:'침투',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'드래곤',desc:'스피드142 최속. 용의춤 후 스위퍼. 드래곤애로우 2발식 연속공격. 신속 선공. 침투로 스크린 무시. 기합의띠로 1타 보장.'},
+  {name:'드래펄트(특수형)',id:887,moves:['드래곤애로우','섀도볼','화염방사','신속'],ability:'침투',item:'기합의띠',nature:'조심',up:'spa',down:'atk',ep:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},tag:'드래곤',desc:'특수형. 섀도볼+화염방사로 강철/얼음 견제폭 확보. 침투로 서포트 무시. 기합의띠로 확정1타.'},
   {name:'아머까오',id:823,moves:['브레이브버드','유턴','아이언헤드','도발'],ability:'미러아머',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'강철',desc:'미러아머로 위협 반사. 강철/비행으로 지진 면역. U턴으로 사이클. 브레이브버드 고화력.'},
   {name:'한카리아스',id:445,moves:['지진','역린','암석봉인','독찌르기'],ability:'모래숨기',item:'구애스카프',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'드래곤',desc:'지진 98.8% 고정. 독찌르기로 메가메가니움 견제. 암석봉인으로 메가리자몽Y 견제. 역린 고점. 스카프로 스피드102 보강.'},
   {name:'핫삼',id:212,moves:['불릿펀치','시저크로스','유턴','칼춤'],ability:'기술달인',item:'기합의띠',nature:'고집',up:'atk',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'벌레',desc:'기술달인으로 불릿펀치+시저크로스 위력 강화. U턴으로 대면조작. 페어리 타입 견제.'},
@@ -2837,10 +2833,10 @@ const SAMPLE_DB = [
   {name:'메가리자몽X',id:6,moves:['플레어드라이브','드래곤크루','불릿펀치','칼춤'],ability:'강한턱',item:'리자몽나이트X',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'메가',desc:'강한턱으로 불꽃/드래곤 엄니기 위력 강화. 칼춤 후 물리 스위퍼. 불릿펀치 선공.'},
   {name:'메가팬텀',id:94,moves:['섀도볼','기합구슬','길동무','사이코키네시스'],ability:'방음',item:'팬텀나이트',nature:'조심',up:'spa',down:'atk',ep:{hp:2,atk:0,def:0,spa:32,spd:0,spe:32},tag:'메가',desc:'채용률 상위권. 방음으로 음파기 무효. 길동무로 상대 사이클 차단. 기합구슬로 악/강철 견제.'},
   {name:'메가캥카(특수도구형)',id:115,moves:['불꽃펀치','번개펀치','이판사판태클','칼춤'],ability:'부자유친',item:'캥카나이트',nature:'고집',up:'atk',down:'spa',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'메가',desc:'칼춤 채용형. 부자유친 효과로 2배 화력. 칼춤 후 대부분의 포켓몬 1타.'},
-  {name:'삼삼드래',id:635,moves:['용성군','화염방사','깨물어부수기','나쁜음모'],ability:'부유',item:'생명의구슬',nature:'조심',up:'spa',down:'atk',ep:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},tag:'드래곤',desc:'부유로 지진 면역. 나쁜음모로 특공2배. 화염방사로 강철 견제. 챔피언스 사용률 3위권.'},
+  {name:'삼삼드래',id:635,moves:['용성군','화염방사','깨물어부수기','나쁜음모'],ability:'부유',item:'기합의띠',nature:'조심',up:'spa',down:'atk',ep:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},tag:'드래곤',desc:'부유로 지진 면역. 나쁜음모로 특공2배. 화염방사로 강철 견제. 기합의띠로 1타 생존.'},
   {name:'망나뇽',id:149,moves:['용성군','에어슬래시','화염방사','신속'],ability:'멀티스케일',item:'구애스카프',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:2,atk:0,def:0,spa:32,spd:0,spe:32},tag:'드래곤',desc:'멀티스케일로 첫 턴 생존 보장. 신속 선공. 스카프로 많은 포켓몬 추월.'},
   {name:'킬라플로르',id:970,moves:['스텔스록','파워젬','머드숏','고속스핀'],ability:'독가시',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:2,atk:0,def:0,spa:32,spd:0,spe:32},tag:'독',desc:'스텔스록 깔이. 머드샷으로 스피드 하락. 독가시로 접촉시 독 부여. 기점 마련형.'},
-  {name:'킬라플로르(어태커형)',id:970,moves:['파워젬','에너지볼','스텔스록','머드숏'],ability:'독가시',item:'생명의구슬',nature:'조심',up:'spa',down:'atk',ep:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},tag:'독',desc:'어태커형. 파워젬 고화력. 에너지볼로 땅/물 견제. 독가시 접촉 독 부여.'},
+  {name:'킬라플로르(어태커형)',id:970,moves:['파워젬','에너지볼','스텔스록','머드숏'],ability:'독가시',item:'기합의띠',nature:'조심',up:'spa',down:'atk',ep:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},tag:'독',desc:'어태커형. 파워젬 고화력. 에너지볼로 땅/물 견제. 독가시 접촉 독 부여. 기합의띠 1HP 생존.'},
   {name:'메가눈여아',id:478,moves:['눈보라','섀도볼','기합구슬','냉동빔'],ability:'눈퍼트리기',item:'눈여아나이트',nature:'조심',up:'spa',down:'atk',ep:{hp:2,atk:0,def:0,spa:32,spd:0,spe:32},tag:'메가',desc:'채용률 상위 신흥 강자. 눈퍼트리기로 우박 자동발동. 블리자드 필중. 섀도볼+기합구슬 견제폭.'},
   {name:'메가번치코',id:257,moves:['무릎차기','플레어드라이브','불릿펀치','칼춤'],ability:'가속',item:'번치코나이트',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'메가',desc:'가속으로 매 턴 스피드 상승. 칼춤+가속으로 제어 불가 스위퍼. 플레어드라이브 고화력.'},
   {name:'메가루카리오',id:448,moves:['파동탄','불릿펀치','칼춤','오라스피어'],ability:'적응력',item:'루카리오나이트',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'메가',desc:'적응력으로 자속 기술 2배화력. 파동탄 칸 전환 가능. 불릿펀치 선공. 칼춤 스위퍼.'},
@@ -2863,7 +2859,7 @@ const SAMPLE_DB = [
   {name:'메가염무왕(특수형)',id:500,moves:['화염방사','기합구슬','스텔스록','볼트체인지'],ability:'맹화',item:'염무왕나이트',nature:'조심',up:'spa',down:'atk',ep:{hp:32,atk:0,def:0,spa:32,spd:0,spe:2},tag:'메가',desc:'특수형. 스텔스록 깔이 겸 어태커. 볼트체인지 사이클.'},
   // 일반 포켓몬
   {name:'마스카나',id:908,moves:['트릭플라워','유턴','탁쳐서떨구기','기습'],ability:'심록',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'풀',desc:'트릭플라워 확정급소. 탁쳐서떨구기 도구 제거. U턴 사이클. 기습 선공. 챔피언스 고사용률.'},
-  {name:'드래펄트',id:887,moves:['드래곤애로우','섀도볼','화염방사','신속'],ability:'침투',item:'생명의구슬',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'드래곤',desc:'챔피언스 사용률 52.6%. 스피드142 압도적. 드래곤애로우 2발 연속 공격. 신속 선공.'},
+  {name:'드래펄트',id:887,moves:['드래곤애로우','섀도볼','화염방사','신속'],ability:'침투',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'드래곤',desc:'챔피언스 사용률 52.6%. 스피드142 압도적. 드래곤애로우 2발 연속 공격. 신속 선공. 기합의띠 1타 생존.'},
   {name:'따라큐',id:778,moves:['치근거리기','야습','칼춤','길동무'],ability:'변장',item:'기합의띠',nature:'고집',up:'atk',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'고스트',desc:'변장으로 1회 무조건 버팀. 칼춤 후 무력화. 드래곤/격투/악 타입 일관성.'},
   {name:'한카리아스',id:445,moves:['지진','역린','암석봉인','독찌르기'],ability:'모래숨기',item:'구애스카프',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'드래곤',desc:'지진 확정. 스카프로 스피드102 극대화. 독찌르기=메가메가니움 견제. 암석봉인=메가리자몽Y 견제.'},
   {name:'망나뇽',id:149,moves:['용성군','에어슬래시','화염방사','신속'],ability:'멀티스케일',item:'구애스카프',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:2,atk:0,def:0,spa:32,spd:0,spe:32},tag:'드래곤',desc:'멀티스케일 1턴 생존 보장. 스카프 기준 광범위 추월. 신속 선공.'},
@@ -2871,23 +2867,23 @@ const SAMPLE_DB = [
   {name:'에브이',id:196,moves:['트릭','하품','미래예지','초롱초롱눈동자'],ability:'매직미러',item:'구애스카프',nature:'차분',up:'spd',down:'atk',ep:{hp:32,atk:0,def:16,spa:0,spd:18,spe:0},tag:'에스퍼',desc:'매직미러 반사. 구애스카프 트릭으로 상대 기능정지. 초롱초롱눈동자 특방 하락 환경.'},
   {name:'엘풍',id:547,moves:['문포스','에너지볼','앵콜','추억의선물'],ability:'짓궂은마음',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:2,atk:0,def:0,spa:32,spd:0,spe:32},tag:'풀',desc:'짓궂은마음+선공앙코르. 추억의선물로 도구탈취. 스피드116 서포터.'},
   {name:'포푸니크',id:903,moves:['인파이트','페이탈클로','속이다','유턴'],ability:'곡예',item:'하양허브',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'격투',desc:'흉독조→능력하락→곡예발동. 기선제압 선공. 유턴 사이클. 하양허브 소모 후 곡예.'},
-  {name:'삼삼드래',id:635,moves:['용성군','화염방사','깨물어부수기','나쁜음모'],ability:'부유',item:'생명의구슬',nature:'조심',up:'spa',down:'atk',ep:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},tag:'드래곤',desc:'부유로 지진 면역. 챔피언스 사용률 3위권. 나쁜음모 후 고화력. 화염방사 강철 견제.'},
+  {name:'삼삼드래',id:635,moves:['용성군','화염방사','깨물어부수기','나쁜음모'],ability:'부유',item:'기합의띠',nature:'조심',up:'spa',down:'atk',ep:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},tag:'드래곤',desc:'부유로 지진 면역. 챔피언스 사용률 3위권. 나쁜음모 후 고화력. 화염방사 강철 견제. 기합의띠 1타 생존.'},
   {name:'아머까오',id:823,moves:['브레이브버드','유턴','강철날개','도발'],ability:'미러아머',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'강철',desc:'미러아머 위협 반사. 지진 면역. 챔피언스 4위권. U턴 사이클.'},
   {name:'핫삼',id:212,moves:['불릿펀치','시저크로스','유턴','칼춤'],ability:'기술달인',item:'기합의띠',nature:'고집',up:'atk',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'벌레',desc:'기술달인 강화. U턴 사이클. 페어리 견제. 챔피언스 10위권.'},
   {name:'킬라플로르',id:970,moves:['스텔스록','파워젬','머드숏','고속스핀'],ability:'독가시',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:2,atk:0,def:0,spa:32,spd:0,spe:32},tag:'독',desc:'스텔스록 깔이. 머드샷 스피드 하락. 킬러스핀 스텔스록 제거 겸 딜. 독가시 접촉 독.'},
   {name:'마기라스',id:248,moves:['스톤에지','지진','깨물어부수기','스텔스록'],ability:'모래일으킴',item:'구애스카프',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'바위',desc:'모래날림 발생. 스카프로 스피드 보완. 스텔스록 깔이 겸 어태커.'},
   {name:'하마돈',id:450,moves:['지진','스텔스록','하품','암석봉인'],ability:'모래일으킴',item:'먹다남은음식',nature:'대담',up:'def',down:'atk',ep:{hp:32,atk:0,def:32,spa:0,spd:2,spe:0},tag:'땅',desc:'출장시 모래. 스텔스록 깔이. 하품 강제교체. 암석봉인 스피드 하락. 챔피언스 필수 기점마련 포켓몬.'},
   {name:'라우드본',id:911,moves:['파이어송','성묘','도깨비불','태만함'],ability:'천진',item:'자뭉열매',nature:'대담',up:'def',down:'atk',ep:{hp:32,atk:0,def:2,spa:32,spd:0,spe:0},tag:'불꽃',desc:'천진으로 위협 무효. 파이어송+병상첨병 고화력 자속. 도깨비불 물리막이.'},
-  {name:'웨이니발',id:914,moves:['폭포오르기','마하펀치','무릎차기','아쿠아스텝'],ability:'급류',item:'생명의구슬',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'물',desc:'마하펀치 선공. 아쿠아스텝으로 스피드 상승. 폭포오르기+하이점프킥 쌍두 물리.'},
-  {name:'마스카나',id:908,moves:['트릭플라워','기습','유턴','탁쳐서떨구기'],ability:'심록',item:'구애머리띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'풀',desc:'머리띠 트릭플라워 확정급소. 기습 선공. U턴 사이클. 머리띠형은 도발에 강함.'},
+  {name:'웨이니발',id:914,moves:['폭포오르기','마하펀치','무릎차기','아쿠아스텝'],ability:'급류',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'물',desc:'마하펀치 선공. 아쿠아스텝으로 스피드 상승. 폭포오르기+하이점프킥 쌍두 물리. 기합의띠로 확정1타.'},
+  {name:'마스카나',id:908,moves:['트릭플라워','기습','유턴','탁쳐서떨구기'],ability:'심록',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'풀',desc:'트릭플라워 확정급소. 기습 선공. U턴 사이클. 기합의띠로 1HP 생존. 고속 피벗.'},
   {name:'블래키',id:197,moves:['깨물어부수기','나쁜독','달의불빛','도발'],ability:'이상한짓',item:'먹다남은음식',nature:'신중',up:'spd',down:'spa',ep:{hp:32,atk:0,def:2,spa:0,spd:32,spe:0},tag:'악',desc:'나쁜독+달의빛 회복 전략. 도발로 상대 변화기 봉쇄. 이상한짓으로 변화기 무효.'},
-  {name:'따라큐(칼춤형)',id:778,moves:['치근거리기','야습','칼춤','전광석화'],ability:'변장',item:'생명의구슬',nature:'고집',up:'atk',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'고스트',desc:'변장으로 첫 칼춤 확보. 이후 전광석화+섀도스니크 선공 마무리.'},
-  {name:'갸라도스',id:130,moves:['폭포오르기','아이언헤드','지진','용의춤'],ability:'위협',item:'구애머리띠',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'물',desc:'위협으로 상대 공격 하락. 머리띠 고화력. 용의춤형은 스위퍼. 지진으로 전기 견제.'},
+  {name:'따라큐(칼춤형)',id:778,moves:['치근거리기','야습','칼춤','전광석화'],ability:'변장',item:'리샘열매',nature:'고집',up:'atk',down:'spa',ep:{hp:29,atk:30,def:7,spa:0,spd:0,spe:0},tag:'고스트',desc:'변장으로 첫 칼춤 확보. 리샘열매로 화상/중독 상태이상 자연치유. 전광석화+섀도스니크 선공 마무리. 실전 pkmnchamps 2339 랭커 빌드.'},
+  {name:'갸라도스',id:130,moves:['폭포오르기','아이언헤드','지진','용의춤'],ability:'위협',item:'자뭉열매',nature:'고집',up:'atk',down:'spa',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'물',desc:'위협으로 상대 공격 하락. 용의춤으로 공격+스피드 랭크업 스위퍼. 자뭉열매로 HP 50% 시 회복. 지진으로 전기 견제.'},
   {name:'밀로틱',id:350,moves:['파도타기','냉동빔','회복','달의불빛'],ability:'경이로운비늘',item:'조개껍질방울',nature:'차분',up:'spd',down:'atk',ep:{hp:32,atk:0,def:2,spa:0,spd:32,spe:0},tag:'물',desc:'경이로운비늘로 능력 하락 차단. 회복기 보유한 특수막이. 조개껍질방울 자동회복.'},
-  {name:'몰드류',id:530,moves:['지진','아이언헤드','시저크로스','칼춤'],ability:'모래의힘',item:'생명의구슬',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'땅',desc:'모래 환경에서 지진/강철 위력 강화. 칼춤 스위퍼. 시저크로스로 드래곤 견제.'},
+  {name:'몰드류',id:530,moves:['지진','아이언헤드','시저크로스','칼춤'],ability:'모래의힘',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'땅',desc:'모래 환경에서 지진/강철 위력 강화. 칼춤 스위퍼. 시저크로스로 드래곤 견제. 기합의띠 1HP 생존.'},
   {name:'포푸니크(곡예형)',id:903,moves:['인파이트','페이탈클로','속이다','마하펀치'],ability:'곡예',item:'하양허브',nature:'겁쟁이',up:'spe',down:'atk',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'격투',desc:'마하펀치 선공으로 마무리. 기선제압 선공+인파이트 고화력.'},
-  {name:'재비고도스',id:784,moves:['드레인펀치','드래곤크루','스톤에지','무릎차기'],ability:'굳센턱',item:'돌격조끼',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'드래곤',desc:'굳센턱으로 엄니류 위력 강화. 돌격조끼로 특방 보완. 드레인펀치 HP 회복.'},
-  {name:'대도각참',id:983,moves:['도각참','아이언헤드','대검돌격','칼춤'],ability:'굳건한발톱',item:'구애머리띠',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},tag:'악',desc:'굳건한발톱 접촉기 1.3배. 코마린크로 3배 위력. 쥬로라이드로 스피드 상승 가능.'},
+  {name:'재비고도스',id:784,moves:['드레인펀치','드래곤크루','스톤에지','무릎차기'],ability:'굳센턱',item:'기합의띠',nature:'겁쟁이',up:'spe',down:'spa',ep:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},tag:'드래곤',desc:'굳센턱으로 엄니류 위력 강화. 드레인펀치 HP 회복. 기합의띠로 1타 보장.'},
+  {name:'대도각참',id:983,moves:['도각참','아이언헤드','기습','칼춤'],ability:'오기',item:'로플열매',nature:'고집',up:'atk',down:'spa',ep:{hp:32,atk:25,def:1,spa:0,spd:1,spe:7},tag:'악',desc:'오기로 위협 등 능력 하락 시 공격 2랭크 상승. 로플열매로 격투 4배 약점 1회 반감. 도각참+기습 선공. 실전 pkmnchamps 2200 랭커 빌드.'},
 ];
 
 // ===== 샘플 기능 =====
@@ -3151,7 +3147,7 @@ function spriteUrl_fn(id) {
 }
 
 // ===== 싱글/더블 통계 데이터 =====
-const SINGLES_DATA = [{"rank": 1, "dex_id": 445, "kor": "한카리아스", "usage_rate": 0.382, "note": "드래곤/땅 제왕. 모래환경+스카프"}, {"rank": 2, "dex_id": 730, "kor": "누리레느", "usage_rate": 0.298, "note": "물/페어리. 한카리아스 카운터"}, {"rank": 3, "dex_id": 6, "kor": "리자몽(메가Y)", "usage_rate": 0.276, "note": "가뭄+오버히트 고화력"}, {"rank": 4, "dex_id": 823, "kor": "아머까오", "usage_rate": 0.251, "note": "강철/비행. 미러아머+유턴"}, {"rank": 5, "dex_id": 450, "kor": "하마돈", "usage_rate": 0.239, "note": "모래+스텔스록+하품 기점"}, {"rank": 6, "dex_id": 1018, "kor": "브리두라스", "usage_rate": 0.198, "note": "강철/드래곤. 지구력+일렉트로빔"}, {"rank": 7, "dex_id": 983, "kor": "대도각참", "usage_rate": 0.187, "note": "강철/악. 총대장 피니셔"}, {"rank": 8, "dex_id": 94, "kor": "팬텀(메가)", "usage_rate": 0.171, "note": "고스피드 오물폭탄+섀도볼"}, {"rank": 9, "dex_id": 681, "kor": "킬가르도", "usage_rate": 0.165, "note": "폴터가이스트+야습 물리"}, {"rank": 10, "dex_id": 212, "kor": "핫삼", "usage_rate": 0.158, "note": "테크니션 불릿펀치+유턴"}, {"rank": 11, "dex_id": 887, "kor": "드래펄트", "usage_rate": 0.152, "note": "스피드142 드래곤/고스트"}, {"rank": 12, "dex_id": 149, "kor": "망나뇽", "usage_rate": 0.143, "note": "멀티스케일+신속"}, {"rank": 13, "dex_id": 635, "kor": "삼삼드래", "usage_rate": 0.138, "note": "부유+나쁜음모 특수"}, {"rank": 14, "dex_id": 970, "kor": "킬라플로르", "usage_rate": 0.129, "note": "스텔스록+머드샷 기점"}, {"rank": 15, "dex_id": 248, "kor": "마기라스", "usage_rate": 0.121, "note": "모래일으킴+스카프"}, {"rank": 16, "dex_id": 778, "kor": "따라큐", "usage_rate": 0.118, "note": "변장 물리 스위퍼"}, {"rank": 17, "dex_id": 908, "kor": "마스카나", "usage_rate": 0.112, "note": "트릭플라워 확정급소"}, {"rank": 18, "dex_id": 448, "kor": "루카리오(메가)", "usage_rate": 0.107, "note": "적응력 파동탄"}, {"rank": 19, "dex_id": 130, "kor": "갸라도스", "usage_rate": 0.098, "note": "위협+용의춤"}, {"rank": 20, "dex_id": 547, "kor": "엘풍", "usage_rate": 0.094, "note": "짓궂은마음 서포터"}];
+const SINGLES_DATA = [{"rank": 1, "dex_id": 445, "kor": "한카리아스", "usage_rate": 0.382, "note": "드래곤/땅 제왕. 모래환경+스카프", "build": {"item": "구애스카프", "ability": "까칠한피부", "nature": "명랑", "role": "물리 스카프 스위퍼"}}, {"rank": 2, "dex_id": 730, "kor": "누리레느", "usage_rate": 0.298, "note": "물/페어리. 한카리아스 카운터", "build": {"item": "자뭉열매", "ability": "촉촉보이스", "nature": "조심", "role": "특수 서포터"}}, {"rank": 3, "dex_id": 6, "kor": "리자몽(메가Y)", "usage_rate": 0.276, "note": "가뭄+오버히트 고화력", "build": {"item": "리자몽나이트Y", "ability": "가뭄", "nature": "조심", "role": "쾌청 특수 에이스"}}, {"rank": 4, "dex_id": 823, "kor": "아머까오", "usage_rate": 0.251, "note": "강철/비행. 미러아머+유턴", "build": {"item": "먹다남은음식", "ability": "프레셔", "nature": "장난꾸러기", "role": "물리 벽 피벗"}}, {"rank": 5, "dex_id": 450, "kor": "하마돈", "usage_rate": 0.239, "note": "모래+스텔스록+하품 기점", "build": {"item": "먹다남은음식", "ability": "모래일으킴", "nature": "대담", "role": "기점 세터"}}, {"rank": 6, "dex_id": 1018, "kor": "브리두라스", "usage_rate": 0.198, "note": "강철/드래곤. 지구력+일렉트로빔", "build": {"item": "먹다남은음식", "ability": "옹골참", "nature": "겁쟁이", "role": "특수 어태커"}}, {"rank": 7, "dex_id": 983, "kor": "대도각참", "usage_rate": 0.187, "note": "강철/악. 총대장 피니셔", "build": {"item": "로플열매", "ability": "오기", "nature": "고집", "role": "물리 피니셔"}}, {"rank": 8, "dex_id": 94, "kor": "팬텀(메가)", "usage_rate": 0.171, "note": "고스피드 오물폭탄+섀도볼", "build": {"item": "팬텀나이트", "ability": "그림자밟기", "nature": "겁쟁이", "role": "특수 스위퍼"}}, {"rank": 9, "dex_id": 681, "kor": "킬가르도", "usage_rate": 0.165, "note": "폴터가이스트+야습 물리", "build": {"item": "기합의띠", "ability": "배틀스위치", "nature": "고집", "role": "물리 칼춤 스윕"}}, {"rank": 10, "dex_id": 212, "kor": "핫삼", "usage_rate": 0.158, "note": "테크니션 불릿펀치+유턴", "build": {"item": "기합의띠", "ability": "테크니션", "nature": "고집", "role": "물리 피벗"}}, {"rank": 11, "dex_id": 887, "kor": "드래펄트", "usage_rate": 0.152, "note": "스피드142 드래곤/고스트", "build": {"item": "기합의띠", "ability": "침투", "nature": "겁쟁이", "role": "고속 어태커"}}, {"rank": 12, "dex_id": 149, "kor": "망나뇽", "usage_rate": 0.143, "note": "멀티스케일+신속", "build": {"item": "기합의띠", "ability": "멀티스케일", "nature": "조심", "role": "특수 어태커"}}, {"rank": 13, "dex_id": 635, "kor": "삼삼드래", "usage_rate": 0.138, "note": "부유+나쁜음모 특수", "build": {"item": "기합의띠", "ability": "부유", "nature": "조심", "role": "특수 나쁜음모"}}, {"rank": 14, "dex_id": 970, "kor": "킬라플로르", "usage_rate": 0.129, "note": "스텔스록+머드샷 기점", "build": {"item": "기합의띠", "ability": "독가시", "nature": "조심", "role": "기점 세터"}}, {"rank": 15, "dex_id": 248, "kor": "마기라스", "usage_rate": 0.121, "note": "모래일으킴+스카프", "build": {"item": "구애스카프", "ability": "모래일으킴", "nature": "명랑", "role": "모래 물리 스위퍼"}}, {"rank": 16, "dex_id": 778, "kor": "따라큐", "usage_rate": 0.118, "note": "변장 물리 스위퍼", "build": {"item": "리샘열매", "ability": "탈", "nature": "고집", "role": "물리 칼춤 스위퍼"}}, {"rank": 17, "dex_id": 908, "kor": "마스카나", "usage_rate": 0.112, "note": "트릭플라워 확정급소", "build": {"item": "기합의띠", "ability": "심록", "nature": "겁쟁이", "role": "고속 피벗"}}, {"rank": 18, "dex_id": 448, "kor": "루카리오(메가)", "usage_rate": 0.107, "note": "적응력 파동탄", "build": {"item": "루카리오나이트", "ability": "적응력", "nature": "고집", "role": "물리 칼춤 스위퍼"}}, {"rank": 19, "dex_id": 130, "kor": "갸라도스", "usage_rate": 0.098, "note": "위협+용의춤", "build": {"item": "자뭉열매", "ability": "위협", "nature": "고집", "role": "물리 용의춤"}}, {"rank": 20, "dex_id": 547, "kor": "엘풍", "usage_rate": 0.094, "note": "짓궂은마음 서포터", "build": {"item": "기합의띠", "ability": "짓궂은마음", "nature": "조심", "role": "선공 서포터"}}];
 const DOUBLES_DATA = [{"rank": 1, "dex_id": 730, "kor": "누리레느", "usage_rate": 0.5437, "note": "더블 54.4% 독보적 1위"}, {"rank": 2, "dex_id": 903, "kor": "포푸니크", "usage_rate": 0.4513, "note": "곡예+흉독조 더블 에이스"}, {"rank": 3, "dex_id": 445, "kor": "한카리아스", "usage_rate": 0.3715, "note": "지진 광역기 핵심"}, {"rank": 4, "dex_id": 1013, "kor": "사이화차이", "usage_rate": 0.3462, "note": "분차+홈서비스 서포트"}, {"rank": 5, "dex_id": 983, "kor": "대도각참", "usage_rate": 0.2701, "note": "총대장 클리너"}, {"rank": 6, "dex_id": 902, "kor": "데스여너", "usage_rate": 0.2215, "note": "저승도망+웨이브크래시"}, {"rank": 7, "dex_id": 547, "kor": "엘풍", "usage_rate": 0.2006, "note": "짓궂은마음+앙코르"}, {"rank": 8, "dex_id": 6, "kor": "리자몽", "usage_rate": 0.1781, "note": "가뭄팟 에이스"}, {"rank": 9, "dex_id": 670, "kor": "메가플라엣테", "usage_rate": 0.1778, "note": "페어리오라 지원형"}, {"rank": 10, "dex_id": 10009, "kor": "워시로토무", "usage_rate": 0.1603, "note": "전기자석파+볼트체인지"}, {"rank": 11, "dex_id": 248, "kor": "마기라스", "usage_rate": 0.1512, "note": "모래날림 세터"}, {"rank": 12, "dex_id": 279, "kor": "패리퍼", "usage_rate": 0.1489, "note": "비바라기 날씨팟"}, {"rank": 13, "dex_id": 142, "kor": "프테라(메가)", "usage_rate": 0.1401, "note": "암석헤드 헤드스매시"}, {"rank": 14, "dex_id": 478, "kor": "눈여아(메가)", "usage_rate": 0.1389, "note": "눈퍼트리기 우박팟"}, {"rank": 15, "dex_id": 887, "kor": "드래펄트", "usage_rate": 0.1298, "note": "스피드142 드래곤"}, {"rank": 16, "dex_id": 681, "kor": "킬가르도", "usage_rate": 0.1245, "note": "강철/고스트 사이클"}, {"rank": 17, "dex_id": 450, "kor": "하마돈", "usage_rate": 0.1198, "note": "모래+스텔스록"}, {"rank": 18, "dex_id": 130, "kor": "갸라도스(메가)", "usage_rate": 0.1156, "note": "용의춤 스위퍼"}, {"rank": 19, "dex_id": 149, "kor": "망나뇽(메가)", "usage_rate": 0.1098, "note": "멀티스케일 특수형"}, {"rank": 20, "dex_id": 730, "kor": "누리레느", "usage_rate": 0.1045, "note": "페어리 서포터"}];
 
 let currentStatsMode = 'single';
@@ -4190,32 +4186,40 @@ function runFreeGuide(pokeId, megaVariant) {
   if (st.hp >= 100 && (st.def >= 80 || st.spd >= 80)) roles.push('서포터');
   if (roles.filter(r => r !== '메가진화' && r !== '고속' && r !== '저속').length === 0) roles.push('밸런스형');
 
-  // 타입 약점 계산 (메가 타입 기준)
-  const typeWeakMap = {
-    '노말':{'격투':2},'불꽃':{'물':2,'바위':2,'땅':2},'물':{'전기':2,'풀':2},
-    '전기':{'땅':2},'풀':{'불꽃':2,'독':2,'비행':2,'벌레':2,'얼음':2},
-    '얼음':{'불꽃':2,'격투':2,'바위':2,'강철':2},'격투':{'비행':2,'에스퍼':2,'페어리':2},
-    '독':{'땅':2,'에스퍼':2},'땅':{'물':2,'풀':2,'얼음':2},
-    '비행':{'전기':2,'얼음':2,'바위':2},'에스퍼':{'벌레':2,'고스트':2,'악':2},
-    '벌레':{'불꽃':2,'비행':2,'바위':2},'바위':{'물':2,'풀':2,'격투':2,'땅':2,'강철':2},
-    '고스트':{'고스트':2,'악':2},'드래곤':{'얼음':2,'드래곤':2,'페어리':2},
-    '악':{'격투':2,'벌레':2,'페어리':2},'강철':{'불꽃':2,'격투':2,'땅':2},
-    '페어리':{'독':2,'강철':2}
+  // 타입 상성표 (OP.GG 포켓몬 챔피언스 기준, 완전판) - 공격자 관점
+  // TYPE_CHART[atkType][defType] = 배수 (0/0.5/2). 미기재는 1x.
+  const TYPE_CHART = {
+    '노말':{'바위':0.5,'고스트':0,'강철':0.5},
+    '불꽃':{'불꽃':0.5,'물':0.5,'풀':2,'얼음':2,'벌레':2,'바위':0.5,'드래곤':0.5,'강철':2},
+    '물':{'불꽃':2,'물':0.5,'풀':0.5,'땅':2,'바위':2,'드래곤':0.5},
+    '전기':{'물':2,'전기':0.5,'풀':0.5,'땅':0,'비행':2,'드래곤':0.5},
+    '풀':{'불꽃':0.5,'물':2,'풀':0.5,'독':0.5,'땅':2,'비행':0.5,'벌레':0.5,'바위':2,'드래곤':0.5,'강철':0.5},
+    '얼음':{'불꽃':0.5,'물':0.5,'풀':2,'얼음':0.5,'땅':2,'비행':2,'드래곤':2,'강철':0.5},
+    '격투':{'노말':2,'얼음':2,'독':0.5,'비행':0.5,'에스퍼':0.5,'벌레':0.5,'바위':2,'고스트':0,'악':2,'강철':2,'페어리':0.5},
+    '독':{'풀':2,'독':0.5,'땅':0.5,'바위':0.5,'고스트':0.5,'강철':0,'페어리':2},
+    '땅':{'불꽃':2,'전기':2,'풀':0.5,'독':2,'비행':0,'벌레':0.5,'바위':2,'강철':2},
+    '비행':{'전기':0.5,'풀':2,'격투':2,'벌레':2,'바위':0.5,'강철':0.5},
+    '에스퍼':{'격투':2,'독':2,'에스퍼':0.5,'악':0,'강철':0.5},
+    '벌레':{'불꽃':0.5,'풀':2,'격투':0.5,'독':0.5,'비행':0.5,'에스퍼':2,'고스트':0.5,'악':2,'강철':0.5,'페어리':0.5},
+    '바위':{'불꽃':2,'얼음':2,'격투':0.5,'땅':0.5,'비행':2,'벌레':2,'강철':0.5},
+    '고스트':{'노말':0,'에스퍼':2,'고스트':2,'악':0.5},
+    '드래곤':{'드래곤':2,'강철':0.5,'페어리':0},
+    '악':{'격투':0.5,'에스퍼':2,'고스트':2,'악':0.5,'페어리':0.5},
+    '강철':{'불꽃':0.5,'물':0.5,'전기':0.5,'얼음':2,'바위':2,'강철':0.5,'페어리':2},
+    '페어리':{'불꽃':0.5,'격투':2,'독':0.5,'드래곤':2,'악':2,'강철':0.5}
   };
-  const typeImmuneMap = {
-    '노말':['고스트'],'전기':['땅'],'비행':['땅'],'고스트':['노말','격투'],'강철':['독'],
-    '페어리':['드래곤'],'땅':['전기'],'악':['에스퍼']
-  };
+  // 모든 공격 타입에 대해 내 타입이 받는 배수 계산 → 2배 이상만 '약점'으로 분류
+  const ALL_TYPES = Object.keys(TYPE_CHART);
   const weakCount = {};
-  displayType.forEach(t => {
-    const w = typeWeakMap[t] || {};
-    Object.entries(w).forEach(([wt, mult]) => {
-      weakCount[wt] = (weakCount[wt] || 1) * mult;
-    });
-    const immune = typeImmuneMap[t] || [];
-    immune.forEach(it => { weakCount[it] = 0; });
+  ALL_TYPES.forEach(atk => {
+    let mult = 1;
+    for (const dt of displayType) {
+      const v = (TYPE_CHART[atk]||{})[dt];
+      if (v !== undefined) mult *= v;
+    }
+    if (mult >= 2) weakCount[atk] = mult;
   });
-  const weakTypes = Object.entries(weakCount).filter(([,v])=>v>=2).sort((a,b)=>b[1]-a[1]).map(([t])=>t).slice(0,6);
+  const weakTypes = Object.entries(weakCount).sort((a,b)=>b[1]-a[1]).map(([t,v])=>v>=4?t+' 4배':t).slice(0,6);
 
   // 추천 기술 (메가 타입 기준 STAB 우선, 물리/특수 분리)
   const moves = p.moves || [];
@@ -4257,14 +4261,13 @@ function runFreeGuide(pokeId, megaVariant) {
     return 'role';
   };
 
-  // ===== 싱글 상위권 매치업 분석 (STAB 타입 기준) =====
-  // 타입 상성 계산: 공격타입(atk)이 수비타입 배열(defTypes)에게 주는 배수
+  // ===== 싱글 상위권 매치업 분석 (STAB 타입 기준, 저항 포함) =====
+  // 공격 타입(atk)이 방어 타입 배열(defTypes)에게 주는 최종 배수 (0/0.25/0.5/1/2/4)
   const typeMult = (atk, defTypes) => {
     let mult = 1;
+    const chart = TYPE_CHART[atk] || {};
     for (const dt of defTypes) {
-      if ((typeImmuneMap[dt] || []).includes(atk)) return 0;
-      const w = typeWeakMap[dt] || {};
-      if (w[atk]) mult *= w[atk];
+      if (chart[dt] !== undefined) mult *= chart[dt];
     }
     return mult;
   };
@@ -4301,7 +4304,7 @@ function runFreeGuide(pokeId, megaVariant) {
     else if (oppOff === 0) score = 99;
     else score = Math.log2(myOff / oppOff);
 
-    return { name: sd.kor, score: score, myOff: myOff, oppOff: oppOff };
+    return { name: sd.kor, score: score, myOff: myOff, oppOff: oppOff, build: sd.build || null };
   }).filter(Boolean);
 
   matchups.sort((a, b) => b.score - a.score);
@@ -4310,8 +4313,17 @@ function runFreeGuide(pokeId, megaVariant) {
 
   const buildMatchupBlock = (label, list, tagClass) => {
     if (!list.length) return '<div class="g-block"><div class="g-label">' + label + '</div><div class="g-text" style="font-size:12px;color:var(--muted2);">해당 없음 (상위권 내 중립 매치업)</div></div>';
-    return '<div class="g-block"><div class="g-label">' + label + '</div><div class="g-tags">' +
-      list.map(m => '<span class="g-tag ' + tagClass + '">' + m.name + '</span>').join('') +
+    return '<div class="g-block"><div class="g-label">' + label + '</div><div class="g-tags" style="gap:8px;">' +
+      list.map(m => {
+        const buildLine = m.build ?
+          '<span style="font-size:10px;opacity:.68;margin-top:3px;display:block;font-weight:400;letter-spacing:.2px;line-height:1.3;">'
+            + m.build.item + ' · ' + m.build.ability + '<br><span style="opacity:.7;">' + m.build.nature + ' · ' + m.build.role + '</span>'
+          + '</span>' : '';
+        return '<span class="g-tag ' + tagClass + '" style="flex-direction:column;align-items:flex-start;padding:6px 10px;">'
+          + '<span style="font-weight:600;">' + m.name + '</span>'
+          + buildLine
+          + '</span>';
+      }).join('') +
       '</div></div>';
   };
 
