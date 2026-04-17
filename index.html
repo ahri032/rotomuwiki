@@ -465,16 +465,21 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 /* ===== AI 배틀 운용 가이드 ===== */
 .guide-section{background:linear-gradient(135deg,rgba(77,131,245,0.06),rgba(155,109,255,0.04));border:1px solid rgba(77,131,245,0.2);border-radius:var(--radius);padding:20px;margin-top:16px;position:relative;overflow:hidden;}
 .guide-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(77,131,245,0.4),transparent);}
-.guide-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.guide-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
 .guide-title{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;}
-.guide-gen-btn{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s;box-shadow:0 2px 10px rgba(77,131,245,.3);}
-.guide-gen-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(77,131,245,.4);}
-.guide-gen-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
-.guide-gen-btn .btn-spinner{width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
-.guide-gen-btn.loading .btn-spinner{display:block;}
-.guide-gen-btn.loading .btn-text{display:none;}
+.guide-btns{display:flex;gap:6px;align-items:center;}
+.guide-free-btn{display:flex;align-items:center;gap:5px;background:var(--surface2);color:var(--muted2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s;}
+.guide-free-btn:hover{border-color:var(--accent);color:var(--accent);}
+.guide-ai-btn{display:flex;align-items:center;gap:5px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s;box-shadow:0 2px 8px rgba(77,131,245,.3);}
+.guide-ai-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(77,131,245,.4);}
+.guide-ai-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.guide-ai-btn .btn-spinner{width:11px;height:11px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.guide-ai-btn.loading .btn-spinner{display:block;}
+.guide-ai-btn.loading .btn-text{display:none;}
 .guide-body{display:none;}
 .guide-body.visible{display:block;}
+.guide-body .g-mode{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:12px;padding:4px 8px;background:var(--surface2);border-radius:4px;display:inline-block;}
+.guide-body .g-mode.ai{color:var(--accent2);background:rgba(155,109,255,.1);}
 .guide-body .g-block{margin-bottom:14px;}
 .guide-body .g-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
 .guide-body .g-label::after{content:'';flex:1;height:1px;background:rgba(77,131,245,.15);}
@@ -486,9 +491,33 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 .guide-body .g-tag.role{border-color:rgba(77,131,245,.35);color:#7eb4ff;background:rgba(77,131,245,.08);}
 .guide-body .g-tag.move{border-color:rgba(155,109,255,.35);color:#b08fff;background:rgba(155,109,255,.08);}
 .guide-body .g-tag.tool{border-color:rgba(240,194,51,.35);color:var(--gold);background:rgba(240,194,51,.08);}
+.guide-body .g-tag.weak{border-color:rgba(240,96,96,.35);color:#f08080;background:rgba(240,96,96,.08);}
 .guide-cursor{display:inline-block;width:2px;height:14px;background:var(--accent);animation:blink .7s step-end infinite;vertical-align:middle;margin-left:2px;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .guide-error{font-family:var(--mono);color:var(--red);font-size:11px;padding:10px;background:rgba(240,96,96,.08);border-radius:6px;border:1px solid rgba(240,96,96,.2);}
+.guide-apikey-hint{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:8px;padding:8px 10px;background:var(--surface2);border-radius:6px;border:1px solid var(--border);}
+/* API 키 모달 */
+.apikey-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:1000;align-items:center;justify-content:center;}
+.apikey-overlay.show{display:flex;}
+.apikey-modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:28px;width:100%;max-width:440px;margin:16px;box-shadow:0 20px 60px rgba(0,0,0,.5);position:relative;}
+.apikey-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(77,131,245,.5),transparent);border-radius:var(--radius) var(--radius) 0 0;}
+.apikey-modal-title{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:1px;color:var(--accent);margin-bottom:6px;}
+.apikey-modal-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.apikey-modal-desc a{color:var(--accent);text-decoration:none;}
+.apikey-input-wrap{position:relative;margin-bottom:14px;}
+.apikey-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 40px 10px 14px;font-size:13px;font-family:var(--mono);color:var(--text);outline:none;transition:border-color .2s;box-sizing:border-box;}
+.apikey-input:focus{border-color:var(--accent);}
+.apikey-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;padding:4px;}
+.apikey-modal-btns{display:flex;gap:8px;margin-top:14px;}
+.apikey-save-btn{flex:1;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:var(--radius-sm);padding:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+.apikey-save-btn:hover{opacity:.9;}
+.apikey-cancel-btn{background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 18px;font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+.apikey-status{font-family:var(--mono);font-size:10px;margin-top:8px;padding:6px 10px;border-radius:6px;display:none;}
+.apikey-status.set{display:block;color:var(--green);background:rgba(61,214,140,.08);border:1px solid rgba(61,214,140,.2);}
+.apikey-status.unset{display:block;color:var(--muted);background:var(--surface2);border:1px solid var(--border);}
+.apikey-navbar-btn{display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11px;font-weight:600;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-family:var(--mono);transition:all .2s;flex-shrink:0;}
+.apikey-navbar-btn:hover{color:var(--accent);border-color:var(--accent);}
+.apikey-navbar-btn.active{color:var(--green);border-color:rgba(61,214,140,.4);}
 </style>
   <!-- PWA -->
   <link rel="manifest" href="/manifest.json">
@@ -500,6 +529,28 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
   <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
 </head>
 <body>
+
+<!-- API 키 모달 -->
+<div class="apikey-overlay" id="apikey-overlay" onclick="if(event.target===this)closeApiKeyModal()">
+  <div class="apikey-modal">
+    <div class="apikey-modal-title">🔑 CLAUDE API KEY</div>
+    <p class="apikey-modal-desc">
+      Claude API 키를 입력하면 더 상세한 AI 운용 가이드를 받을 수 있어요.<br>
+      키는 이 기기의 브라우저에만 저장되며 외부로 전송되지 않습니다.<br>
+      <a href="https://console.anthropic.com/settings/keys" target="_blank">→ API 키 발급받기 (claude.ai 구독자는 무료)</a>
+    </p>
+    <div class="apikey-input-wrap">
+      <input class="apikey-input" id="apikey-input" type="password" placeholder="sk-ant-..." autocomplete="off" />
+      <button class="apikey-toggle" onclick="toggleApiKeyVisibility()">👁</button>
+    </div>
+    <div id="apikey-status" class="apikey-status"></div>
+    <div class="apikey-modal-btns">
+      <button class="apikey-save-btn" onclick="saveApiKey()">저장</button>
+      <button class="apikey-cancel-btn" onclick="closeApiKeyModal()">취소</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== 네비게이션 바 ===== -->
 <nav class="navbar">
   <a class="navbar-brand" href="#" onclick="switchTab('dex',null);return false;">
@@ -517,7 +568,8 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
   </div>
   <div class="navbar-actions">
     <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="테마 전환">☀️</button>
-    <button class="reg-badge">⚡ REG M-A</button>
+    <button class="apikey-navbar-btn" id="apikey-navbar-btn" onclick="openApiKeyModal()" title="Claude API 키 설정">🔑 PRO</button>
+<button class="reg-badge">⚡ REG M-A</button>
   </div>
 </nav>
 <div class="app">
@@ -2155,10 +2207,13 @@ function showDetail(id,megaVariant){
     <div class="guide-section" id="guide-section-${p.id}">
       <div class="guide-header">
         <span class="guide-title">&#9876;&#65039; 싱글배틀 운용 가이드</span>
-        <button class="guide-gen-btn" id="guide-btn-${p.id}" onclick="generateBattleGuide(${p.id})">
-          <div class="btn-spinner"></div>
-          <span class="btn-text">&#10024; AI 가이드 생성</span>
-        </button>
+        <div class="guide-btns">
+          <button class="guide-free-btn" onclick="runFreeGuide(${p.id})">&#128196; 자동 분석</button>
+          <button class="guide-ai-btn" id="guide-btn-${p.id}" onclick="runAiGuide(${p.id})">
+            <div class="btn-spinner"></div>
+            <span class="btn-text">&#10024; AI 분석 <small style="opacity:.7;font-size:10px;">PRO</small></span>
+          </button>
+        </div>
       </div>
       <div class="guide-body" id="guide-body-${p.id}"></div>
     </div>
@@ -4061,10 +4116,122 @@ initSampleTagFilters();
 renderSamples();
 
 
-// ===== AI 싱글배틀 운용 가이드 (Gemini via Worker) =====
+// ===== API 키 관리 =====
 const WORKER_URL = 'https://rotomuwiki-api.kljjgu02.workers.dev';
+function getApiKey() { return localStorage.getItem('rotomuwiki_apikey') || ''; }
+function openApiKeyModal() {
+  const key = getApiKey();
+  const input = document.getElementById('apikey-input');
+  const status = document.getElementById('apikey-status');
+  if (input) input.value = key;
+  if (status) {
+    if (key) { status.className='apikey-status set'; status.textContent='✅ API 키 설정됨: sk-ant-...' + key.slice(-4); }
+    else { status.className='apikey-status unset'; status.textContent='⚠️ API 키 미설정'; }
+  }
+  document.getElementById('apikey-overlay').classList.add('show');
+}
+function closeApiKeyModal() { document.getElementById('apikey-overlay').classList.remove('show'); }
+function saveApiKey() {
+  const val = document.getElementById('apikey-input').value.trim();
+  if (!val) { alert('API 키를 입력해주세요.'); return; }
+  localStorage.setItem('rotomuwiki_apikey', val);
+  const btn = document.getElementById('apikey-navbar-btn');
+  if (btn) btn.classList.add('active');
+  closeApiKeyModal();
+}
+function toggleApiKeyVisibility() {
+  const input = document.getElementById('apikey-input');
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('apikey-navbar-btn');
+  if (btn && getApiKey()) btn.classList.add('active');
+});
 
-async function generateBattleGuide(pokeId) {
+// ===== 룰 기반 자동 분석 =====
+function runFreeGuide(pokeId) {
+  const p = POKEMON_DATA.find(x => x.id === pokeId);
+  if (!p) return;
+  const body = document.getElementById('guide-body-' + pokeId);
+  if (!body) return;
+  body.classList.add('visible');
+
+  const st = p.stats;
+  const bst = Object.values(st).reduce((a,b)=>a+b,0);
+  const isPhysical = st.atk >= st.spa;
+  const mainAtk = isPhysical ? st.atk : st.spa;
+
+  // 포지션 판단
+  const roles = [];
+  if (st.spe >= 100) roles.push('고속');
+  else if (st.spe <= 60) roles.push('저속');
+  if (mainAtk >= 120) roles.push(isPhysical ? '물리 어태커' : '특수 어태커');
+  else if (mainAtk >= 90) roles.push(isPhysical ? '물리 스위퍼' : '특수 스위퍼');
+  if (st.def >= 100 && st.spd >= 100) roles.push('내구형');
+  else if (st.def >= 120) roles.push('물리 탱커');
+  else if (st.spd >= 120) roles.push('특수 탱커');
+  if (st.hp >= 100 && (st.def >= 80 || st.spd >= 80)) roles.push('서포터');
+  if (roles.length === 0) roles.push('밸런스형');
+
+  // 타입 약점 계산
+  const typeWeakMap = {
+    '노말':{'격투':2},'불꽃':{'물':2,'바위':2,'땅':2},'물':{'전기':2,'풀':2},
+    '전기':{'땅':2},'풀':{'불꽃':2,'독':2,'비행':2,'벌레':2,'얼음':2},
+    '얼음':{'불꽃':2,'격투':2,'바위':2,'강철':2},'격투':{'비행':2,'에스퍼':2,'페어리':2},
+    '독':{'땅':2,'에스퍼':2},'땅':['물','풀','얼음'],
+    '비행':{'전기':2,'얼음':2,'바위':2},'에스퍼':{'벌레':2,'고스트':2,'악':2},
+    '벌레':{'불꽃':2,'비행':2,'바위':2},'바위':{'물':2,'풀':2,'격투':2,'땅':2,'강철':2},
+    '고스트':{'고스트':2,'악':2},'드래곤':{'얼음':2,'드래곤':2,'페어리':2},
+    '악':{'격투':2,'벌레':2,'페어리':2},'강철':{'불꽃':2,'격투':2,'땅':2},
+    '페어리':{'독':2,'강철':2}
+  };
+  const weakSet = new Set();
+  p.type.forEach(t => {
+    const w = typeWeakMap[t];
+    if (w) Object.keys(w).forEach(wt => weakSet.add(wt));
+  });
+  const weakTypes = [...weakSet].slice(0,5);
+
+  // 추천 기술 (STAB 우선)
+  const moves = p.moves || [];
+  const stabMoves = moves.filter(m => {
+    const md = MOVE_DATA[m];
+    return md && p.type.includes(md.type) && md.cat !== '변화';
+  });
+  const otherMoves = moves.filter(m => {
+    const md = MOVE_DATA[m];
+    return md && !p.type.includes(md.type) && md.cat !== '변화';
+  });
+  const supportMoves = moves.filter(m => {
+    const md = MOVE_DATA[m];
+    return md && md.cat === '변화';
+  });
+  const recMoves = [...stabMoves.slice(0,2), ...otherMoves.slice(0,1), ...supportMoves.slice(0,1)].slice(0,4);
+  if (recMoves.length < 4) recMoves.push(...moves.filter(m => !recMoves.includes(m)).slice(0, 4 - recMoves.length));
+
+  const rc = r => {
+    if(['스위퍼','어태커','고속'].some(k=>r.includes(k))) return 'atk';
+    if(['탱커','내구형','서포터'].some(k=>r.includes(k))) return 'def';
+    return 'role';
+  };
+
+  body.innerHTML =
+    '<div class="g-mode">&#128196; 자동 분석</div>' +
+    '<div class="g-block"><div class="g-label">포지션</div><div class="g-tags">' + roles.map(r=>'<span class="g-tag '+rc(r)+'">'+r+'</span>').join('') + '</div></div>' +
+    '<div class="g-block"><div class="g-label">종족값 요약</div><div class="g-text">' +
+      'BST <strong>' + bst + '</strong> &nbsp;|&nbsp; ' +
+      (isPhysical ? '물리 중심 (공격 ' + st.atk + ')' : '특수 중심 (특공 ' + st.spa + ')') +
+      ' &nbsp;|&nbsp; 스피드 ' + st.spe +
+    '</div></div>' +
+    '<div class="g-block"><div class="g-label">주요 약점</div><div class="g-tags">' + (weakTypes.length ? weakTypes.map(w=>'<span class="g-tag weak">'+w+'</span>').join('') : '<span class="g-tag">없음</span>') + '</div></div>' +
+    '<div class="g-block"><div class="g-label">추천 기술</div><div class="g-tags">' + recMoves.map(m=>'<span class="g-tag move">'+m+'</span>').join('') + '</div></div>' +
+    '<div class="guide-apikey-hint">&#10024; Claude API 키를 등록하면 더 상세한 AI 운용 가이드를 받을 수 있어요. <a href="#" onclick="openApiKeyModal();return false;" style="color:var(--accent);">키 등록하기</a></div>';
+}
+
+// ===== AI 분석 (Claude API via Worker) =====
+async function runAiGuide(pokeId) {
+  const apiKey = getApiKey();
+  if (!apiKey) { openApiKeyModal(); return; }
   const p = POKEMON_DATA.find(x => x.id === pokeId);
   if (!p) return;
   const btn = document.getElementById('guide-btn-' + pokeId);
@@ -4072,7 +4239,7 @@ async function generateBattleGuide(pokeId) {
   if (!btn || !body) return;
   btn.classList.add('loading'); btn.disabled = true;
   body.classList.add('visible');
-  body.innerHTML = '<div style="font-family:var(--mono);color:var(--muted);font-size:11px;padding:8px 0;">AI 분석 중<span class="guide-cursor"></span></div>';
+  body.innerHTML = '<div style="font-family:var(--mono);color:var(--muted);font-size:11px;padding:8px 0;">Claude AI 분석 중<span class="guide-cursor"></span></div>';
   const st = p.stats;
   const bst = Object.values(st).reduce((a,b)=>a+b,0);
   const pokeInfo = '타입: '+p.type.join('/')+'\n종족값: HP'+st.hp+' 공'+st.atk+' 방'+st.def+' 특공'+st.spa+' 특방'+st.spd+' 스'+st.spe+' (합계 '+bst+')\n기술: '+(p.moves||[]).join(', ')+'\n세대: '+p.gen+'세대';
@@ -4080,17 +4247,18 @@ async function generateBattleGuide(pokeId) {
     const res = await fetch(WORKER_URL, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ pokeName: p.name, pokeInfo })
+      body: JSON.stringify({pokeName: p.name, pokeInfo, apiKey})
     });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || '오류 발생');
     const g = data.result;
     const rc = r => {
-      if (['스위퍼','어태커','선봉','클리너','공격','전령'].some(k=>r.includes(k))) return 'atk';
-      if (['탱커','벽','서포터','보조','내구','웰','센터'].some(k=>r.includes(k))) return 'def';
+      if(['스위퍼','어태커','선봉','클리너','공격'].some(k=>r.includes(k))) return 'atk';
+      if(['탱커','벽','서포터','보조','내구'].some(k=>r.includes(k))) return 'def';
       return 'role';
     };
     body.innerHTML =
+      '<div class="g-mode ai">&#10024; Claude AI 분석</div>' +
       '<div class="g-block"><div class="g-label">포지션</div><div class="g-tags">'+(g.roles||[]).map(r=>'<span class="g-tag '+rc(r)+'">'+r+'</span>').join('')+'</div></div>'+
       '<div class="g-block"><div class="g-label">강점 분석</div><div class="g-text">'+(g.strength||'')+'</div></div>'+
       '<div class="g-block"><div class="g-label">약점과 대응</div><div class="g-text">'+(g.weakness||'')+'</div></div>'+
@@ -4099,10 +4267,11 @@ async function generateBattleGuide(pokeId) {
       '<div class="g-block"><div class="g-label">시너지 파트너</div><div class="g-text">'+(g.partner||'')+'</div></div>'+
       '<div class="g-block" style="margin-bottom:0;"><div class="g-label">핵심 운용 팁</div><div class="g-text">'+(g.tip||'')+'</div></div>';
   } catch(err) {
-    body.innerHTML = '<div class="guide-error">오류: '+err.message+'</div>';
+    body.innerHTML = '<div class="guide-error">&#9888;&#65039; ' + err.message + '</div>' +
+      '<div class="guide-apikey-hint">API 키가 올바른지 확인하세요. <a href="#" onclick="openApiKeyModal();return false;" style="color:var(--accent);">키 재설정</a></div>';
   }
   btn.classList.remove('loading'); btn.disabled = false;
-  const bt = btn.querySelector('.btn-text'); if(bt) bt.textContent = '재생성';
+  const bt = btn.querySelector('.btn-text'); if(bt) bt.innerHTML = '&#10024; AI 재분석 <small style="opacity:.7;font-size:10px;">PRO</small>';
 }
 </script>
   <script>
