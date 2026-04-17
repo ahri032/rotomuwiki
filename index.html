@@ -489,6 +489,29 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 .guide-cursor{display:inline-block;width:2px;height:14px;background:var(--accent);animation:blink .7s step-end infinite;vertical-align:middle;margin-left:2px;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .guide-error{font-family:var(--mono);color:var(--red);font-size:11px;padding:10px;background:rgba(240,96,96,.08);border-radius:6px;border:1px solid rgba(240,96,96,.2);}
+/* ===== API 키 모달 ===== */
+.apikey-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:1000;align-items:center;justify-content:center;}
+.apikey-overlay.show{display:flex;}
+.apikey-modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:28px;width:100%;max-width:440px;margin:16px;box-shadow:0 20px 60px rgba(0,0,0,.5);position:relative;}
+.apikey-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(77,131,245,.5),transparent);border-radius:var(--radius) var(--radius) 0 0;}
+.apikey-modal-title{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:1px;color:var(--accent);margin-bottom:6px;}
+.apikey-modal-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.apikey-modal-desc a{color:var(--accent);text-decoration:none;}
+.apikey-input-wrap{position:relative;margin-bottom:14px;}
+.apikey-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 40px 10px 14px;font-size:13px;font-family:var(--mono);color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;box-sizing:border-box;}
+.apikey-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(77,131,245,.12);}
+.apikey-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;padding:4px;}
+.apikey-modal-btns{display:flex;gap:8px;}
+.apikey-save-btn{flex:1;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:var(--radius-sm);padding:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s;}
+.apikey-save-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(77,131,245,.35);}
+.apikey-cancel-btn{background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 18px;font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s;}
+.apikey-cancel-btn:hover{color:var(--text);border-color:var(--border3);}
+.apikey-status{font-family:var(--mono);font-size:10px;margin-top:8px;padding:6px 10px;border-radius:6px;display:none;}
+.apikey-status.set{display:block;color:var(--green);background:rgba(61,214,140,.08);border:1px solid rgba(61,214,140,.2);}
+.apikey-status.unset{display:block;color:var(--muted);background:var(--surface2);border:1px solid var(--border);}
+.apikey-navbar-btn{display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11px;font-weight:600;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-family:var(--mono);transition:all .2s;flex-shrink:0;}
+.apikey-navbar-btn:hover{color:var(--accent);border-color:var(--accent);}
+.apikey-navbar-btn.active{color:var(--green);border-color:rgba(61,214,140,.4);}
 </style>
   <!-- PWA -->
   <link rel="manifest" href="/manifest.json">
@@ -500,6 +523,28 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
   <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
 </head>
 <body>
+
+<!-- API 키 모달 -->
+<div class="apikey-overlay" id="apikey-overlay" onclick="if(event.target===this)closeApiKeyModal()">
+  <div class="apikey-modal">
+    <div class="apikey-modal-title">🔑 ANTHROPIC API KEY</div>
+    <p class="apikey-modal-desc">
+      AI 가이드 기능을 사용하려면 Anthropic API 키가 필요합니다.<br>
+      키는 이 기기의 브라우저에만 저장되며 외부로 전송되지 않습니다.<br>
+      <a href="https://console.anthropic.com/settings/keys" target="_blank">→ API 키 발급받기</a>
+    </p>
+    <div class="apikey-input-wrap">
+      <input class="apikey-input" id="apikey-input" type="password" placeholder="sk-ant-..." autocomplete="off" />
+      <button class="apikey-toggle" onclick="toggleApiKeyVisibility()" id="apikey-toggle-btn">👁</button>
+    </div>
+    <div id="apikey-status" class="apikey-status"></div>
+    <div class="apikey-modal-btns" style="margin-top:14px;">
+      <button class="apikey-save-btn" onclick="saveApiKey()">저장</button>
+      <button class="apikey-cancel-btn" onclick="closeApiKeyModal()">취소</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== 네비게이션 바 ===== -->
 <nav class="navbar">
   <a class="navbar-brand" href="#" onclick="switchTab('dex',null);return false;">
@@ -517,7 +562,8 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
   </div>
   <div class="navbar-actions">
     <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="테마 전환">☀️</button>
-    <button class="reg-badge">⚡ REG M-A</button>
+    <button class="apikey-navbar-btn" id="apikey-navbar-btn" onclick="openApiKeyModal()" title="API 키 설정">🔑 API KEY</button>
+<button class="reg-badge">⚡ REG M-A</button>
   </div>
 </nav>
 <div class="app">
@@ -4061,8 +4107,51 @@ initSampleTagFilters();
 renderSamples();
 
 
+// ===== API 키 관리 =====
+function getApiKey() { return localStorage.getItem('rotomuwiki_apikey') || ''; }
+function openApiKeyModal() {
+  const key = getApiKey();
+  const input = document.getElementById('apikey-input');
+  const status = document.getElementById('apikey-status');
+  if (input) input.value = key;
+  if (status) {
+    if (key) {
+      status.className = 'apikey-status set';
+      status.textContent = '✅ API 키가 설정되어 있습니다: sk-ant-...' + key.slice(-6);
+    } else {
+      status.className = 'apikey-status unset';
+      status.textContent = '⚠️ API 키가 설정되지 않았습니다.';
+    }
+  }
+  document.getElementById('apikey-overlay').classList.add('show');
+}
+function closeApiKeyModal() { document.getElementById('apikey-overlay').classList.remove('show'); }
+function saveApiKey() {
+  const val = document.getElementById('apikey-input').value.trim();
+  if (!val) { alert('API 키를 입력해주세요.'); return; }
+  if (!val.startsWith('sk-ant-')) { if(!confirm('sk-ant-로 시작하지 않는 키입니다. 그래도 저장할까요?')) return; }
+  localStorage.setItem('rotomuwiki_apikey', val);
+  const btn = document.getElementById('apikey-navbar-btn');
+  if (btn) btn.classList.add('active');
+  closeApiKeyModal();
+  alert('✅ API 키가 저장되었습니다!');
+}
+function toggleApiKeyVisibility() {
+  const input = document.getElementById('apikey-input');
+  const btn = document.getElementById('apikey-toggle-btn');
+  if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
+  else { input.type = 'password'; btn.textContent = '👁'; }
+}
+// 초기 API 키 상태 반영
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('apikey-navbar-btn');
+  if (btn && getApiKey()) btn.classList.add('active');
+});
+
 // ===== AI 싱글배틀 운용 가이드 =====
 async function generateBattleGuide(pokeId) {
+  const apiKey = getApiKey();
+  if (!apiKey) { openApiKeyModal(); return; }
   const p = POKEMON_DATA.find(x => x.id === pokeId);
   if (!p) return;
   const btn = document.getElementById('guide-btn-' + pokeId);
@@ -4079,16 +4168,26 @@ async function generateBattleGuide(pokeId) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
         'anthropic-dangerous-direct-browser-access': 'true'
       },
       body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
     });
     const data = await res.json();
-    if(!data.content||!data.content[0]) throw new Error('응답 없음');
+    if (data.type === 'error') throw new Error(data.error?.message || '인증 오류');
+    if (!data.content || !data.content[0]) throw new Error('응답 없음');
     const raw = data.content[0].text.replace(/```json/g,'').replace(/```/g,'').trim();
-    let g; try{g=JSON.parse(raw);}catch(e){body.innerHTML='<div class="guide-error">⚠️ 파싱 오류. 다시 시도해주세요.</div>';btn.classList.remove('loading');btn.disabled=false;return;}
-    const rc=r=>{if(['스위퍼','어태커','선봉','클리너','공격','전령'].some(k=>r.includes(k)))return 'atk';if(['탱커','벽','서포터','보조','내구','웰','센터'].some(k=>r.includes(k)))return 'def';return 'role';};
-    body.innerHTML=
+    let g; try { g = JSON.parse(raw); } catch(e) {
+      body.innerHTML='<div class="guide-error">⚠️ 파싱 오류. 다시 시도해주세요.</div>';
+      btn.classList.remove('loading'); btn.disabled=false; return;
+    }
+    const rc = r => {
+      if (['스위퍼','어태커','선봉','클리너','공격','전령'].some(k=>r.includes(k))) return 'atk';
+      if (['탱커','벽','서포터','보조','내구','웰','센터'].some(k=>r.includes(k))) return 'def';
+      return 'role';
+    };
+    body.innerHTML =
       '<div class="g-block"><div class="g-label">포지션</div><div class="g-tags">'+(g.roles||[]).map(r=>'<span class="g-tag '+rc(r)+'">'+r+'</span>').join('')+'</div></div>'+
       '<div class="g-block"><div class="g-label">강점 분석</div><div class="g-text">'+(g.strength||'')+'</div></div>'+
       '<div class="g-block"><div class="g-label">약점과 대응</div><div class="g-text">'+(g.weakness||'')+'</div></div>'+
@@ -4096,9 +4195,12 @@ async function generateBattleGuide(pokeId) {
       '<div class="g-block"><div class="g-label">추천 도구 · 특성</div><div class="g-tags">'+(g.tools||[]).map(t=>'<span class="g-tag tool">'+t+'</span>').join('')+'</div><div class="g-text" style="margin-top:6px;font-size:11px;color:var(--muted2);">'+(g.ability||'')+'</div></div>'+
       '<div class="g-block"><div class="g-label">시너지 파트너</div><div class="g-text">'+(g.partner||'')+'</div></div>'+
       '<div class="g-block" style="margin-bottom:0;"><div class="g-label">핵심 운용 팁</div><div class="g-text">'+(g.tip||'')+'</div></div>';
-  } catch(err){body.innerHTML='<div class="guide-error">⚠️ 오류: '+err.message+'</div>';}
-  btn.classList.remove('loading'); btn.disabled=false;
-  const bt=btn.querySelector('.btn-text'); if(bt) bt.textContent='🔄 재생성';
+  } catch(err) {
+    body.innerHTML = '<div class="guide-error">⚠️ 오류: '+err.message+'</div>';
+    if (err.message.includes('인증') || err.message.includes('auth')) openApiKeyModal();
+  }
+  btn.classList.remove('loading'); btn.disabled = false;
+  const bt = btn.querySelector('.btn-text'); if (bt) bt.textContent = '🔄 재생성';
 }
 </script>
   <script>
