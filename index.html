@@ -4304,7 +4304,7 @@ function runFreeGuide(pokeId, megaVariant) {
     else if (oppOff === 0) score = 99;
     else score = Math.log2(myOff / oppOff);
 
-    return { name: sd.kor, score: score, myOff: myOff, oppOff: oppOff, build: sd.build || null };
+    return { name: sd.kor, dex_id: sd.dex_id, score: score, myOff: myOff, oppOff: oppOff, build: sd.build || null };
   }).filter(Boolean);
 
   matchups.sort((a, b) => b.score - a.score);
@@ -4327,13 +4327,15 @@ function runFreeGuide(pokeId, megaVariant) {
         }
         var typeDots = oppTypes.map(function(t){var tc=TYPE_COLORS[t];return tc?'<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:'+tc.text+';box-shadow:0 0 3px '+tc.text+'88;" title="'+t+'"></span>':'';}).join('');
         var typeWrap = typeDots ? '<span style="display:inline-flex;gap:3px;margin-right:6px;vertical-align:middle;">'+typeDots+'</span>' : '';
-        const buildLine = m.build ?
-          '<span style="font-size:10px;opacity:.68;margin-top:3px;display:block;font-weight:400;letter-spacing:.2px;line-height:1.3;">'
-            + m.build.item + ' · ' + m.build.ability + '<br><span style="opacity:.7;">' + m.build.nature + ' · ' + m.build.role + '</span>'
-          + '</span>' : '';
-        return '<span class="g-tag ' + tagClass + '" style="flex-direction:column;align-items:flex-start;padding:6px 10px;">'
-          + '<span style="font-weight:600;">' + typeWrap + m.name + '</span>'
-          + buildLine
+        var spriteId = String(m.dex_id).padStart(4, '0');
+        var spriteUrl = 'https://pkmnchamps.github.io/images/sprites/' + spriteId + '_profile.png';
+        var roleText = m.build && m.build.role ? m.build.role : '';
+        return '<span class="g-tag ' + tagClass + '" style="flex-direction:row;align-items:center;gap:8px;padding:8px 12px;">'
+          + '<img src="' + spriteUrl + '" style="width:40px;height:40px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;" onerror="this.style.display=\'none\';" />'
+          + '<span style="display:flex;flex-direction:column;gap:2px;min-width:0;">'
+            + '<span style="font-weight:600;display:inline-flex;align-items:center;">' + typeWrap + m.name + '</span>'
+            + (roleText ? '<span style="font-size:10px;opacity:.7;font-weight:400;letter-spacing:.2px;">' + roleText + '</span>' : '')
+          + '</span>'
           + '</span>';
       }).join('') +
       '</div></div>';
