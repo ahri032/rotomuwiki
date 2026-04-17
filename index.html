@@ -478,14 +478,14 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 .guide-ai-btn.loading .btn-text{display:none;}
 .guide-body{display:none;}
 .guide-body.visible{display:block;}
-.guide-body .g-mode{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:12px;padding:4px 8px;background:var(--surface2);border-radius:4px;display:inline-block;}
-.guide-body .g-mode.ai{color:var(--accent2);background:rgba(155,109,255,.1);}
+.guide-body .g-mode{font-family:'Noto Sans KR',sans-serif;font-size:10px;color:var(--muted);margin-bottom:12px;padding:4px 10px;background:var(--surface2);border-radius:4px;display:inline-block;font-weight:500;}
+.guide-body .g-mode.ai{color:var(--accent2);background:rgba(155,109,255,.1);font-weight:600;}
 .guide-body .g-block{margin-bottom:14px;}
 .guide-body .g-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
 .guide-body .g-label::after{content:'';flex:1;height:1px;background:rgba(77,131,245,.15);}
-.guide-body .g-text{font-family:var(--mono);color:var(--text);font-size:12px;line-height:1.8;}
+.guide-body .g-text{font-family:'Noto Sans KR',sans-serif;color:var(--text);font-size:13px;line-height:1.75;}
 .guide-body .g-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
-.guide-body .g-tag{font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);color:var(--muted2);}
+.guide-body .g-tag{font-family:'Noto Sans KR',sans-serif;font-size:11px;padding:3px 9px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);color:var(--muted2);}
 .guide-body .g-tag.atk{border-color:rgba(240,96,96,.35);color:#f08080;background:rgba(240,96,96,.08);}
 .guide-body .g-tag.def{border-color:rgba(61,214,140,.35);color:#3dd68c;background:rgba(61,214,140,.08);}
 .guide-body .g-tag.role{border-color:rgba(77,131,245,.35);color:#7eb4ff;background:rgba(77,131,245,.08);}
@@ -494,7 +494,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 .guide-body .g-tag.weak{border-color:rgba(240,96,96,.35);color:#f08080;background:rgba(240,96,96,.08);}
 .guide-cursor{display:inline-block;width:2px;height:14px;background:var(--accent);animation:blink .7s step-end infinite;vertical-align:middle;margin-left:2px;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.guide-error{font-family:var(--mono);color:var(--red);font-size:11px;padding:10px;background:rgba(240,96,96,.08);border-radius:6px;border:1px solid rgba(240,96,96,.2);}
+.guide-error{font-family:'Noto Sans KR',sans-serif;color:var(--red);font-size:12px;padding:10px;background:rgba(240,96,96,.08);border-radius:6px;border:1px solid rgba(240,96,96,.2);}
 .guide-apikey-hint{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:8px;padding:8px 10px;background:var(--surface2);border-radius:6px;border:1px solid var(--border);}
 /* API 키 모달 */
 .apikey-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:1000;align-items:center;justify-content:center;}
@@ -2208,8 +2208,8 @@ function showDetail(id,megaVariant){
       <div class="guide-header">
         <span class="guide-title">&#9876;&#65039; 싱글배틀 운용 가이드</span>
         <div class="guide-btns">
-          <button class="guide-free-btn" onclick="runFreeGuide(${p.id})">&#128196; 자동 분석</button>
-          <button class="guide-ai-btn" id="guide-btn-${p.id}" onclick="runAiGuide(${p.id})">
+          <button class="guide-free-btn" onclick="runFreeGuide(${p.id},'${megaVariant||''}')">&#128196; 자동 분석</button>
+          <button class="guide-ai-btn" id="guide-btn-${p.id}" onclick="runAiGuide(${p.id},'${megaVariant||''}')">
             <div class="btn-spinner"></div>
             <span class="btn-text">&#10024; AI 분석 <small style="opacity:.7;font-size:10px;">PRO</small></span>
           </button>
@@ -4149,87 +4149,135 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ===== 룰 기반 자동 분석 =====
-function runFreeGuide(pokeId) {
+function runFreeGuide(pokeId, megaVariant) {
   const p = POKEMON_DATA.find(x => x.id === pokeId);
   if (!p) return;
   const body = document.getElementById('guide-body-' + pokeId);
   if (!body) return;
   body.classList.add('visible');
 
-  const st = p.stats;
+  // 메가진화 데이터 적용
+  const megaInfo = MEGA_DATA[pokeId];
+  let displayType = p.type;
+  let displayStats = p.stats;
+  let megaLabel = '';
+  let megaName = p.name;
+
+  if (megaVariant && megaInfo) {
+    const md = (megaVariant === 'X' || megaVariant === 'Y') ? megaInfo[megaVariant] : megaInfo;
+    if (md && md.stats) {
+      displayType = md.type || p.type;
+      displayStats = md.stats;
+      megaLabel = megaVariant ? ' (' + (md.name || '메가') + ')' : '';
+      megaName = md.name || p.name;
+    }
+  }
+
+  const st = displayStats;
   const bst = Object.values(st).reduce((a,b)=>a+b,0);
   const isPhysical = st.atk >= st.spa;
   const mainAtk = isPhysical ? st.atk : st.spa;
 
   // 포지션 판단
   const roles = [];
+  if (megaVariant) roles.push('메가진화');
   if (st.spe >= 100) roles.push('고속');
   else if (st.spe <= 60) roles.push('저속');
-  if (mainAtk >= 120) roles.push(isPhysical ? '물리 어태커' : '특수 어태커');
-  else if (mainAtk >= 90) roles.push(isPhysical ? '물리 스위퍼' : '특수 스위퍼');
+  if (mainAtk >= 130) roles.push(isPhysical ? '물리 어태커' : '특수 어태커');
+  else if (mainAtk >= 100) roles.push(isPhysical ? '물리 스위퍼' : '특수 스위퍼');
   if (st.def >= 100 && st.spd >= 100) roles.push('내구형');
   else if (st.def >= 120) roles.push('물리 탱커');
   else if (st.spd >= 120) roles.push('특수 탱커');
   if (st.hp >= 100 && (st.def >= 80 || st.spd >= 80)) roles.push('서포터');
-  if (roles.length === 0) roles.push('밸런스형');
+  if (roles.filter(r => r !== '메가진화' && r !== '고속' && r !== '저속').length === 0) roles.push('밸런스형');
 
-  // 타입 약점 계산
+  // 타입 약점 계산 (메가 타입 기준)
   const typeWeakMap = {
     '노말':{'격투':2},'불꽃':{'물':2,'바위':2,'땅':2},'물':{'전기':2,'풀':2},
     '전기':{'땅':2},'풀':{'불꽃':2,'독':2,'비행':2,'벌레':2,'얼음':2},
     '얼음':{'불꽃':2,'격투':2,'바위':2,'강철':2},'격투':{'비행':2,'에스퍼':2,'페어리':2},
-    '독':{'땅':2,'에스퍼':2},'땅':['물','풀','얼음'],
+    '독':{'땅':2,'에스퍼':2},'땅':{'물':2,'풀':2,'얼음':2},
     '비행':{'전기':2,'얼음':2,'바위':2},'에스퍼':{'벌레':2,'고스트':2,'악':2},
     '벌레':{'불꽃':2,'비행':2,'바위':2},'바위':{'물':2,'풀':2,'격투':2,'땅':2,'강철':2},
     '고스트':{'고스트':2,'악':2},'드래곤':{'얼음':2,'드래곤':2,'페어리':2},
     '악':{'격투':2,'벌레':2,'페어리':2},'강철':{'불꽃':2,'격투':2,'땅':2},
     '페어리':{'독':2,'강철':2}
   };
-  const weakSet = new Set();
-  p.type.forEach(t => {
-    const w = typeWeakMap[t];
-    if (w) Object.keys(w).forEach(wt => weakSet.add(wt));
+  const typeImmuneMap = {
+    '노말':['고스트'],'전기':['땅'],'비행':['땅'],'고스트':['노말','격투'],'강철':['독'],
+    '페어리':['드래곤'],'땅':['전기'],'악':['에스퍼']
+  };
+  const weakCount = {};
+  displayType.forEach(t => {
+    const w = typeWeakMap[t] || {};
+    Object.entries(w).forEach(([wt, mult]) => {
+      weakCount[wt] = (weakCount[wt] || 1) * mult;
+    });
+    const immune = typeImmuneMap[t] || [];
+    immune.forEach(it => { weakCount[it] = 0; });
   });
-  const weakTypes = [...weakSet].slice(0,5);
+  const weakTypes = Object.entries(weakCount).filter(([,v])=>v>=2).sort((a,b)=>b[1]-a[1]).map(([t])=>t).slice(0,6);
 
-  // 추천 기술 (STAB 우선)
+  // 추천 기술 (메가 타입 기준 STAB 우선, 물리/특수 분리)
   const moves = p.moves || [];
-  const stabMoves = moves.filter(m => {
+  const stabPhys = moves.filter(m => {
     const md = MOVE_DATA[m];
-    return md && p.type.includes(md.type) && md.cat !== '변화';
+    return md && displayType.includes(md.type) && md.cat === '물리';
   });
-  const otherMoves = moves.filter(m => {
+  const stabSpec = moves.filter(m => {
     const md = MOVE_DATA[m];
-    return md && !p.type.includes(md.type) && md.cat !== '변화';
+    return md && displayType.includes(md.type) && md.cat === '특수';
+  });
+  const otherPhys = moves.filter(m => {
+    const md = MOVE_DATA[m];
+    return md && !displayType.includes(md.type) && md.cat === '물리';
+  });
+  const otherSpec = moves.filter(m => {
+    const md = MOVE_DATA[m];
+    return md && !displayType.includes(md.type) && md.cat === '특수';
   });
   const supportMoves = moves.filter(m => {
     const md = MOVE_DATA[m];
     return md && md.cat === '변화';
   });
-  const recMoves = [...stabMoves.slice(0,2), ...otherMoves.slice(0,1), ...supportMoves.slice(0,1)].slice(0,4);
-  if (recMoves.length < 4) recMoves.push(...moves.filter(m => !recMoves.includes(m)).slice(0, 4 - recMoves.length));
+
+  let recMoves = [];
+  if (isPhysical) {
+    recMoves = [...stabPhys.slice(0,2), ...otherPhys.slice(0,1), ...supportMoves.slice(0,1)].slice(0,4);
+  } else {
+    recMoves = [...stabSpec.slice(0,2), ...otherSpec.slice(0,1), ...supportMoves.slice(0,1)].slice(0,4);
+  }
+  if (recMoves.length < 4) {
+    const allOther = moves.filter(m => !recMoves.includes(m));
+    recMoves.push(...allOther.slice(0, 4 - recMoves.length));
+  }
 
   const rc = r => {
-    if(['스위퍼','어태커','고속'].some(k=>r.includes(k))) return 'atk';
-    if(['탱커','내구형','서포터'].some(k=>r.includes(k))) return 'def';
+    if (['스위퍼','어태커','메가진화','고속'].some(k=>r.includes(k))) return 'atk';
+    if (['탱커','내구형','서포터'].some(k=>r.includes(k))) return 'def';
     return 'role';
   };
 
+  const modeLabel = megaVariant ? '&#128196; 자동 분석 · ' + megaName : '&#128196; 자동 분석';
+
   body.innerHTML =
-    '<div class="g-mode">&#128196; 자동 분석</div>' +
+    '<div class="g-mode">' + modeLabel + '</div>' +
     '<div class="g-block"><div class="g-label">포지션</div><div class="g-tags">' + roles.map(r=>'<span class="g-tag '+rc(r)+'">'+r+'</span>').join('') + '</div></div>' +
     '<div class="g-block"><div class="g-label">종족값 요약</div><div class="g-text">' +
       'BST <strong>' + bst + '</strong> &nbsp;|&nbsp; ' +
       (isPhysical ? '물리 중심 (공격 ' + st.atk + ')' : '특수 중심 (특공 ' + st.spa + ')') +
       ' &nbsp;|&nbsp; 스피드 ' + st.spe +
     '</div></div>' +
-    '<div class="g-block"><div class="g-label">주요 약점</div><div class="g-tags">' + (weakTypes.length ? weakTypes.map(w=>'<span class="g-tag weak">'+w+'</span>').join('') : '<span class="g-tag">없음</span>') + '</div></div>' +
-    '<div class="g-block"><div class="g-label">추천 기술</div><div class="g-tags">' + recMoves.map(m=>'<span class="g-tag move">'+m+'</span>').join('') + '</div></div>' +
+    '<div class="g-block"><div class="g-label">타입 · 약점</div>' +
+    '<div class="g-tags" style="margin-bottom:4px;">' + displayType.map(t=>'<span class="g-tag role">'+t+'</span>').join('') + '</div>' +
+    '<div class="g-tags">' + (weakTypes.length ? weakTypes.map(w=>'<span class="g-tag weak">'+w+' 약점</span>').join('') : '<span class="g-tag">없음</span>') + '</div></div>' +
+    '<div class="g-block"><div class="g-label">추천 기술 (' + (isPhysical?'물리형':'특수형') + ')</div><div class="g-tags">' + recMoves.map(m=>'<span class="g-tag move">'+m+'</span>').join('') + '</div></div>' +
     '<div class="guide-apikey-hint">&#10024; Claude API 키를 등록하면 더 상세한 AI 운용 가이드를 받을 수 있어요. <a href="#" onclick="openApiKeyModal();return false;" style="color:var(--accent);">키 등록하기</a></div>';
 }
 
+
 // ===== AI 분석 (Claude API via Worker) =====
-async function runAiGuide(pokeId) {
+async function runAiGuide(pokeId, megaVariant) {
   const apiKey = getApiKey();
   if (!apiKey) { openApiKeyModal(); return; }
   const p = POKEMON_DATA.find(x => x.id === pokeId);
