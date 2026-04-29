@@ -1889,13 +1889,10 @@ const MOVE_DATA = {
   "힘껏치기":{"power":80,"type":"노말","cat":"물리","acc":75,"pp":20},
   "힘껏펀치":{"power":150,"type":"격투","cat":"물리","acc":100,"pp":20},
   "힘흡수":{"power":null,"type":"풀","cat":"변화","acc":100,"pp":10},
-
-  "메탈캐논":{"power":120,"type":"불꽃","cat":"특수","acc":100,"pp":8},
-  "라스트리조트":{"power":140,"type":"노말","cat":"물리","acc":100,"pp":8},
-  "살빼기":{"power":0,"type":"노말","cat":"변화","acc":null,"pp":5},
-  "레이징플레임":{"power":120,"type":"불꽃","cat":"물리","acc":100,"pp":8},
-  "스노우스케이프":{"power":0,"type":"얼음","cat":"변화","acc":null,"pp":5},
-  "앞으로 나아가기":{"power":70,"type":"격투","cat":"물리","acc":100,"pp":8},
+  "드래곤클로":{"power":80,"type":"드래곤","cat":"물리","acc":100,"pp":16},
+  "속이기":{"power":40,"type":"노말","cat":"물리","acc":100,"pp":12},
+  "얼어붙은바람":{"power":55,"type":"얼음","cat":"특수","acc":95,"pp":16},
+  "집게해머":{"power":100,"type":"물","cat":"물리","acc":90,"pp":12}
 };
 
 const TYPE_COLORS={
@@ -1954,7 +1951,7 @@ function typeBadge(t){
 // 기본: POKEMON[id] 형태. 리전폼/메가는 baseId + formType + formKey
 // DATA_VERSION과 함께 관리. 모든 legacy DB는 이 트리에서 자동 생성됨.
 
-const DATA_VERSION = '2026-04-21';
+const DATA_VERSION = '2026-04-29';
 
 const POKEMON = {
   30023:{name:'메가독침붕',type:['벌레','독'],gen:1,stats:{hp:65,atk:150,def:40,spa:15,spd:80,spe:145},abilities:['적응력'],moves:[],baseId:15,formType:'mega',formKey:'독침붕나이트',triggerItem:'독침붕나이트'},
