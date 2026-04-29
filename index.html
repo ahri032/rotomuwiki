@@ -240,7 +240,22 @@ input[type=range]::-webkit-slider-track{background:var(--surface3);border-radius
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);margin-top:-6px;transition:transform .1s,box-shadow .1s;}
 input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 0 0 6px rgba(77,131,245,.2);}
 
-.calc-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:12px;position:relative;overflow:hidden;}
+.calc-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;position:relative;overflow:hidden;}
+/* 데미지 탭 가로 2열 레이아웃 */
+@media (min-width: 900px){
+  #tab-dmg{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;}
+  #tab-dmg > .calc-section{margin-bottom:0;}
+  #tab-dmg > #dmg-result{grid-column:1 / -1;}
+  /* 모바일 친화: 능력 포인트 그리드, 도구 그리드 등이 좁아진 컬럼에 맞게 */
+  #tab-dmg .calc-section .ev-grid{grid-template-columns:repeat(3,1fr);}
+  #tab-dmg .calc-section select,
+  #tab-dmg .calc-section input[type=text],
+  #tab-dmg .calc-section input[type=number]{font-size:12px;}
+  #tab-dmg .calc-section .move-slot{font-size:10px;}
+  #tab-dmg .calc-section .calc-pokemon-name{font-size:14px;}
+  #tab-dmg .calc-section img#atk-sprite,
+  #tab-dmg .calc-section img#def-sprite{width:72px !important;height:72px !important;}
+}
 .calc-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);}
 .calc-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;}
 .calc-pokemon-header{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
@@ -2839,6 +2854,17 @@ function renderStatBars(stats){
   }).join('');
 }
 
+
+function closeDexDetail(){
+  const detail=document.getElementById('dex-detail');if(detail)detail.innerHTML='';
+  const allList=document.getElementById('dex-all-list');if(allList)allList.style.display='block';
+  const si=document.getElementById('search-input');if(si)si.value='';
+  const sr=document.getElementById('search-results');if(sr)sr.innerHTML='';
+  // 포켓덱스 탭 상단으로 스크롤
+  const tabDex=document.getElementById('tab-dex');
+  if(tabDex)tabDex.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
 function searchPokemon(q){
   const el=document.getElementById('search-results');
   const detail=document.getElementById('dex-detail');
@@ -2863,7 +2889,9 @@ function showDetail(id,megaVariant){
   const p=POKEMON_DATA.find(x=>x.id===id);
   if(!p)return;
   document.getElementById('search-results').innerHTML='';
-  document.getElementById('search-input').value=p.name;
+  // 검색창 비우고 전체 리스트 숨기기 — 상세 카드만 보이도록
+  const _si=document.getElementById('search-input');if(_si)_si.value='';
+  const _all=document.getElementById('dex-all-list');if(_all)_all.style.display='none';
   const megaInfo=MEGA_DATA[id];
   let displayP=p,isMega=false,megaName=p.name,megaSprite=spriteUrl(p.id);
   if(megaInfo&&megaVariant){
@@ -2888,7 +2916,8 @@ function showDetail(id,megaVariant){
     }
   }
   document.getElementById('dex-detail').innerHTML=`
-    <div class="card" style="margin-top:12px;${isMega?'border-color:var(--accent);box-shadow:0 0 16px rgba(255,214,0,0.2);':''}">
+    <button onclick="closeDexDetail()" style="margin-top:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);border-radius:8px;padding:6px 12px;cursor:pointer;color:var(--muted);font-size:12px;display:inline-flex;align-items:center;gap:4px;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">← 목록으로</button>
+    <div class="card" style="margin-top:8px;${isMega?'border-color:var(--accent);box-shadow:0 0 16px rgba(255,214,0,0.2);':''}">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
         <div style="display:flex;align-items:center;gap:16px;">
           <img class="poke-sprite-lg" src="${megaSprite}" alt="${megaName}" onerror="this.src='${spriteUrl(p.id)}'">
@@ -2947,6 +2976,8 @@ function showDetail(id,megaVariant){
     </div>
 
     </div>`;
+  // 상세 카드로 스크롤
+  setTimeout(()=>{const d=document.getElementById('dex-detail');if(d)d.scrollIntoView({behavior:'smooth',block:'start'});},50);
 }
 
 function teamSearch(q){
