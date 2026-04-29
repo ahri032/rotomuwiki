@@ -240,6 +240,9 @@ input[type=range]::-webkit-slider-track{background:var(--surface3);border-radius
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);margin-top:-6px;transition:transform .1s,box-shadow .1s;}
 input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 0 0 6px rgba(77,131,245,.2);}
 
+.fx-check{display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--muted2);padding:3px 5px;border-radius:4px;transition:all .12s;}
+.fx-check:hover{background:rgba(255,255,255,0.04);color:var(--text);}
+.fx-check input[type=checkbox]{margin:0;cursor:pointer;}
 .calc-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;position:relative;overflow:hidden;}
 /* 데미지 탭 가로 2열 레이아웃 */
 @media (min-width: 900px){
@@ -886,7 +889,18 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
           </div>
         </div>
       </div>
-      <div class="calc-label" style="margin-top:12px;">지닌 도구</div>
+      <div class="calc-label" style="margin-top:12px;">상태이상</div>
+      <select id="atk-status" onchange="setStatus(this.value)" style="width:100%;font-size:12px;margin-bottom:10px;">
+        <option value="">없음</option>
+        <option value="burn">화상 (물리 데미지 ×0.5)</option>
+        <option value="paralyze">마비</option>
+        <option value="poison">독</option>
+        <option value="badpoison">맹독</option>
+        <option value="sleep">잠듦</option>
+        <option value="freeze">얼음</option>
+      </select>
+      <div class="calc-label" style="margin-top:8px;">지닌 도구</div>
+      <input type="text" class="item-search-input" id="atk-item-search" placeholder="🔍 도구 이름 검색..." oninput="buildItemGrid('atk',this.value)" autocomplete="off" style="width:100%;box-sizing:border-box;font-size:11px;padding:5px 8px;margin-bottom:6px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);">
       <div class="item-grid" id="atk-item-grid"></div>
       <div class="calc-label" style="margin-top:12px;">공격 랭크</div>
       <div style="display:flex;align-items:center;gap:10px;">
@@ -953,11 +967,77 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
         </div>
       </div>
       <div class="calc-label" style="margin-top:12px;">지닌 도구</div>
+      <input type="text" class="item-search-input" id="def-item-search" placeholder="🔍 도구 이름 검색..." oninput="buildItemGrid('def',this.value)" autocomplete="off" style="width:100%;box-sizing:border-box;font-size:11px;padding:5px 8px;margin-bottom:6px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);">
       <div class="item-grid" id="def-item-grid"></div>
       <div class="calc-label" style="margin-top:12px;">방어 랭크</div>
       <div style="display:flex;align-items:center;gap:10px;">
         <input type="range" min="-6" max="6" value="0" id="def-rank" step="1" oninput="defRankLabel(this.value);calcAll()" style="flex:1;">
         <span class="rank-label" id="def-rank-val" style="color:var(--red);">±0</span>
+      </div>
+    </div>
+    <!-- 🌍 전장 효과 (필드/오라/날씨) -->
+    <div class="calc-section" style="padding:12px;">
+      <div class="calc-label" style="margin-bottom:8px;">🌍 전장 효과</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:4px;font-family:var(--mono);">필드</div>
+          <select id="dmg-field" onchange="setField(this.value)" style="width:100%;font-size:11px;">
+            <option value="">없음</option>
+            <option value="electric">일렉트릭필드 (전기 ×1.3)</option>
+            <option value="psychic">사이코필드 (에스퍼 ×1.3)</option>
+            <option value="grass">그래스필드 (풀 ×1.3)</option>
+            <option value="mist">미스트필드 (드래곤 ×0.5)</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:4px;font-family:var(--mono);">날씨</div>
+          <select id="dmg-weather" onchange="setWeather(this.value)" style="width:100%;font-size:11px;">
+            <option value="">없음</option>
+            <option value="sun">쾌청 (불꽃 ×1.5 / 물 ×0.5)</option>
+            <option value="rain">비바라기 (물 ×1.5 / 불꽃 ×0.5)</option>
+            <option value="sand">모래바람 (바위 특방 ×1.5)</option>
+            <option value="snow">설경 (얼음 방어 ×1.5)</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:4px;font-family:var(--mono);">오라 효과</div>
+          <select id="dmg-aura" onchange="setAura(this.value)" style="width:100%;font-size:11px;">
+            <option value="">없음</option>
+            <option value="fairy">페어리오라 (페어리 ×1.33)</option>
+            <option value="dark">다크오라 (악 ×1.33)</option>
+            <option value="break-fairy">오라브레이크 (페어리 ×0.75)</option>
+            <option value="break-dark">오라브레이크 (악 ×0.75)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ⚡ 특수 효과 (체크박스) -->
+      <div class="calc-label" style="margin-top:14px;margin-bottom:6px;">⚡ 특수 효과</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:4px;font-family:var(--mono);">공격 측</div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;font-size:11px;">
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('atk','crit',this.checked)"> 급소 ×1.5</label>
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('atk','helpingHand',this.checked)"> 도우미 ×1.5</label>
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('atk','battery',this.checked)"> 배터리 (특수 ×1.3)</label>
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('atk','powerSpot',this.checked)"> 파워스폿 ×1.3</label>
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('atk','flowerGift',this.checked)"> 플라워기프트</label>
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('atk','steelyMind',this.checked)"> 강철정신</label>
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('atk','tablets',this.checked)"> 재앙의목간 받음</label>
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('atk','vessel',this.checked)"> 재앙의그릇 받음</label>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:4px;font-family:var(--mono);">방어 측</div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;font-size:11px;">
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('def','friendGuard',this.checked)"> 프렌드가드 ×0.75</label>
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('def','reflect',this.checked)"> 리플렉터 (물리 ×0.5)</label>
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('def','lightScreen',this.checked)"> 빛의장막 (특수 ×0.5)</label>
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('def','auroraVeil',this.checked)"> 오로라베일 ×0.5</label>
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('def','sword',this.checked)"> 재앙의검 받음</label>
+            <label class="fx-check"><input type="checkbox" onchange="toggleFx('def','beads',this.checked)"> 재앙의구슬 받음</label>
+          </div>
+        </div>
       </div>
     </div>
     <div id="dmg-result"></div>
@@ -3075,9 +3155,14 @@ function atkRankLabel(v){const el=document.getElementById('atk-rank-val');if(el)
 function defRankLabel(v){const el=document.getElementById('def-rank-val');if(el){el.textContent=(v>0?'+':'')+v;el.style.color=v<0?'var(--red)':'var(--accent)';}}
 
 const calcState={
-  atk:{ep:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},natAtk:'n',natSpe:'n',item:'없음',selectedMoves:[],megaVariant:null,ability:''},
-  def:{ep:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},natDef:'n',item:'없음',hpEp:0,megaVariant:null,ability:''},
-};
+  atk:{ep:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},natAtk:'n',natSpe:'n',item:'없음',selectedMoves:[],megaVariant:null,ability:'',
+    status:'',
+    fx:{crit:false,helpingHand:false,battery:false,powerSpot:false,flowerGift:false,steelyMind:false,tablets:false,vessel:false}},
+  def:{ep:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},natDef:'n',item:'없음',hpEp:0,megaVariant:null,ability:'',
+    fx:{friendGuard:false,reflect:false,lightScreen:false,auroraVeil:false,sword:false,beads:false}},
+  field:'',
+  aura:'',
+  weather:''};
 
 // 데미지 계산기: 특성 UI 렌더 (wrapper에 드롭다운/입력창 삽입)
 function setCalcAbility(side, val) {
@@ -3126,7 +3211,7 @@ const ITEMS={
 const ITEM_MULT={
   '구애스카프':{spe:1.5},
 };
-const EP_LABELS=['HP','공격','방어','특공','특방','스피드'];
+const EP_LABELS=['HP (H)','공격 (A)','방어 (B)','특공 (C)','특방 (D)','스피드 (S)'];
 const EP_KEYS=['hp','atk','def','spa','spd','spe'];
 
 function buildEPGrid(who){
@@ -3179,10 +3264,19 @@ function setDefNature(stat,val){
   buildEPGrid('def');calcAll();
 }
 
-function buildItemGrid(who){
-  const items=who==='atk'?ITEMS.공격:ITEMS.방어;
+function buildItemGrid(who,searchQ){
+  let items=who==='atk'?ITEMS.공격:ITEMS.방어;
+  // 검색어 필터링 (소문자 무시 부분일치)
+  if(searchQ&&searchQ.trim()){
+    const q=searchQ.trim().toLowerCase();
+    items=items.filter(it=>it.toLowerCase().includes(q));
+    // 선택된 도구는 항상 보이게 (검색에서 빠지더라도)
+    const cur=calcState[who].item;
+    if(cur&&cur!=='없음'&&!items.includes(cur))items=[cur,...items];
+  }
   const grid=document.getElementById(who+'-item-grid');if(!grid)return;
   grid.innerHTML='';
+  if(items.length===0){grid.innerHTML='<div style="color:var(--muted);font-size:11px;padding:8px;text-align:center;grid-column:1/-1;">검색 결과 없음</div>';return;}
   items.forEach(item=>{
     const btn=document.createElement('button');
     btn.className='item-btn'+(calcState[who].item===item?' active':'');
@@ -3195,6 +3289,15 @@ function buildItemGrid(who){
 }
 
 function setItem(who,item){calcState[who].item=item;buildItemGrid(who);calcAll();}
+function setField(v){calcState.field=v||'';calcAll();}
+function setAura(v){calcState.aura=v||'';calcAll();}
+function setWeather(v){calcState.weather=v||'';calcAll();}
+function setStatus(v){calcState.atk.status=v||'';calcAll();}
+function toggleFx(side,key,checked){
+  if(!calcState[side]||!calcState[side].fx)return;
+  calcState[side].fx[key]=!!checked;
+  calcAll();
+}
 
 function buildMovesGrid(){
   renderMoveSlots();
@@ -3395,13 +3498,53 @@ function updateDefInfo(){
   updateMegaBtn('def',pid);updateAbilityUi('def',pid);buildEPGrid('def');buildItemGrid('def');calcAll();
 }
 
+// hits번 이내 KO 확률(%) — 데미지 난수 16단계 (0.85~1.00) 균등분포 기반
+// 명중률은 별개 (난수 N타 정의는 데미지 보정만 고려)
+const _koProbCache=new Map();
+function koProb(hpMax,hpMin,hits){
+  if(hpMin*hits>=100)return 100;
+  if(hpMax*hits<100)return 0;
+  const key=hpMax+'|'+hpMin+'|'+hits;
+  if(_koProbCache.has(key))return _koProbCache.get(key);
+  // 누적 데미지 분포 컨볼루션 — dist[sum]=count
+  let dist=new Map([[0,1]]);
+  const span=hpMax-hpMin;
+  for(let h=0;h<hits;h++){
+    const next=new Map();
+    for(const [sum,count] of dist){
+      for(let r=0;r<16;r++){
+        const dmg=hpMin+r*span/15;
+        const ns=+(sum+dmg).toFixed(3);
+        next.set(ns,(next.get(ns)||0)+count);
+      }
+    }
+    dist=next;
+  }
+  const total=Math.pow(16,hits);
+  let ko=0;
+  for(const [sum,count] of dist){if(sum>=100)ko+=count;}
+  const p=ko/total*100;
+  _koProbCache.set(key,p);
+  return p;
+}
+function fmtProb(p){
+  // 0.1% 단위 표기, 100/0은 표기 없이 처리됨
+  if(p>=99.95)return '99.9%';
+  if(p<0.05)return '<0.1%';
+  return p.toFixed(1)+'%';
+}
 function koText(hpMax,hpMin){
-  if(hpMax>=100)return{text:'확정 1타 💥',cls:'ko1'};
+  // 확정 N타: hpMin*N >= 100 (최소 데미지로도 N번에 KO)
+  // 난수 N타: hpMax*N >= 100 (확률적 — 괄호 안에 N타 발동 확률)
+  if(hpMin>=100)return{text:'확정 1타 💥',cls:'ko1'};
+  if(hpMax>=100)return{text:`난수 1타 (${fmtProb(koProb(hpMax,hpMin,1))})`,cls:'ko1'};
   if(hpMin*2>=100)return{text:'확정 2타',cls:'ko2'};
-  if(hpMax*2>=100)return{text:`난수 2타 (최대 ${hpMax}%)`,cls:'ko2'};
+  if(hpMax*2>=100)return{text:`난수 2타 (${fmtProb(koProb(hpMax,hpMin,2))})`,cls:'ko2'};
   if(hpMin*3>=100)return{text:'확정 3타',cls:'ko3'};
-  if(hpMax*3>=100)return{text:`난수 3타 (최대 ${hpMax}%)`,cls:'ko3'};
-  return{text:`${Math.ceil(100/hpMax)}타`,cls:'ko3'};
+  if(hpMax*3>=100)return{text:`난수 3타 (${fmtProb(koProb(hpMax,hpMin,3))})`,cls:'ko3'};
+  if(hpMin*4>=100)return{text:'확정 4타',cls:'ko3'};
+  if(hpMax*4>=100)return{text:`난수 4타 (${fmtProb(koProb(hpMax,hpMin,4))})`,cls:'ko3'};
+  return{text:`${Math.ceil(100/hpMax)}~${Math.ceil(100/hpMin)}타`,cls:'ko3'};
 }
 
 function calcOneDmg(atkP,defP,moveName,atkRank,defRank){
@@ -3428,6 +3571,35 @@ function calcOneDmg(atkP,defP,moveName,atkRank,defRank){
   const base=Math.floor(Math.floor(22*move.power*Math.round(atkStat*atkMult)/Math.round(defStat*defMult)/50)+2);
   const stab=atkP.type.includes(move.type)?1.5:1;
   let typeEff=1;defP.type.forEach(dt=>{typeEff*=(TYPE_CHART[move.type]?.[dt]??1);});
+  const isPhys=move.cat==='물리';
+  const isSpec=move.cat==='특수';
+  const fxA=calcState.atk.fx||{};
+  const fxD=calcState.def.fx||{};
+  const wx=calcState.weather||'';
+
+  // ── atkStat/defStat 추가 보정 (base 재계산) ──
+  let atkStat2=atkStat;
+  let defStat2=defStat;
+  // 화상: 물리 공격 ×0.5
+  if (calcState.atk.status==='burn'&&isPhys) atkStat2=Math.floor(atkStat2*0.5);
+  // 재앙의목간 (자기 공격 ×0.75) — 물리 영향만
+  if (fxA.tablets&&isPhys) atkStat2=Math.floor(atkStat2*0.75);
+  // 재앙의그릇 (자기 특공 ×0.75)
+  if (fxA.vessel&&isSpec) atkStat2=Math.floor(atkStat2*0.75);
+  // 플라워기프트: 쾌청 시 공격/특공 ×1.5
+  if (fxA.flowerGift&&wx==='sun') atkStat2=Math.floor(atkStat2*1.5);
+  // 재앙의검 (방어 ×0.75)
+  if (fxD.sword&&isPhys) defStat2=Math.floor(defStat2*0.75);
+  // 재앙의구슬 (특방 ×0.75)
+  if (fxD.beads&&isSpec) defStat2=Math.floor(defStat2*0.75);
+  // 모래바람: 바위 타입 방어 시 특방 ×1.5 (방어자가 바위 + 특수 공격일 때)
+  if (wx==='sand'&&isSpec&&defP.type.includes('바위')) defStat2=Math.floor(defStat2*1.5);
+  // 설경: 얼음 타입 방어 시 방어 ×1.5 (방어자가 얼음 + 물리 공격일 때)
+  if (wx==='snow'&&isPhys&&defP.type.includes('얼음')) defStat2=Math.floor(defStat2*1.5);
+
+  // base 데미지 재계산 (atkStat2/defStat2 사용)
+  const base2=Math.floor(Math.floor(22*move.power*Math.round(atkStat2*atkMult)/Math.round(defStat2*defMult)/50)+2);
+
   // 타입강화 도구 (+20% = 1.2배) 반영
   const itemTypeBoost = (() => {
     const itm = calcState.atk.item;
@@ -3436,8 +3608,48 @@ function calcOneDmg(atkP,defP,moveName,atkRank,defRank){
     if (dbItem && dbItem.cat === '타입강화' && dbItem.type === move.type) return 1.2;
     return 1;
   })();
-  const minDmg=Math.round(base*stab*typeEff*itemTypeBoost*0.85);
-  const maxDmg=Math.round(base*stab*typeEff*itemTypeBoost);
+  // 필드 효과
+  const fieldMult = (() => {
+    const f = calcState.field;
+    if (!f) return 1;
+    if (f === 'electric' && move.type === '전기') return 1.3;
+    if (f === 'psychic' && move.type === '에스퍼') return 1.3;
+    if (f === 'grass' && move.type === '풀') return 1.3;
+    if (f === 'mist' && move.type === '드래곤') return 0.5;
+    return 1;
+  })();
+  // 오라 효과
+  const auraMult = (() => {
+    const a = calcState.aura;
+    if (!a) return 1;
+    if (a === 'fairy' && move.type === '페어리') return 1.33;
+    if (a === 'dark' && move.type === '악') return 1.33;
+    if (a === 'break-fairy' && move.type === '페어리') return 0.75;
+    if (a === 'break-dark' && move.type === '악') return 0.75;
+    return 1;
+  })();
+  // 날씨: 데미지 보정 (불꽃/물)
+  const weatherMult = (() => {
+    if (wx==='sun'){if(move.type==='불꽃')return 1.5;if(move.type==='물')return 0.5;}
+    if (wx==='rain'){if(move.type==='물')return 1.5;if(move.type==='불꽃')return 0.5;}
+    return 1;
+  })();
+  // 공격 측 특수 효과
+  const critMult = fxA.crit ? 1.5 : 1;
+  const helpHandMult = fxA.helpingHand ? 1.5 : 1;
+  const batteryMult = (fxA.battery && isSpec) ? 1.3 : 1;
+  const powerSpotMult = fxA.powerSpot ? 1.3 : 1;
+  const steelyMindMult = (fxA.steelyMind && move.type==='강철') ? 1.5 : 1;
+  // 방어 측 특수 효과
+  const friendGuardMult = fxD.friendGuard ? 0.75 : 1;
+  let screenMult = 1;
+  if (fxD.auroraVeil) screenMult = 0.5;
+  else if (isPhys && fxD.reflect) screenMult = 0.5;
+  else if (isSpec && fxD.lightScreen) screenMult = 0.5;
+  const finalMult = stab * typeEff * itemTypeBoost * fieldMult * auraMult * weatherMult * critMult * helpHandMult * batteryMult * powerSpotMult * steelyMindMult * friendGuardMult * screenMult;
+
+  const minDmg=Math.round(base2*finalMult*0.85);
+  const maxDmg=Math.round(base2*finalMult);
   const hpMin=Math.min(999,Math.round(minDmg/defHP*100));
   const hpMax=Math.min(999,Math.round(maxDmg/defHP*100));
   return{moveName,move,minDmg,maxDmg,hpMin,hpMax,stab,typeEff,defHP,atkStat,defStat};
@@ -5401,10 +5613,19 @@ function setDefNature(stat,val){
   buildEPGrid('def');calcAll();
 }
 
-function buildItemGrid(who){
-  const items=who==='atk'?ITEMS.공격:ITEMS.방어;
+function buildItemGrid(who,searchQ){
+  let items=who==='atk'?ITEMS.공격:ITEMS.방어;
+  // 검색어 필터링 (소문자 무시 부분일치)
+  if(searchQ&&searchQ.trim()){
+    const q=searchQ.trim().toLowerCase();
+    items=items.filter(it=>it.toLowerCase().includes(q));
+    // 선택된 도구는 항상 보이게 (검색에서 빠지더라도)
+    const cur=calcState[who].item;
+    if(cur&&cur!=='없음'&&!items.includes(cur))items=[cur,...items];
+  }
   const grid=document.getElementById(who+'-item-grid');if(!grid)return;
   grid.innerHTML='';
+  if(items.length===0){grid.innerHTML='<div style="color:var(--muted);font-size:11px;padding:8px;text-align:center;grid-column:1/-1;">검색 결과 없음</div>';return;}
   items.forEach(item=>{
     const btn=document.createElement('button');
     btn.className='item-btn'+(calcState[who].item===item?' active':'');
@@ -5417,6 +5638,15 @@ function buildItemGrid(who){
 }
 
 function setItem(who,item){calcState[who].item=item;buildItemGrid(who);calcAll();}
+function setField(v){calcState.field=v||'';calcAll();}
+function setAura(v){calcState.aura=v||'';calcAll();}
+function setWeather(v){calcState.weather=v||'';calcAll();}
+function setStatus(v){calcState.atk.status=v||'';calcAll();}
+function toggleFx(side,key,checked){
+  if(!calcState[side]||!calcState[side].fx)return;
+  calcState[side].fx[key]=!!checked;
+  calcAll();
+}
 
 function buildMovesGrid(){
   renderMoveSlots();
