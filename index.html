@@ -246,9 +246,15 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 .calc-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;position:relative;overflow:hidden;}
 /* 데미지 탭 가로 2열 레이아웃 */
 @media (min-width: 900px){
-  #tab-dmg{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;}
+  #tab-dmg{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:12px;align-items:start;}
   #tab-dmg > .calc-section{margin-bottom:0;}
-  #tab-dmg > #dmg-result{grid-column:1 / -1;}
+  /* 좌측 공격 섹션: 1열, 1~2행 차지 (방어+전장효과 합산 높이만큼) */
+  #tab-dmg > .calc-section:nth-of-type(1){grid-column:1;grid-row:1 / span 2;}
+  /* 우측 1행: 방어 섹션 */
+  #tab-dmg > .calc-section:nth-of-type(2){grid-column:2;grid-row:1;}
+  /* 우측 2행: 전장효과 (공격 섹션 옆 빈공간 채움) */
+  #tab-dmg > .calc-section:nth-of-type(3){grid-column:2;grid-row:2;}
+  #tab-dmg > #dmg-result{grid-column:1 / -1;grid-row:3;}
   /* 모바일 친화: 능력 포인트 그리드, 도구 그리드 등이 좁아진 컬럼에 맞게 */
   #tab-dmg .calc-section .ev-grid{grid-template-columns:repeat(3,1fr);}
   #tab-dmg .calc-section select,
@@ -3265,21 +3271,41 @@ function setDefNature(stat,val){
 }
 
 function buildItemGrid(who,searchQ){
-  let items=who==='atk'?ITEMS.공격:ITEMS.방어;
-  // 검색어 필터링 (소문자 무시 부분일치)
-  if(searchQ&&searchQ.trim()){
-    const q=searchQ.trim().toLowerCase();
-    items=items.filter(it=>it.toLowerCase().includes(q));
-    // 선택된 도구는 항상 보이게 (검색에서 빠지더라도)
-    const cur=calcState[who].item;
-    if(cur&&cur!=='없음'&&!items.includes(cur))items=[cur,...items];
-  }
   const grid=document.getElementById(who+'-item-grid');if(!grid)return;
-  grid.innerHTML='';
-  if(items.length===0){grid.innerHTML='<div style="color:var(--muted);font-size:11px;padding:8px;text-align:center;grid-column:1/-1;">검색 결과 없음</div>';return;}
+  const cur=calcState[who].item;
+  const list=who==='atk'?ITEMS.공격:ITEMS.방어;
+
+  // 1. 선택된 도구가 있으면 헤더로 표시 (X 해제 버튼 포함)
+  let headerHtml='';
+  if(cur&&cur!=='없음'){
+    const imgUrl=ITEM_IMAGE_MAP[cur];
+    const imgTag=imgUrl?`<img src="${imgUrl}" style="width:14px;height:14px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px;" onerror="this.style.display='none'">`:'';
+    headerHtml=`<div style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;background:rgba(255,214,0,0.10);border:1px solid rgba(255,214,0,0.4);border-radius:6px;padding:5px 10px;margin-bottom:4px;">
+      <span style="color:var(--accent);font-size:12px;font-weight:600;">${imgTag}선택: ${cur}</span>
+      <button onclick="setItem('${who}','없음')" title="도구 해제" style="background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 6px;line-height:1;border-radius:4px;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--muted)'">✕</button>
+    </div>`;
+  }
+
+  // 2. 검색어 비어있음 → 헤더만 (또는 안내)
+  if(!searchQ||!searchQ.trim()){
+    if(cur&&cur!=='없음'){grid.innerHTML=headerHtml;}
+    else{grid.innerHTML='<div style="color:var(--muted);font-size:11px;padding:10px;text-align:center;grid-column:1/-1;border:1px dashed var(--border);border-radius:6px;">🔍 도구 이름을 검색하세요</div>';}
+    return;
+  }
+
+  // 3. 검색어 있음 → 매칭 결과 (없음 옵션 제외, 선택 도구는 헤더에서 처리)
+  const q=searchQ.trim().toLowerCase();
+  const items=list.filter(it=>it!=='없음'&&it.toLowerCase().includes(q));
+
+  if(items.length===0){
+    grid.innerHTML=headerHtml+'<div style="color:var(--muted);font-size:11px;padding:8px;text-align:center;grid-column:1/-1;">검색 결과 없음</div>';
+    return;
+  }
+
+  grid.innerHTML=headerHtml;
   items.forEach(item=>{
     const btn=document.createElement('button');
-    btn.className='item-btn'+(calcState[who].item===item?' active':'');
+    btn.className='item-btn'+(cur===item?' active':'');
     btn.onclick=function(){setItem(who,item);};
     const imgUrl=ITEM_IMAGE_MAP[item];
     if(imgUrl){const img=document.createElement('img');img.src=imgUrl;img.style.cssText='width:16px;height:16px;object-fit:contain;image-rendering:pixelated;margin-right:3px;vertical-align:middle;';img.onerror=function(){this.style.display='none';};btn.appendChild(img);}
@@ -3288,7 +3314,13 @@ function buildItemGrid(who,searchQ){
   });
 }
 
-function setItem(who,item){calcState[who].item=item;buildItemGrid(who);calcAll();}
+function setItem(who,item){
+  calcState[who].item=item;
+  // 검색 input 비우기 (도구 선택 후 깔끔하게 정리)
+  const si=document.getElementById(who+'-item-search');if(si)si.value='';
+  buildItemGrid(who);
+  calcAll();
+}
 function setField(v){calcState.field=v||'';calcAll();}
 function setAura(v){calcState.aura=v||'';calcAll();}
 function setWeather(v){calcState.weather=v||'';calcAll();}
@@ -5614,21 +5646,41 @@ function setDefNature(stat,val){
 }
 
 function buildItemGrid(who,searchQ){
-  let items=who==='atk'?ITEMS.공격:ITEMS.방어;
-  // 검색어 필터링 (소문자 무시 부분일치)
-  if(searchQ&&searchQ.trim()){
-    const q=searchQ.trim().toLowerCase();
-    items=items.filter(it=>it.toLowerCase().includes(q));
-    // 선택된 도구는 항상 보이게 (검색에서 빠지더라도)
-    const cur=calcState[who].item;
-    if(cur&&cur!=='없음'&&!items.includes(cur))items=[cur,...items];
-  }
   const grid=document.getElementById(who+'-item-grid');if(!grid)return;
-  grid.innerHTML='';
-  if(items.length===0){grid.innerHTML='<div style="color:var(--muted);font-size:11px;padding:8px;text-align:center;grid-column:1/-1;">검색 결과 없음</div>';return;}
+  const cur=calcState[who].item;
+  const list=who==='atk'?ITEMS.공격:ITEMS.방어;
+
+  // 1. 선택된 도구가 있으면 헤더로 표시 (X 해제 버튼 포함)
+  let headerHtml='';
+  if(cur&&cur!=='없음'){
+    const imgUrl=ITEM_IMAGE_MAP[cur];
+    const imgTag=imgUrl?`<img src="${imgUrl}" style="width:14px;height:14px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px;" onerror="this.style.display='none'">`:'';
+    headerHtml=`<div style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;background:rgba(255,214,0,0.10);border:1px solid rgba(255,214,0,0.4);border-radius:6px;padding:5px 10px;margin-bottom:4px;">
+      <span style="color:var(--accent);font-size:12px;font-weight:600;">${imgTag}선택: ${cur}</span>
+      <button onclick="setItem('${who}','없음')" title="도구 해제" style="background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 6px;line-height:1;border-radius:4px;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--muted)'">✕</button>
+    </div>`;
+  }
+
+  // 2. 검색어 비어있음 → 헤더만 (또는 안내)
+  if(!searchQ||!searchQ.trim()){
+    if(cur&&cur!=='없음'){grid.innerHTML=headerHtml;}
+    else{grid.innerHTML='<div style="color:var(--muted);font-size:11px;padding:10px;text-align:center;grid-column:1/-1;border:1px dashed var(--border);border-radius:6px;">🔍 도구 이름을 검색하세요</div>';}
+    return;
+  }
+
+  // 3. 검색어 있음 → 매칭 결과 (없음 옵션 제외, 선택 도구는 헤더에서 처리)
+  const q=searchQ.trim().toLowerCase();
+  const items=list.filter(it=>it!=='없음'&&it.toLowerCase().includes(q));
+
+  if(items.length===0){
+    grid.innerHTML=headerHtml+'<div style="color:var(--muted);font-size:11px;padding:8px;text-align:center;grid-column:1/-1;">검색 결과 없음</div>';
+    return;
+  }
+
+  grid.innerHTML=headerHtml;
   items.forEach(item=>{
     const btn=document.createElement('button');
-    btn.className='item-btn'+(calcState[who].item===item?' active':'');
+    btn.className='item-btn'+(cur===item?' active':'');
     btn.onclick=function(){setItem(who,item);};
     const imgUrl=ITEM_IMAGE_MAP[item];
     if(imgUrl){const img=document.createElement('img');img.src=imgUrl;img.style.cssText='width:16px;height:16px;object-fit:contain;image-rendering:pixelated;margin-right:3px;vertical-align:middle;';img.onerror=function(){this.style.display='none';};btn.appendChild(img);}
@@ -5637,7 +5689,13 @@ function buildItemGrid(who,searchQ){
   });
 }
 
-function setItem(who,item){calcState[who].item=item;buildItemGrid(who);calcAll();}
+function setItem(who,item){
+  calcState[who].item=item;
+  // 검색 input 비우기 (도구 선택 후 깔끔하게 정리)
+  const si=document.getElementById(who+'-item-search');if(si)si.value='';
+  buildItemGrid(who);
+  calcAll();
+}
 function setField(v){calcState.field=v||'';calcAll();}
 function setAura(v){calcState.aura=v||'';calcAll();}
 function setWeather(v){calcState.weather=v||'';calcAll();}
