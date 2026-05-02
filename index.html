@@ -2,10 +2,36 @@
 <html lang="ko" data-theme="dark">
 <head>
 <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://pkmnchamps.github.io https://raw.githubusercontent.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'unsafe-inline'; connect-src 'self' https://rotomuwiki-api.kljjgu02.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>로토무위키 — 포켓몬 챔피언스 대전 도구</title>
+  
+  <!-- Open Graph (카카오톡/디스코드/페이스북 공유 미리보기) -->
+  <meta property="og:title" content="로토무위키 — 포켓몬 챔피언스 대전 도구">
+  <meta property="og:description" content="포켓몬 272마리 · 기술 905개 · 메가진화 62종 검증 데이터. 데미지 계산기, 팀 빌더, 승률 분석 등 챔피언스 대전 필수 도구 모음.">
+  <meta property="og:image" content="https://ahri032.github.io/rotomuwiki/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://ahri032.github.io/rotomuwiki/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="로토무위키">
+  <meta property="og:locale" content="ko_KR">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="로토무위키 — 포켓몬 챔피언스 대전 도구">
+  <meta name="twitter:description" content="포켓몬 272마리 · 기술 905개 · 메가진화 62종 검증 데이터.">
+  <meta name="twitter:image" content="https://ahri032.github.io/rotomuwiki/og.png">
+  
+  <!-- 검색엔진용 description (이미 있다면 중복 방지) -->
 <meta name="description" content="포켓몬 챔피언스 대전 종합 도구 — 포켓덱스, 팀 빌더, 데미지 계산, 샘플 빌드, 승률 분석">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://pkmnchamps.github.io" crossorigin>
+  <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+  <link rel="dns-prefetch" href="//pkmnchamps.github.io">
+  <link rel="dns-prefetch" href="//raw.githubusercontent.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Jua&family=Black+Han+Sans&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* ===== 다크 모드 (기본) ===== */
@@ -246,7 +272,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 .calc-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;position:relative;overflow:hidden;}
 /* 데미지 탭 가로 2열 레이아웃 */
 @media (min-width: 900px){
-  #tab-dmg{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:12px;align-items:start;}
+  #tab-dmg.active{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:12px;align-items:start;}
   #tab-dmg > .calc-section{margin-bottom:0;}
   /* 좌측 공격 섹션: 1열, 1~2행 차지 (방어+전장효과 합산 높이만큼) */
   #tab-dmg > .calc-section:nth-of-type(1){grid-column:1;grid-row:1 / span 2;}
@@ -542,6 +568,36 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 .apikey-navbar-btn{display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11px;font-weight:600;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-family:var(--mono);transition:all .2s;flex-shrink:0;}
 .apikey-navbar-btn:hover{color:var(--accent);border-color:var(--accent);}
 .apikey-navbar-btn.active{color:var(--green);border-color:rgba(61,214,140,.4);}
+
+/* M4: 모바일 보정 (~600px) */
+@media (max-width: 600px) {
+  .navbar { padding: 8px 12px !important; }
+  .navbar-nav { gap: 2px !important; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .navbar-nav::-webkit-scrollbar { display: none; }
+  .nav-btn { padding: 6px 10px !important; font-size: 12px !important; flex-shrink: 0; }
+  .nav-icon { font-size: 13px !important; }
+  .navbar-brand-text { display: none; }
+  .reg-badge { display: none; }
+  .apikey-modal { padding: 16px !important; max-width: 92vw !important; }
+  .calc-section { padding: 8px !important; }
+  .ev-grid { grid-template-columns: repeat(2,1fr) !important; }
+  .item-grid { grid-template-columns: 1fr !important; }
+  .poke-row { padding: 6px 10px !important; gap: 8px !important; font-size: 12px; }
+  .poke-name { font-size: 13px !important; }
+  .poke-num { font-size: 11px !important; }
+  .poke-sprite { width: 36px !important; height: 36px !important; }
+  /* 데미지 탭 결과 작은 화면 */
+  #dmg-result { font-size: 12px; }
+  /* 가로 스크롤 방지 */
+  body { overflow-x: hidden; }
+}
+
+/* M4: 작은 모바일 (~400px) */
+@media (max-width: 400px) {
+  .nav-btn span:not(.nav-icon) { display: none; }
+  .nav-btn { padding: 6px 8px !important; }
+}
+
 </style>
   <!-- PWA -->
   <link rel="manifest" href="/manifest.json">
@@ -555,9 +611,9 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 <body>
 
 <!-- API 키 모달 -->
-<div class="apikey-overlay" id="apikey-overlay" onclick="if(event.target===this)closeApiKeyModal()">
+<div class="apikey-overlay" id="apikey-overlay" onclick="if(event.target===this)closeApiKeyModal()" role="dialog" aria-modal="true" aria-labelledby="apikey-modal-title">
   <div class="apikey-modal">
-    <div class="apikey-modal-title">🔑 CLAUDE API KEY</div>
+    <div class="apikey-modal-title" id="apikey-modal-title">🔑 CLAUDE API KEY</div>
     <p class="apikey-modal-desc">
       Claude API 키를 입력하면 더 상세한 AI 운용 가이드를 받을 수 있어요.<br>
       키는 이 기기의 브라우저에만 저장되며 외부로 전송되지 않습니다.<br>
@@ -567,9 +623,20 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
       <input class="apikey-input" id="apikey-input" type="password" placeholder="sk-ant-..." autocomplete="off" />
       <button class="apikey-toggle" onclick="toggleApiKeyVisibility()">👁</button>
     </div>
+    <div style="display:flex;align-items:center;gap:8px;margin:8px 0;font-size:12px;color:var(--muted);">
+      <input type="checkbox" id="apikey-session-only" style="cursor:pointer;">
+      <label for="apikey-session-only" style="cursor:pointer;flex:1;">이 브라우저에 저장하지 않고 <strong>이번 세션에만</strong> 사용 (탭 닫으면 사라짐)</label>
+    </div>
+    <div style="font-size:11px;color:var(--muted);background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.3);border-radius:6px;padding:8px 10px;margin-bottom:10px;line-height:1.5;">
+      <strong style="color:#fb923c;">⚠ 보안 안내:</strong><br>
+      • 저장 시 브라우저의 localStorage에 평문으로 보관됩니다<br>
+      • 같은 도메인의 XSS 공격에 노출될 수 있습니다<br>
+      • 공용 PC에선 <strong>세션 모드 권장</strong>
+    </div>
     <div id="apikey-status" class="apikey-status"></div>
     <div class="apikey-modal-btns">
       <button class="apikey-save-btn" onclick="saveApiKey()">저장</button>
+      <button class="apikey-cancel-btn" onclick="clearApiKey()" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);color:#ef4444;">삭제</button>
       <button class="apikey-cancel-btn" onclick="closeApiKeyModal()">취소</button>
     </div>
   </div>
@@ -582,17 +649,17 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
     <span class="navbar-brand-text">로토무위키</span>
   </a>
   <div class="navbar-nav">
-    <button class="nav-btn active" id="nav-dex" onclick="switchTab('dex',this)"><span class="nav-icon">📖</span>포켓덱스</button>
-    <button class="nav-btn" id="nav-team" onclick="switchTab('team',this)"><span class="nav-icon">⚔️</span>팀 빌더</button>
-    <button class="nav-btn" id="nav-dmg" onclick="switchTab('dmg',this)"><span class="nav-icon">🔢</span>데미지</button>
-    <button class="nav-btn" id="nav-items" onclick="switchTab('items',this)"><span class="nav-icon">🎒</span>도구</button>
-    <button class="nav-btn" id="nav-samples" onclick="switchTab('samples',this)"><span class="nav-icon">🃏</span>샘플 빌드</button>
-    <button class="nav-btn" id="nav-stats" onclick="switchTab('stats',this)"><span class="nav-icon">📊</span>배틀 통계</button>
-    <button class="nav-btn" id="nav-winrate" onclick="switchTab('winrate',this)"><span class="nav-icon">🏆</span>승률 분석</button>
+    <button class="nav-btn active" id="nav-dex" onclick="switchTab('dex',this)" aria-label="포켓덱스"><span class="nav-icon">📖</span>포켓덱스</button>
+    <button class="nav-btn" id="nav-team" onclick="switchTab('team',this)" aria-label="팀 빌더"><span class="nav-icon">⚔️</span>팀 빌더</button>
+    <button class="nav-btn" id="nav-dmg" onclick="switchTab('dmg',this)" aria-label="데미지 계산기"><span class="nav-icon">🔢</span>데미지</button>
+    <button class="nav-btn" id="nav-items" onclick="switchTab('items',this)" aria-label="도구 도감"><span class="nav-icon">🎒</span>도구</button>
+    <button class="nav-btn" id="nav-samples" onclick="switchTab('samples',this)" aria-label="샘플 빌드"><span class="nav-icon">🃏</span>샘플 빌드</button>
+    <button class="nav-btn" id="nav-stats" onclick="switchTab('stats',this)" aria-label="배틀 통계"><span class="nav-icon">📊</span>배틀 통계</button>
+    <button class="nav-btn" id="nav-winrate" onclick="switchTab('winrate',this)" aria-label="승률 분석"><span class="nav-icon">🏆</span>승률 분석</button>
   </div>
   <div class="navbar-actions">
-    <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="테마 전환">☀️</button>
-    <button class="apikey-navbar-btn" id="apikey-navbar-btn" onclick="openApiKeyModal()" title="Claude API 키 설정">🔑 PRO</button>
+    <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="테마 전환" aria-label="테마 전환">☀️</button>
+    <button class="apikey-navbar-btn" id="apikey-navbar-btn" onclick="openApiKeyModal()" title="Claude API 키 설정" aria-label="API 키 설정">🔑 PRO</button>
 <button class="reg-badge">⚡ REG M-A</button>
   </div>
 </nav>
@@ -655,7 +722,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
           <input type="hidden" id="wr-my-poke" value="">
           <div id="wr-my-mega" style="margin-bottom:8px;display:none;"></div>
           <div id="wr-my-info" style="display:flex;gap:10px;align-items:center;min-height:60px;">
-            <img id="wr-my-sprite" src="" style="width:60px;height:60px;object-fit:contain;image-rendering:pixelated;display:none;">
+            <img id="wr-my-sprite" src="" alt="내 포켓몬" style="width:60px;height:60px;object-fit:contain;image-rendering:pixelated;display:none;" loading="lazy" decoding="async">
             <div id="wr-my-stats" style="font-size:11px;font-family:var(--mono);color:var(--muted2);line-height:1.8;"></div>
           </div>
           <!-- 상세 설정 -->
@@ -719,7 +786,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
           <input type="hidden" id="wr-op-poke" value="">
           <div id="wr-op-mega" style="margin-bottom:8px;display:none;"></div>
           <div id="wr-op-info" style="display:flex;gap:10px;align-items:center;min-height:60px;">
-            <img id="wr-op-sprite" src="" style="width:60px;height:60px;object-fit:contain;image-rendering:pixelated;display:none;">
+            <img id="wr-op-sprite" src="" alt="상대 포켓몬" style="width:60px;height:60px;object-fit:contain;image-rendering:pixelated;display:none;" loading="lazy" decoding="async">
             <div id="wr-op-stats" style="font-size:11px;font-family:var(--mono);color:var(--muted2);line-height:1.8;"></div>
           </div>
           <!-- 상세 설정 -->
@@ -864,7 +931,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
     <div class="calc-section">
       <div class="calc-label">⚡ 공격 포켓몬</div>
       <div class="calc-pokemon-header">
-        <img id="atk-sprite" src="" alt="" onerror="this.style.display='none'" style="width:96px;height:96px;image-rendering:pixelated;filter:drop-shadow(0 3px 10px rgba(0,0,0,.6));display:none;">
+        <img id="atk-sprite" src="" alt="공격 측 포켓몬" onerror="this.style.display='none'" style="width:96px;height:96px;image-rendering:pixelated;filter:drop-shadow(0 3px 10px rgba(0,0,0,.6));display:none;" loading="lazy" decoding="async">
         <div>
           <div class="calc-pokemon-name" id="atk-name-label">—</div>
           <div class="calc-pokemon-sub" id="atk-type-label"></div>
@@ -945,7 +1012,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
     <div class="calc-section">
       <div class="calc-label">🛡 방어 포켓몬</div>
       <div class="calc-pokemon-header">
-        <img id="def-sprite" src="" alt="" onerror="this.style.display='none'" style="width:96px;height:96px;image-rendering:pixelated;filter:drop-shadow(0 3px 10px rgba(0,0,0,.6));display:none;">
+        <img id="def-sprite" src="" alt="방어 측 포켓몬" onerror="this.style.display='none'" style="width:96px;height:96px;image-rendering:pixelated;filter:drop-shadow(0 3px 10px rgba(0,0,0,.6));display:none;" loading="lazy" decoding="async">
         <div>
           <div class="calc-pokemon-name" id="def-name-label">—</div>
           <div class="calc-pokemon-sub" id="def-type-label"></div>
@@ -1059,7 +1126,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
       <button class="item-cat-btn" onclick="filterItemCat('타입강화',this)">타입강화</button>
       <button class="item-cat-btn" onclick="filterItemCat('타입방어',this)">타입방어</button>
       <button class="item-cat-btn" onclick="filterItemCat('메가돌',this)">메가돌</button>
-      <button class="item-cat-btn" onclick="filterItemCat('중족특화',this)">중족특화</button>
+      <button class="item-cat-btn" onclick="filterItemCat('종족특화',this)">종족특화</button>
     </div>
     <div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;text-align:right;" id="item-count-label"></div>
     <div id="items-list" style="margin-top:8px;"></div>
@@ -1088,6 +1155,16 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 </div>
 
 <script>
+// H1: 이미지 로드 실패 시 통일 fallback (전역 핸들러)
+document.addEventListener('error', function(e) {
+  if (e.target.tagName === 'IMG' && !e.target.dataset.fallbackTried) {
+    e.target.dataset.fallbackTried = '1';
+    e.target.style.opacity = '0.3';
+    e.target.style.outline = '1px dashed var(--border, #555)';
+    if (!e.target.alt || e.target.alt === '') e.target.alt = '[이미지 로드 실패]';
+  }
+}, true);
+
 const MOVE_DATA = {
   "1000만볼트":{"power":195,"type":"전기","cat":"특수","acc":null,"pp":1},
   "10만마력":{"power":95,"type":"땅","cat":"물리","acc":95,"pp":12},
@@ -2041,7 +2118,7 @@ const TYPE_EN_MAP = {
 function typeBadge(t){
   const c=TYPE_COLORS[t]||{bg:'#88888822',text:'#888',border:'#88888855'};
   const en=TYPE_EN_MAP[t];
-  const img=en?`<img src="https://pkmnchamps.github.io/images/icons/types/${en}.png" style="height:18px;vertical-align:middle;margin-right:3px;" onerror="this.style.display='none'">`:'';
+  const img=en?`<img src="https://pkmnchamps.github.io/images/icons/types/${en}.png" alt="${t} 타입" style="height:18px;vertical-align:middle;margin-right:3px;" onerror="this.style.display='none'" loading="lazy" decoding="async">`:'';
   return `<span class="badge" style="background:${c.bg};color:${c.text};border:1px solid ${c.border};display:inline-flex;align-items:center;padding:3px 8px;">${img}${t}</span>`;
 }
 
@@ -2052,9 +2129,11 @@ function typeBadge(t){
 // 기본: POKEMON[id] 형태. 리전폼/메가는 baseId + formType + formKey
 // DATA_VERSION과 함께 관리. 모든 legacy DB는 이 트리에서 자동 생성됨.
 
-const DATA_VERSION = '2026-04-29';
+const DATA_VERSION = '2026-04-29-bugfix2';
 
 const POKEMON = {
+  10129:{name:'켄타로스 (팔데아 화염)',type:['격투','불꽃'],gen:9,stats:{hp:75,atk:110,def:105,spa:30,spd:70,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/tauros-paldea-blaze-breed.png',abilities:['위협','되새김질','분노의경혈'],moves:[],baseId:128,formType:'regional',formKey:'paldea-blaze'},
+  10130:{name:'켄타로스 (팔데아 물결)',type:['격투','물'],gen:9,stats:{hp:75,atk:110,def:105,spa:30,spd:70,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/tauros-paldea-aqua-breed.png',abilities:['위협','되새김질','분노의경혈'],moves:[],baseId:128,formType:'regional',formKey:'paldea-aqua'},
   30023:{name:'메가독침붕',type:['벌레','독'],gen:1,stats:{hp:65,atk:150,def:40,spa:15,spd:80,spe:145},abilities:['적응력'],moves:[],baseId:15,formType:'mega',formKey:'독침붕나이트',triggerItem:'독침붕나이트'},
   30024:{name:'메가피죤투',type:['노말','비행'],gen:1,stats:{hp:83,atk:80,def:80,spa:135,spd:80,spe:121},abilities:['노가드'],moves:[],baseId:18,formType:'mega',formKey:'피죤투나이트',triggerItem:'피죤투나이트'},
   30025:{name:'메가픽시',type:['페어리','비행'],gen:1,stats:{hp:95,atk:80,def:93,spa:135,spd:110,spe:70},abilities:['매직미러'],moves:[],baseId:36,formType:'mega',formKey:'픽시나이트',triggerItem:'픽시나이트'},
@@ -2116,7 +2195,7 @@ const POKEMON = {
   115:{name:'캥카',type:['노말'],gen:1,stats:{hp:105,atk:95,def:80,spa:40,spd:80,spe:90},abilities:['일찍기상','배짱','정신력'],moves:['이판사판태클','불꽃펀치','번개펀치','칼춤','신속','지진','스톤에지','아이언테일','브레이브버드'],formIds:[30006]},
   121:{name:'아쿠스타',type:['물','에스퍼'],gen:1,stats:{hp:60,atk:75,def:85,spa:100,spd:85,spe:115},abilities:['발광','자연회복','애널라이즈'],moves:['10만볼트','냉동빔','기합구슬','파도타기','번개','냉동빔','하이드로펌프','전자포'],formIds:[30029]},
   127:{name:'쁘사이저',type:['벌레'],gen:1,stats:{hp:65,atk:125,def:100,spa:55,spd:70,spe:85},abilities:['괴력집게','틀깨기','자기과신'],moves:['시저크로스','칼춤','스톤에지','불릿펀치','브레이크크루','아이언헤드','신속'],formIds:[30030]},
-  128:{name:'켄타로스',type:['노말'],gen:1,stats:{hp:75,atk:100,def:95,spa:40,spd:70,spe:110},abilities:['위협','분노의경혈','우격다짐'],moves:['지진','스톤에지','불꽃엄니','얼음엄니','번개엄니','브레이크크루','신속','파괴광선'],formIds:[10128]},
+  128:{name:'켄타로스',type:['노말'],gen:1,stats:{hp:75,atk:100,def:95,spa:40,spd:70,spe:110},abilities:['위협','분노의경혈','우격다짐'],moves:['지진','스톤에지','불꽃엄니','얼음엄니','번개엄니','브레이크크루','신속','파괴광선'],formIds:[10128,10129,10130]},
   130:{name:'갸라도스',type:['물','비행'],gen:1,stats:{hp:95,atk:125,def:79,spa:60,spd:100,spe:81},abilities:['위협','자기과신'],moves:['폭포오르기','용의춤','아이언헤드','얼음엄니','깨물어부수기','지진','스톤에지','아쿠아테일','번개'],formIds:[30005]},
   132:{name:'메타몽',type:['노말'],gen:1,stats:{hp:48,atk:48,def:48,spa:48,spd:48,spe:48},abilities:['유연','괴짜'],moves:['변신']},
   134:{name:'샤미드',type:['물'],gen:1,stats:{hp:130,atk:65,def:60,spa:110,spd:95,spe:65},abilities:['저수','촉촉바디'],moves:['파도타기','냉동빔','기합구슬','물의파동','열탕','냉동빔','눈보라','하이드로펌프','냉동펀치']},
@@ -2283,25 +2362,25 @@ const POKEMON = {
   1013:{name:'그우린차',type:['풀','고스트'],gen:9,stats:{hp:71,atk:60,def:106,spa:121,spd:80,spe:70},abilities:['대접','내열'],moves:['솔라블레이드','에너지볼','독찌르기','기합구슬','달의불빛','유턴','리프스톰']},
   1018:{name:'브리두라스',type:['강철','드래곤'],gen:9,stats:{hp:90,atk:105,def:130,spa:125,spd:65,spe:85},abilities:['지구력','옹골참','굳건한신념'],moves:['용의파동','용성군','러스터캐논','일렉트로빔','메테오빔','철제광선','파동탄','드래곤크루','아이언헤드','바디프레스','하드프레스','메탈버스트','스톤에지','역린','스텔스록','칼춤','철벽','방어']},
   1019:{name:'과미드라',type:['풀','드래곤'],gen:9,stats:{hp:106,atk:80,def:110,spa:120,spd:80,spe:44},abilities:['감미로운꿀','재생력','점착'],moves:['용성군','리프스톰','솔라빔','역린','파괴광선','기가임팩트','이판사판태클','하이드로펌프','성장','HP회복','리플렉터','잠자기','껍질에숨기']},
-  10008:{name:'히트로토무',type:['전기','불꽃'],gen:4,stats:{hp:50,atk:65,def:107,spa:105,spd:107,spe:86},abilities:['부유'],moves:['오버히트','10만볼트','볼트체인지','도깨비불','트릭','방어','아픔나누기','대타출동','섀도볼'],baseId:479,formType:'appliance',formKey:'heat'},
-  10009:{name:'워시로토무',type:['전기','물'],gen:4,stats:{hp:50,atk:65,def:107,spa:105,spd:107,spe:86},abilities:['부유'],moves:['하이드로펌프','10만볼트','볼트체인지','도깨비불','트릭','방어','아픔나누기','대타출동','섀도볼'],baseId:479,formType:'appliance',formKey:'wash',spriteAliasId:479},
-  10010:{name:'프로스트로토무',type:['전기','얼음'],gen:4,stats:{hp:50,atk:65,def:107,spa:105,spd:107,spe:86},abilities:['부유'],moves:['눈보라','10만볼트','볼트체인지','도깨비불','트릭','방어','아픔나누기','대타출동','섀도볼'],baseId:479,formType:'appliance',formKey:'frost'},
-  10011:{name:'스핀로토무',type:['전기','비행'],gen:4,stats:{hp:50,atk:65,def:107,spa:105,spd:107,spe:86},abilities:['부유'],moves:['에어슬래시','10만볼트','볼트체인지','도깨비불','트릭','방어','아픔나누기','대타출동','섀도볼'],baseId:479,formType:'appliance',formKey:'fan'},
-  10012:{name:'커트로토무',type:['전기','풀'],gen:4,stats:{hp:50,atk:65,def:107,spa:105,spd:107,spe:86},abilities:['부유'],moves:['리프스톰','10만볼트','볼트체인지','도깨비불','트릭','방어','아픔나누기','대타출동','섀도볼'],baseId:479,formType:'appliance',formKey:'mow'},
-  10026:{name:'라이츄(알로라)',type:['전기','에스퍼'],gen:7,stats:{hp:60,atk:85,def:50,spa:95,spd:85,spe:110},abilities:[],moves:['볼트체인지','사이코쇼크','풀묶기','10만볼트','전기자석파','파동탄','마하펀치','방어'],baseId:26,formType:'regional',formKey:'alola',sprite:'https://pkmnchamps.github.io/images/sprites/forms/raichu-alola.png'},
-  10038:{name:'나인테일(알로라)',type:['얼음','페어리'],gen:7,stats:{hp:73,atk:67,def:75,spa:81,spd:100,spe:109},abilities:[],moves:['눈보라','냉동빔','달의불빛','오로라베일','흰안개','치근거리기','매혹의보이스','얼다바람'],baseId:38,formType:'regional',formKey:'alola',sprite:'https://pkmnchamps.github.io/images/sprites/forms/ninetales-alola.png'},
-  10059:{name:'윈디(히스이)',type:['불꽃','바위'],gen:1,stats:{hp:95,atk:115,def:80,spa:95,spd:80,spe:90},abilities:[],moves:['플레어드라이브','스톤샤워','신속','그로우펀치','인파이트','깜짝베기','성스러운불꽃','스톤에지','암석봉인'],baseId:59,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/arcanine-hisui.png'},
-  10080:{name:'야도란(가라르)',type:['에스퍼','악'],gen:8,stats:{hp:95,atk:100,def:95,spa:100,spd:70,spe:30},abilities:[],moves:['나쁜음모','사이코쇼크','섀도볼','냉동빔','기합구슬','트릭룸','하품','앵콜'],baseId:80,formType:'regional',formKey:'galar',sprite:'https://pkmnchamps.github.io/images/sprites/forms/slowbro-galar.png'},
-  10128:{name:'켄타로스(팔데아)',type:['격투','불꽃'],gen:9,stats:{hp:75,atk:115,def:70,spa:40,spd:70,spe:110},abilities:[],moves:['플레어드라이브','인파이트','스톤에지','지진','불꽃엄니','신속','도발','방어'],baseId:128,formType:'regional',formKey:'paldea'},
-  10157:{name:'블레이범(히스이)',type:['불꽃','고스트'],gen:8,stats:{hp:75,atk:95,def:55,spa:98,spd:65,spe:83},abilities:[],moves:['분화','섀도볼','오버히트','사이코키네시스','에너지볼','도깨비불','도발','방어'],baseId:157,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/typhlosion-hisui.png'},
-  10199:{name:'야도킹(가라르)',type:['에스퍼','악'],gen:8,stats:{hp:95,atk:65,def:80,spa:110,spd:110,spe:30},abilities:[],moves:['나쁜음모','사이코쇼크','섀도볼','냉동빔','기합구슬','트릭룸','하품','앵콜'],baseId:199,formType:'regional',formKey:'galar',sprite:'https://pkmnchamps.github.io/images/sprites/forms/slowking-galar.png'},
-  10503:{name:'대검귀(히스이)',type:['강철','불꽃'],gen:8,stats:{hp:73,atk:117,def:65,spa:65,spd:80,spe:90},abilities:[],moves:['성스러운칼','플레어드라이브','인파이트','칼춤','전광석화','불꽃엄니','방어','도발'],baseId:503,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/samurott-hisui.png'},
-  10571:{name:'조로아크(히스이)',type:['노말','고스트'],gen:8,stats:{hp:55,atk:100,def:60,spa:125,spd:60,spe:110},abilities:[],moves:['하이퍼보이스','섀도볼','나쁜음모','냉동빔','10만볼트','도깨비불','방어','도발'],baseId:571,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/zoroark-hisui.png'},
-  10618:{name:'메더(가라르)',type:['땅','강철'],gen:5,stats:{hp:109,atk:81,def:99,spa:66,spd:84,spe:32},abilities:[],moves:['뇌격','스텔스록','배북','지진','자이로볼','맹독','하품','철벽'],baseId:618,formType:'regional',formKey:'galar',sprite:'https://pkmnchamps.github.io/images/sprites/forms/stunfisk-galar.png'},
-  10706:{name:'미끄래곤(히스이)',type:['강철','드래곤'],gen:6,stats:{hp:80,atk:100,def:100,spa:110,spd:150,spe:60},abilities:[],moves:['용의파동','파동탄','러스터캐논','기합구슬','파워젬','드래곤테일','탁쳐서떨구기','방어'],baseId:706,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/goodra-hisui.png'},
-  10713:{name:'크레베이스(히스이)',type:['얼음','바위'],gen:6,stats:{hp:95,atk:127,def:184,spa:34,spd:36,spe:38},abilities:[],moves:['아이스스피너','눈사태','깨물어부수기','락블레스트','바디프레스','철벽','HP회복','얼음엄니'],baseId:713,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/avalugg-hisui.png'},
-  10724:{name:'모크나이퍼(히스이)',type:['풀','강철'],gen:8,stats:{hp:72,atk:120,def:75,spa:50,spd:75,spe:60},abilities:[],moves:['잎날가르기','아이언테일','칼춤','에너지볼','스텔스록','씨뿌리기','방어','도발'],baseId:724,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/decidueye-hisui.png'},
-  10745:{name:'루가루암(황혼)',type:['바위'],gen:7,stats:{hp:75,atk:117,def:65,spa:55,spd:65,spe:110},abilities:['단단한발톱'],moves:['액셀록','스톤에지','깨물어부수기','인파이트','칼춤','기습','불꽃엄니','사이코팽','아이언헤드'],baseId:745,formType:'form',formKey:'dusk',sprite:'https://pkmnchamps.github.io/images/sprites/forms/lycanroc-dusk.png'},
+  10008:{name:'로토무 (히트)',type:['전기','불꽃'],gen:4,stats:{hp:50,atk:65,def:107,spa:105,spd:107,spe:86},sprite:'https://pkmnchamps.github.io/images/sprites/forms/rotom-heat.png',abilities:['부유'],moves:['오버히트','10만볼트','볼트체인지','도깨비불','트릭','방어','아픔나누기','대타출동','섀도볼'],baseId:479,formType:'appliance',formKey:'heat'},
+  10009:{name:'로토무 (워시)',type:['전기','물'],gen:4,stats:{hp:50,atk:65,def:107,spa:105,spd:107,spe:86},sprite:'https://pkmnchamps.github.io/images/sprites/forms/rotom-wash.png',abilities:['부유'],moves:['하이드로펌프','10만볼트','볼트체인지','도깨비불','트릭','방어','아픔나누기','대타출동','섀도볼'],baseId:479,formType:'appliance',formKey:'wash',spriteAliasId:479},
+  10010:{name:'로토무 (프로스트)',type:['전기','얼음'],gen:4,stats:{hp:50,atk:65,def:107,spa:105,spd:107,spe:86},sprite:'https://pkmnchamps.github.io/images/sprites/forms/rotom-frost.png',abilities:['부유'],moves:['눈보라','10만볼트','볼트체인지','도깨비불','트릭','방어','아픔나누기','대타출동','섀도볼'],baseId:479,formType:'appliance',formKey:'frost'},
+  10011:{name:'로토무 (팬)',type:['전기','비행'],gen:4,stats:{hp:50,atk:65,def:107,spa:105,spd:107,spe:86},sprite:'https://pkmnchamps.github.io/images/sprites/forms/rotom-fan.png',abilities:['부유'],moves:['에어슬래시','10만볼트','볼트체인지','도깨비불','트릭','방어','아픔나누기','대타출동','섀도볼'],baseId:479,formType:'appliance',formKey:'fan'},
+  10012:{name:'로토무 (컷)',type:['전기','풀'],gen:4,stats:{hp:50,atk:65,def:107,spa:105,spd:107,spe:86},sprite:'https://pkmnchamps.github.io/images/sprites/forms/rotom-mow.png',abilities:['부유'],moves:['리프스톰','10만볼트','볼트체인지','도깨비불','트릭','방어','아픔나누기','대타출동','섀도볼'],baseId:479,formType:'appliance',formKey:'mow'},
+  10026:{name:'라이츄 (알로라)',type:['전기','에스퍼'],gen:7,stats:{hp:60,atk:85,def:50,spa:95,spd:85,spe:110},abilities:['서핑테일'],moves:['볼트체인지','사이코쇼크','풀묶기','10만볼트','전기자석파','파동탄','마하펀치','방어'],baseId:26,formType:'regional',formKey:'alola',sprite:'https://pkmnchamps.github.io/images/sprites/forms/raichu-alola.png'},
+  10038:{name:'나인테일 (알로라)',type:['얼음','페어리'],gen:7,stats:{hp:73,atk:67,def:75,spa:81,spd:100,spe:109},abilities:['눈퍼뜨리기','눈숨기'],moves:['눈보라','냉동빔','달의불빛','오로라베일','흰안개','치근거리기','매혹의보이스','얼다바람'],baseId:38,formType:'regional',formKey:'alola',sprite:'https://pkmnchamps.github.io/images/sprites/forms/ninetales-alola.png'},
+  10059:{name:'윈디 (히스이)',type:['불꽃','바위'],gen:1,stats:{hp:95,atk:115,def:80,spa:95,spd:80,spe:90},abilities:['돌머리','위협','타오르는불꽃'],moves:['플레어드라이브','스톤샤워','신속','그로우펀치','인파이트','깜짝베기','성스러운불꽃','스톤에지','암석봉인'],baseId:59,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/arcanine-hisui.png'},
+  10080:{name:'야도란 (가라르)',type:['독','에스퍼'],gen:8,stats:{hp:95,atk:100,def:95,spa:100,spd:70,spe:30},abilities:['퀵드로','재생력','마이페이스'],moves:['나쁜음모','사이코쇼크','섀도볼','냉동빔','기합구슬','트릭룸','하품','앵콜'],baseId:80,formType:'regional',formKey:'galar',sprite:'https://pkmnchamps.github.io/images/sprites/forms/slowbro-galar.png'},
+  10128:{name:'켄타로스 (팔데아 투지)',type:['격투'],gen:9,stats:{hp:75,atk:110,def:105,spa:30,spd:70,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/tauros-paldea-combat-breed.png',abilities:['위협','되새김질','분노의경혈'],moves:['플레어드라이브','인파이트','스톤에지','지진','불꽃엄니','신속','도발','방어'],baseId:128,formType:'regional',formKey:'paldea'},
+  10157:{name:'블레이범 (히스이)',type:['불꽃','고스트'],gen:8,stats:{hp:73,atk:84,def:78,spa:119,spd:85,spe:95},abilities:['통찰','맹화'],moves:['분화','섀도볼','오버히트','사이코키네시스','에너지볼','도깨비불','도발','방어'],baseId:157,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/typhlosion-hisui.png'},
+  10199:{name:'야도킹 (가라르)',type:['독','에스퍼'],gen:8,stats:{hp:95,atk:65,def:80,spa:110,spd:110,spe:30},abilities:['재생력','마이페이스','이상한약'],moves:['나쁜음모','사이코쇼크','섀도볼','냉동빔','기합구슬','트릭룸','하품','앵콜'],baseId:199,formType:'regional',formKey:'galar',sprite:'https://pkmnchamps.github.io/images/sprites/forms/slowking-galar.png'},
+  10503:{name:'대검귀 (히스이)',type:['물','악'],gen:8,stats:{hp:90,atk:108,def:80,spa:100,spd:65,spe:85},abilities:['예리함','급류'],moves:['성스러운칼','플레어드라이브','인파이트','칼춤','전광석화','불꽃엄니','방어','도발'],baseId:503,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/samurott-hisui.png'},
+  10571:{name:'조로아크 (히스이)',type:['노말','고스트'],gen:8,stats:{hp:55,atk:100,def:60,spa:125,spd:60,spe:110},abilities:['일루전'],moves:['하이퍼보이스','섀도볼','나쁜음모','냉동빔','10만볼트','도깨비불','방어','도발'],baseId:571,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/zoroark-hisui.png'},
+  10618:{name:'메더 (가라르)',type:['땅','강철'],gen:5,stats:{hp:109,atk:81,def:99,spa:66,spd:84,spe:32},abilities:['의태'],moves:['뇌격','스텔스록','배북','지진','자이로볼','맹독','하품','철벽'],baseId:618,formType:'regional',formKey:'galar',sprite:'https://pkmnchamps.github.io/images/sprites/forms/stunfisk-galar.png'},
+  10706:{name:'미끄래곤 (히스이)',type:['강철','드래곤'],gen:6,stats:{hp:80,atk:100,def:100,spa:110,spd:150,spe:60},abilities:['미끈미끈','조가비갑옷','초식'],moves:['용의파동','파동탄','러스터캐논','기합구슬','파워젬','드래곤테일','탁쳐서떨구기','방어'],baseId:706,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/goodra-hisui.png'},
+  10713:{name:'크레베이스 (히스이)',type:['얼음','바위'],gen:6,stats:{hp:95,atk:127,def:184,spa:34,spd:36,spe:38},abilities:['옹골참','아이스바디','옹골찬턱'],moves:['아이스스피너','눈사태','깨물어부수기','락블레스트','바디프레스','철벽','HP회복','얼음엄니'],baseId:713,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/avalugg-hisui.png'},
+  10724:{name:'모크나이퍼 (히스이)',type:['풀','격투'],gen:8,stats:{hp:88,atk:112,def:80,spa:95,spd:95,spe:60},abilities:['배짱','심록'],moves:['잎날가르기','아이언테일','칼춤','에너지볼','스텔스록','씨뿌리기','방어','도발'],baseId:724,formType:'regional',formKey:'hisui',sprite:'https://pkmnchamps.github.io/images/sprites/forms/decidueye-hisui.png'},
+  10745:{name:'루가루간 (황혼의 모습)',type:['바위'],gen:7,stats:{hp:75,atk:117,def:65,spa:55,spd:65,spe:110},abilities:['단단한발톱'],moves:['액셀록','스톤에지','깨물어부수기','인파이트','칼춤','기습','불꽃엄니','사이코팽','아이언헤드'],baseId:745,formType:'form',formKey:'dusk',sprite:'https://pkmnchamps.github.io/images/sprites/forms/lycanroc-dusk.png'},
   30000:{name:'메가리자몽X',type:['불꽃','드래곤'],gen:1,stats:{hp:78,atk:130,def:111,spa:130,spd:85,spe:100},abilities:['강한턱'],moves:[],baseId:6,formType:'mega',formKey:'리자몽나이트X',triggerItem:'리자몽나이트X'},
   30001:{name:'메가리자몽Y',type:['불꽃','비행'],gen:1,stats:{hp:78,atk:104,def:78,spa:159,spd:115,spe:100},abilities:['가뭄'],moves:[],baseId:6,formType:'mega',formKey:'리자몽나이트Y',triggerItem:'리자몽나이트Y'},
   30002:{name:'메가한카리아스',type:['드래곤','땅'],gen:4,stats:{hp:108,atk:170,def:115,spa:120,spd:95,spe:92},abilities:['모래의힘'],moves:[],baseId:445,formType:'mega',formKey:'한카리아스나이트',triggerItem:'한카리아스나이트'},
@@ -2470,71 +2549,45 @@ if (typeof window !== 'undefined' && (location.hostname === 'localhost' || locat
 function spriteUrl(id){if(FORM_SPRITE[id]){return FORM_SPRITE[id];}const o=SPRITE_OVERRIDE[id]||id;const pad=String(o).padStart(4,'0');return`https://pkmnchamps.github.io/images/sprites/${pad}_profile.png`;}
 function statColor(v){if(v>=120)return'#5b8af0';if(v>=100)return'#4ade80';if(v>=80)return'#f5c842';if(v>=60)return'#fb923c';return'#f87171';}
 
-// ===== 메가진화 데이터 =====
-const MEGA_DATA={
-  6:{
-    'X':{name:'메가리자몽X',type:['불꽃','드래곤'],stats:{hp:78,atk:130,def:111,spa:130,spd:85,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/charizard-mega-x.png'},
-    'Y':{name:'메가리자몽Y',type:['불꽃','비행'],stats:{hp:78,atk:104,def:78,spa:159,spd:115,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/charizard-mega-y.png'}
-  },
-  9:{name:'메가거북왕',type:['물'],stats:{hp:79,atk:103,def:120,spa:135,spd:115,spe:78},sprite:'https://pkmnchamps.github.io/images/sprites/forms/blastoise-mega.png'},
-  15:{name:'메가독침붕',type:['벌레','독'],stats:{hp:65,atk:150,def:40,spa:15,spd:80,spe:145},sprite:'https://pkmnchamps.github.io/images/sprites/forms/beedrill-mega.png'},
-  18:{name:'메가피죤투',type:['노말','비행'],stats:{hp:83,atk:80,def:75,spa:135,spd:80,spe:121},sprite:'https://pkmnchamps.github.io/images/sprites/forms/pidgeot-mega.png'},
-  26:{
-    'X':{name:'메가라이츄X',type:['전기'],stats:{hp:60,atk:110,def:75,spa:80,spd:80,spe:130},sprite:'https://pkmnchamps.github.io/images/sprites/forms/raichu-mega-x.png'},
-    'Y':{name:'메가라이츄Y',type:['전기','에스퍼'],stats:{hp:60,atk:85,def:50,spa:130,spd:95,spe:130},sprite:'https://pkmnchamps.github.io/images/sprites/forms/raichu-mega-y.png'}
-  },
-  36:{name:'메가픽시',type:['페어리','비행'],stats:{hp:95,atk:80,def:93,spa:135,spd:110,spe:70},sprite:'https://pkmnchamps.github.io/images/sprites/forms/clefable-mega.png'},
-  65:{name:'메가후딘',type:['에스퍼'],stats:{hp:55,atk:50,def:65,spa:175,spd:95,spe:150},sprite:'https://pkmnchamps.github.io/images/sprites/forms/alakazam-mega.png'},
-  71:{name:'메가우츠보트',type:['풀','독'],stats:{hp:80,atk:125,def:85,spa:135,spd:95,spe:70},sprite:'https://pkmnchamps.github.io/images/sprites/forms/victreebel-mega.png'},
-  80:{name:'메가야도란',type:['물','에스퍼'],stats:{hp:95,atk:75,def:110,spa:100,spd:110,spe:30},sprite:'https://pkmnchamps.github.io/images/sprites/forms/slowbro-mega.png'},
-  94:{name:'메가팬텀',type:['고스트','독'],stats:{hp:60,atk:65,def:80,spa:170,spd:95,spe:130},sprite:'https://pkmnchamps.github.io/images/sprites/forms/gengar-mega.png'},
-  115:{name:'메가캥카',type:['노말'],stats:{hp:105,atk:125,def:100,spa:60,spd:100,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/kangaskhan-mega.png'},
-  121:{name:'메가아쿠스타',type:['물','에스퍼'],stats:{hp:60,atk:140,def:105,spa:130,spd:105,spe:120},sprite:'https://pkmnchamps.github.io/images/sprites/forms/starmie-mega.png'},
-  127:{name:'메가쁘사이저',type:['벌레','강철'],stats:{hp:65,atk:155,def:120,spa:65,spd:90,spe:105},sprite:'https://pkmnchamps.github.io/images/sprites/forms/pinsir-mega.png'},
-  130:{name:'메가갸라도스',type:['물','악'],stats:{hp:95,atk:155,def:80,spa:70,spd:100,spe:81},sprite:'https://pkmnchamps.github.io/images/sprites/forms/gyarados-mega.png'},
-  142:{name:'메가프테라',type:['바위','비행'],stats:{hp:80,atk:135,def:80,spa:70,spd:80,spe:150},sprite:'https://pkmnchamps.github.io/images/sprites/forms/aerodactyl-mega.png'},
-  149:{name:'메가망나뇽',type:['드래곤','비행'],stats:{hp:91,atk:170,def:80,spa:140,spd:95,spe:118},sprite:'https://pkmnchamps.github.io/images/sprites/forms/dragonite-mega.png'},
-  154:{name:'메가메가니움',type:['풀','페어리'],stats:{hp:80,atk:92,def:115,spa:143,spd:115,spe:80},sprite:'https://pkmnchamps.github.io/images/sprites/forms/meganium-mega.png'},
-  160:{name:'메가장크로다일',type:['물','드래곤'],stats:{hp:85,atk:160,def:125,spa:89,spd:93,spe:78},sprite:'https://pkmnchamps.github.io/images/sprites/forms/feraligatr-mega.png'},
-  181:{name:'메가전룡',type:['전기','드래곤'],stats:{hp:90,atk:95,def:105,spa:165,spd:110,spe:45},sprite:'https://pkmnchamps.github.io/images/sprites/forms/ampharos-mega.png'},
-  208:{name:'메가강철톤',type:['강철','땅'],stats:{hp:75,atk:125,def:230,spa:55,spd:65,spe:30},sprite:'https://pkmnchamps.github.io/images/sprites/forms/steelix-mega.png'},
-  212:{name:'메가핫삼',type:['벌레','강철'],stats:{hp:70,atk:150,def:140,spa:65,spd:90,spe:75},sprite:'https://pkmnchamps.github.io/images/sprites/forms/scizor-mega.png'},
-  214:{name:'메가헤라크로스',type:['벌레','격투'],stats:{hp:80,atk:185,def:115,spa:40,spd:105,spe:75},sprite:'https://pkmnchamps.github.io/images/sprites/forms/heracross-mega.png'},
-  227:{name:'메가무장조',type:['강철','비행'],stats:{hp:65,atk:140,def:110,spa:40,spd:100,spe:110},sprite:'https://pkmnchamps.github.io/images/sprites/forms/skarmory-mega.png'},
-  229:{name:'메가헬가',type:['악','불꽃'],stats:{hp:75,atk:90,def:50,spa:130,spd:90,spe:95},sprite:'https://pkmnchamps.github.io/images/sprites/forms/houndoom-mega.png'},
-  248:{name:'메가마기라스',type:['바위','악'],stats:{hp:100,atk:164,def:150,spa:95,spd:120,spe:71},sprite:'https://pkmnchamps.github.io/images/sprites/forms/tyranitar-mega.png'},
-  282:{name:'메가가디안',type:['에스퍼','페어리'],stats:{hp:68,atk:85,def:65,spa:165,spd:135,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/gardevoir-mega.png'},
-  302:{name:'메가깜지곰',type:['악'],stats:{hp:50,atk:75,def:75,spa:65,spd:65,spe:50},sprite:'https://pkmnchamps.github.io/images/sprites/forms/sableye-mega.png'},
-  306:{name:'메가보스로라',type:['강철'],stats:{hp:75,atk:140,def:230,spa:60,spd:80,spe:50},sprite:'https://pkmnchamps.github.io/images/sprites/forms/aggron-mega.png'},
-  308:{name:'메가요가램',type:['격투','에스퍼'],stats:{hp:60,atk:100,def:85,spa:122,spd:85,spe:80},sprite:'https://pkmnchamps.github.io/images/sprites/forms/medicham-mega.png'},
-  310:{name:'메가썬더볼트',type:['전기'],stats:{hp:70,atk:75,def:60,spa:130,spd:90,spe:110},sprite:'https://pkmnchamps.github.io/images/sprites/forms/manectric-mega.png'},
-  319:{name:'메가샤크니아',type:['물','악'],stats:{hp:70,atk:140,def:70,spa:110,spd:65,spe:105},sprite:'https://pkmnchamps.github.io/images/sprites/forms/sharpedo-mega.png'},
-  323:{name:'메가폭타',type:['불꽃','바위'],stats:{hp:70,atk:160,def:45,spa:105,spd:65,spe:45},sprite:'https://pkmnchamps.github.io/images/sprites/forms/camerupt-mega.png'},
-  334:{name:'메가파비코리',type:['드래곤'],stats:{hp:75,atk:110,def:80,spa:130,spd:115,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/altaria-mega.png'},
-  354:{name:'메가다크펫',type:['고스트'],stats:{hp:50,atk:65,def:105,spa:73,spd:55,spe:72},sprite:'https://pkmnchamps.github.io/images/sprites/forms/banette-mega.png'},
-  358:{name:'메가치링',type:['에스퍼','강철'],stats:{hp:75,atk:95,def:90,spa:95,spd:90,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/chimecho-mega.png'},
-  359:{name:'메가앱솔',type:['악'],stats:{hp:65,atk:150,def:60,spa:115,spd:60,spe:75},sprite:'https://pkmnchamps.github.io/images/sprites/forms/absol-mega.png'},
-  362:{name:'메가얼음귀신',type:['얼음'],stats:{hp:80,atk:120,def:120,spa:70,spd:70,spe:40},sprite:'https://pkmnchamps.github.io/images/sprites/forms/glalie-mega.png'},
-  428:{name:'메가이어롭',type:['노말','에스퍼'],stats:{hp:65,atk:100,def:91,spa:110,spd:98,spe:116},sprite:'https://pkmnchamps.github.io/images/sprites/forms/lopunny-mega.png'},
-  445:{name:'메가한카리아스',type:['드래곤','땅'],stats:{hp:108,atk:170,def:115,spa:120,spd:95,spe:92},sprite:'https://pkmnchamps.github.io/images/sprites/forms/garchomp-mega.png'},
-  448:{name:'메가루카리오',type:['격투','강철'],stats:{hp:70,atk:145,def:88,spa:140,spd:70,spe:112},sprite:'https://pkmnchamps.github.io/images/sprites/forms/lucario-mega.png'},
-  460:{name:'메가눈설왕',type:['풀','얼음'],stats:{hp:110,atk:92,def:105,spa:114,spd:70,spe:40},sprite:'https://pkmnchamps.github.io/images/sprites/forms/abomasnow-mega.png'},
-  475:{name:'메가엘레이드',type:['에스퍼','페어리'],stats:{hp:68,atk:175,def:60,spa:65,spd:115,spe:104},sprite:'https://pkmnchamps.github.io/images/sprites/forms/gallade-mega.png'},
-  478:{name:'메가눈여아',type:['얼음','고스트'],stats:{hp:70,atk:80,def:70,spa:140,spd:100,spe:120},sprite:'https://pkmnchamps.github.io/images/sprites/forms/froslass-mega.png'},
-  500:{name:'메가염무왕',type:['불꽃','격투'],stats:{hp:110,atk:148,def:75,spa:110,spd:110,spe:75},sprite:'https://pkmnchamps.github.io/images/sprites/forms/emboar-mega.png'},
-  530:{name:'메가몰드류',type:['땅','강철'],stats:{hp:110,atk:165,def:100,spa:65,spd:65,spe:103},sprite:'https://pkmnchamps.github.io/images/sprites/forms/excadrill-mega.png'},
-  531:{name:'메가다부니',type:['노말','페어리'],stats:{hp:103,atk:100,def:120,spa:85,spd:105,spe:72},sprite:'https://pkmnchamps.github.io/images/sprites/forms/audino-mega.png'},
-  609:{name:'메가샹델라',type:['고스트','불꽃'],stats:{hp:60,atk:75,def:110,spa:175,spd:110,spe:90},sprite:'https://pkmnchamps.github.io/images/sprites/forms/chandelure-mega.png'},
-  623:{name:'메가골루그',type:['땅','고스트'],stats:{hp:89,atk:145,def:90,spa:65,spd:85,spe:85},sprite:'https://pkmnchamps.github.io/images/sprites/forms/golurk-mega.png'},
-  652:{name:'메가브리가론',type:['풀','격투'],stats:{hp:88,atk:137,def:172,spa:74,spd:115,spe:44},sprite:'https://pkmnchamps.github.io/images/sprites/forms/chesnaught-mega.png'},
-  655:{name:'메가마폭시',type:['불꽃','에스퍼'],stats:{hp:75,atk:69,def:72,spa:159,spd:125,spe:134},sprite:'https://pkmnchamps.github.io/images/sprites/forms/delphox-mega.png'},
-  658:{name:'메가개굴닌자',type:['물','악'],stats:{hp:72,atk:125,def:77,spa:133,spd:81,spe:142},sprite:'https://pkmnchamps.github.io/images/sprites/forms/greninja-mega.png'},
-  670:{name:'메가플라엣테',type:['페어리'],stats:{hp:74,atk:130,def:80,spa:65,spd:80,spe:116},sprite:'https://pkmnchamps.github.io/images/sprites/forms/floette-mega.png'},
-  678:{name:'메가냐오닉스',type:['에스퍼'],stats:{hp:74,atk:48,def:76,spa:83,spd:81,spe:104},sprite:'https://pkmnchamps.github.io/images/sprites/forms/meowstic-mega.png'},
-  701:{name:'메가루차불',type:['격투','비행'],stats:{hp:79,atk:135,def:68,spa:53,spd:62,spe:118},sprite:'https://pkmnchamps.github.io/images/sprites/forms/hawlucha-mega.png'},
-  780:{name:'메가할비룡',type:['노말','드래곤'],stats:{hp:68,atk:135,def:64,spa:66,spd:64,spe:115},sprite:'https://pkmnchamps.github.io/images/sprites/forms/drampa-mega.png'},
-  970:{name:'메가킬라플로르',type:['풀','독'],stats:{hp:70,atk:100,def:90,spa:120,spd:90,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/clodsire-mega.png'},
-  3:{name:'메가이상해꽃',type:['풀','독'],stats:{hp:80,atk:100,def:123,spa:122,spd:120,spe:80},sprite:'https://pkmnchamps.github.io/images/sprites/forms/venusaur-mega.png'},
+// ===== 메가진화 데이터 (POKEMON 트리에서 자동 생성) =====
+// ⚠️ MEGA_DATA는 POKEMON 트리의 단일 원본에서 자동 파생됨.
+// 직접 수정 금지 — 트리(POKEMON[megaId])를 수정하면 자동 반영.
+const MEGA_DATA = (() => {
+  const out = {};
+  for (const idStr of Object.keys(POKEMON)) {
+    const id = +idStr;
+    const p = POKEMON[id];
+    if (!p.formIds) continue;
+    const megaIds = p.formIds.filter(fid => POKEMON[fid]?.formType === 'mega');
+    if (megaIds.length === 0) continue;
+    if (megaIds.length === 1) {
+      const m = POKEMON[megaIds[0]];
+      out[id] = {
+        name: m.name, type: m.type, stats: m.stats,
+        sprite: `https://pkmnchamps.github.io/images/sprites/forms/${(m.formKey||'').replace(/나이트$/, '')}-mega.png`
+      };
+    } else {
+      // X/Y 분리 (리자몽 등) — 이름에서 X/Y 판별
+      const obj = {};
+      for (const mid of megaIds) {
+        const m = POKEMON[mid];
+        const xy = m.name.endsWith('X') ? 'X' : (m.name.endsWith('Y') ? 'Y' : null);
+        if (xy) {
+          obj[xy] = {
+            name: m.name, type: m.type, stats: m.stats,
+            sprite: `https://pkmnchamps.github.io/images/sprites/forms/${(m.formKey||'').replace(/나이트[XY]?$/, '')}-mega-${xy.toLowerCase()}.png`
+          };
+        }
+      }
+      if (Object.keys(obj).length > 0) out[id] = obj;
+    }
+  }
+  return out;
+})();
+// hasMega 헬퍼 — 라벨 조건 등에 사용
+function hasMega(id) {
+  const p = POKEMON[id];
+  return !!(p?.formIds?.some(fid => POKEMON[fid]?.formType === 'mega'));
 };
 
 const ITEM_IMAGE_MAP = {
@@ -2594,7 +2647,7 @@ const ITEM_IMAGE_MAP = {
   '후디나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/alakazite.png',
   '야도란나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/slowbronite.png',
   '팬텀나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/gengarite.png',
-  '캥카나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/kangaskhanite.png',
+  '캥카나이트': 'https://pkmnchamps.github.io/images/items/kangaskhanite.png',
   '쁘사이저나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/scizorite.png',
   '가라도스나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/gyaradosite.png',
   '프테라나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/aerodactylite.png',
@@ -2621,7 +2674,7 @@ const ITEM_IMAGE_MAP = {
   '뮤즈나이트X': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/mewtwonite-x.png',
   '뮤즈나이트Y': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/mewtwonite-y.png',
   '번치코나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/blazikenite.png',
-  '보만다나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/salamencite.png',
+  '보만다나이트': 'https://pkmnchamps.github.io/images/items/salamencite.png',
   '메타그로스나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/metagrossite.png',
   '라티아스나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/latiasite.png',
   '라티오스나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/latiosite.png',
@@ -2631,10 +2684,10 @@ const ITEM_IMAGE_MAP = {
   '라이츄나이트Y': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/manectite.png',
   '우츠보트나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/venusaurite.png',
   '아쿠스타나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/blastoisinite.png',
-  '망나뇽나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/salamencite.png',
+  '망나뇽나이트': 'https://pkmnchamps.github.io/images/items/salamencite.png',
   '메가니움나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/venusaurite.png',
   '장크로다일나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/feraligatrite.png',
-  '전룡나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/ampharosite.png',
+  '전룡나이트': 'https://pkmnchamps.github.io/images/items/ampharosite.png',
   '강철톤나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/steelixite.png',
   '무장조나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/scizorite.png',
   '눈여아나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/glalitite.png',
@@ -2649,7 +2702,7 @@ const ITEM_IMAGE_MAP = {
   '플라엣테나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/gardevoirite.png',
   '냐오닉스나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/alakazite.png',
   '루차불나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/lopunnite.png',
-  '할비룡나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/salamencite.png',
+  '할비룡나이트': 'https://pkmnchamps.github.io/images/items/salamencite.png',
   '킬라플로르나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/venusaurite.png',
   '레쿠자나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/rayquazite.png',
   '대짱이나이트': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/mega-stones/tyranitarite.png',
@@ -2714,8 +2767,8 @@ const ITEM_DB=[
   {name:'바리비열매',cat:'타입방어',tags:['데미지 ×0.5','소모'],icon:'🍓',type:'악',desc:'악 타입 기술의 데미지를 0.5배로 줄인다. 소모품.',price:10},
   {name:'카리열매',cat:'타입방어',tags:['데미지 ×0.5','소모'],icon:'🫑',type:'강철',desc:'강철 타입 기술의 데미지를 0.5배로 줄인다. 소모품.',price:10},
   {name:'로셀열매',cat:'타입방어',tags:['데미지 ×0.5','소모'],icon:'🌸',type:'페어리',desc:'페어리 타입 기술의 데미지를 0.5배로 줄인다. 소모품.',price:10},
-  // 중족특화
-  {name:'전기구슬',cat:'중족특화',tags:['공격/특공 ×2'],icon:'⚡',desc:'피카츄 전용. 공격과 특수공격이 2배가 된다.',price:30,effect:{atk:2,spa:2}},
+  // 종족특화
+  {name:'전기구슬',cat:'종족특화',tags:['공격/특공 ×2'],icon:'⚡',desc:'피카츄 전용. 공격과 특수공격이 2배가 된다.',price:30,effect:{atk:2,spa:2}},
 ];
 
 // 메가돌 자동 생성
@@ -2772,7 +2825,7 @@ function tagStyle(tag){
 
 
 function mkImg(url,size,extra){
-  var img=document.createElement('img');
+  var img=document.createElement('img');img.loading='lazy';img.decoding='async';
   img.src=url;
   img.style.cssText='width:'+size+'px;height:'+size+'px;object-fit:contain;image-rendering:pixelated;'+(extra||'');
   img.onerror=function(){this.style.display='none';};
@@ -2831,7 +2884,7 @@ function showItemDetail(name){
     const p=POKEMON_DATA.find(x=>x.id===item.forPokemonId);
     if(p){
       pokeInfo=`<div style="display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px;background:var(--surface2);border-radius:8px;border:1px solid var(--border);">
-        <img src="${spriteUrl(p.id)}" style="width:48px;height:48px;image-rendering:pixelated;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));">
+        <img src="${spriteUrl(p.id)}" alt="${p.name}" style="width:48px;height:48px;image-rendering:pixelated;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));" loading="lazy" decoding="async">
         <div>
           <div style="font-size:13px;font-weight:600;">${p.name} 전용</div>
           <div style="font-size:11px;color:var(--muted);font-family:var(--mono);">No.${p.id} · ${p.gen}세대</div>
@@ -2941,6 +2994,32 @@ function renderStatBars(stats){
 }
 
 
+
+// === 메가 동기화: 상세 → 데미지 계산기 ===
+function applyDetailToCalc(id, megaVariant) {
+  // 공격 측에 적용
+  const atkSelect = document.getElementById('atk-pokemon');
+  if (atkSelect) {
+    atkSelect.value = id;
+    updateAtkInfo();
+    if (megaVariant) {
+      // setCalcMega가 메가 적용
+      setCalcMega('atk', megaVariant === 'mega' ? 'mega' : megaVariant);
+    }
+  }
+  // 데미지 탭으로 전환
+  const dmgNav = document.getElementById('nav-dmg');
+  if (dmgNav) dmgNav.click();
+  // 토스트 알림
+  const t = document.createElement('div');
+  const pName = POKEMON_DATA.find(x=>x.id===id)?.name || '포켓몬';
+  const label = megaVariant ? '메가 ' + pName : pName;
+  t.textContent = '⚔️ ' + label + ' → 공격 측에 적용됨';
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(91,138,240,0.95);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.3);transition:opacity 0.3s;';
+  document.body.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; setTimeout(()=>t.remove(), 300); }, 1800);
+}
+
 function closeDexDetail(){
   const detail=document.getElementById('dex-detail');if(detail)detail.innerHTML='';
   const allList=document.getElementById('dex-all-list');if(allList)allList.style.display='block';
@@ -2959,12 +3038,12 @@ function searchPokemon(q){
   allList.style.display='none';
   const pool=currentGen===0?POKEMON_DATA:POKEMON_DATA.filter(p=>p.gen===currentGen);
   const res=pool.filter(p=>p.name.includes(q)).slice(0,8);
-  if(!res.length){el.innerHTML='<div class="empty"><div class="empty-icon">?</div><p style="font-size:13px;">검색 결과 없음</p></div>';detail.innerHTML='';return;}
+  if(!res.length){el.innerHTML='<div class="empty"><div class="empty-icon">🔍</div><p style="font-size:13px;">검색 결과 없음</p></div>';detail.innerHTML='';return;}
   el.innerHTML=res.map(p=>`
     <div class="poke-row" onclick="showDetail(${p.id})">
-      <img class="poke-sprite" src="${spriteUrl(p.id)}" alt="${p.name}" onerror="this.style.opacity=0">
+      <img class="poke-sprite" src="${spriteUrl(p.id)}" alt="${p.name}" onerror="this.style.opacity=0" loading="lazy" decoding="async">
       <span class="poke-num">No.${p.id}</span>
-      ${MEGA_DATA[p.id]?'<span style="font-size:10px;color:var(--accent);font-weight:700;background:rgba(255,214,0,0.12);padding:2px 5px;border-radius:4px;margin-right:2px;">MEGA</span>':''}
+      ${hasMega(p.id)?'<span style="font-size:10px;color:var(--accent);font-weight:700;background:rgba(255,214,0,0.12);padding:2px 5px;border-radius:4px;margin-right:2px;">MEGA</span>':''}
       <span class="poke-name">${p.name}</span>
       <div class="poke-types">${p.type.map(typeBadge).join('')}</div>
       <span style="font-size:11px;color:var(--muted);margin-left:auto;">${p.gen}세대</span>
@@ -2993,11 +3072,13 @@ function showDetail(id,megaVariant){
         <button onclick="showDetail(${id})" style="padding:5px 10px;border-radius:8px;border:1px solid ${!isMega?'var(--accent)':'var(--muted)'};background:${!isMega?'var(--accent)':'transparent'};color:${!isMega?'#000':'var(--text)'};cursor:pointer;font-size:12px;">일반</button>
         <button onclick="showDetail(${id},'X')" style="padding:5px 10px;border-radius:8px;border:1px solid ${megaVariant==='X'?'var(--accent)':'var(--muted)'};background:${megaVariant==='X'?'var(--accent)':'transparent'};color:${megaVariant==='X'?'#000':'var(--text)'};cursor:pointer;font-size:12px;">메가X</button>
         <button onclick="showDetail(${id},'Y')" style="padding:5px 10px;border-radius:8px;border:1px solid ${megaVariant==='Y'?'var(--accent)':'var(--muted)'};background:${megaVariant==='Y'?'var(--accent)':'transparent'};color:${megaVariant==='Y'?'#000':'var(--text)'};cursor:pointer;font-size:12px;">메가Y</button>
+        <button onclick="applyDetailToCalc(${id},${megaVariant?`'${megaVariant}'`:'null'})" style="padding:5px 10px;border-radius:8px;border:1px solid rgba(91,138,240,0.5);background:rgba(91,138,240,0.12);color:#5b8af0;cursor:pointer;font-size:12px;font-weight:600;" title="이 폼으로 데미지 계산기에 적용">⚔️ 계산기에 적용</button>
       </div>`;
     }else{
       megaBtns=`<div style="display:flex;gap:6px;margin-top:10px;">
         <button onclick="showDetail(${id})" style="padding:5px 10px;border-radius:8px;border:1px solid ${!isMega?'var(--accent)':'var(--muted)'};background:${!isMega?'var(--accent)':'transparent'};color:${!isMega?'#000':'var(--text)'};cursor:pointer;font-size:12px;">일반</button>
         <button onclick="showDetail(${id},'mega')" style="padding:5px 10px;border-radius:8px;border:1px solid ${isMega?'var(--accent)':'var(--muted)'};background:${isMega?'var(--accent)':'transparent'};color:${isMega?'#000':'var(--text)'};cursor:pointer;font-size:12px;">⚡ 메가진화</button>
+        <button onclick="applyDetailToCalc(${id},${isMega?`'mega'`:'null'})" style="padding:5px 10px;border-radius:8px;border:1px solid rgba(91,138,240,0.5);background:rgba(91,138,240,0.12);color:#5b8af0;cursor:pointer;font-size:12px;font-weight:600;" title="이 폼으로 데미지 계산기에 적용">⚔️ 계산기에 적용</button>
       </div>`;
     }
   }
@@ -3006,12 +3087,13 @@ function showDetail(id,megaVariant){
     <div class="card" style="margin-top:8px;${isMega?'border-color:var(--accent);box-shadow:0 0 16px rgba(255,214,0,0.2);':''}">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
         <div style="display:flex;align-items:center;gap:16px;">
-          <img class="poke-sprite-lg" src="${megaSprite}" alt="${megaName}" onerror="this.src='${spriteUrl(p.id)}'">
+          <img class="poke-sprite-lg" src="${megaSprite}" alt="${megaName}" onerror="this.src='${spriteUrl(p.id)}'" loading="lazy" decoding="async">
           <div>
             <div style="font-size:20px;font-weight:400;font-family:'Black Han Sans','Noto Sans KR',sans-serif;letter-spacing:.5px;">${megaName}${isMega?` <span style="font-size:13px;color:var(--accent);vertical-align:middle;">MEGA</span>`:''}</div>
             <div style="font-size:12px;color:var(--muted);margin-top:2px;font-family:'Noto Sans KR',sans-serif;letter-spacing:.3px;font-weight:500;">No.${p.id} · ${p.gen}세대</div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">${displayP.type.map(typeBadge).join('')}</div>
             ${megaBtns}
+            ${!megaInfo ? `<div style="display:flex;gap:6px;margin-top:10px;"><button onclick="applyDetailToCalc(${id},null)" style="padding:5px 10px;border-radius:8px;border:1px solid rgba(91,138,240,0.5);background:rgba(91,138,240,0.12);color:#5b8af0;cursor:pointer;font-size:12px;font-weight:600;" title="데미지 계산기에 적용">⚔️ 계산기에 적용</button></div>` : ''}
           </div>
         </div>
       </div>
@@ -3072,7 +3154,7 @@ function teamSearch(q){
   const res=POKEMON_DATA.filter(p=>p.name.includes(q)).slice(0,5);
   el.innerHTML=res.map(p=>`
     <div class="poke-row" onclick="addToTeam(${p.id})" style="margin-top:4px;">
-      <img class="poke-sprite" src="${spriteUrl(p.id)}" alt="${p.name}" onerror="this.style.opacity=0">
+      <img class="poke-sprite" src="${spriteUrl(p.id)}" alt="${p.name}" onerror="this.style.opacity=0" loading="lazy" decoding="async">
       <span class="poke-num">No.${p.id}</span>
       <span class="poke-name">${p.name}</span>
       <div class="poke-types">${p.type.map(typeBadge).join('')}</div>
@@ -3099,7 +3181,7 @@ function renderTeam(){
   if(!team.length){el.innerHTML='<div class="empty"><div class="empty-icon">◦</div><p style="font-size:13px;">아직 비어있어요</p></div>';document.getElementById('team-analysis').innerHTML='';return;}
   el.innerHTML=team.map(p=>`
     <div class="team-slot">
-      <img class="poke-sprite" src="${spriteUrl(p.id)}" alt="${p.name}" onerror="this.style.opacity=0">
+      <img class="poke-sprite" src="${spriteUrl(p.id)}" alt="${p.name}" onerror="this.style.opacity=0" loading="lazy" decoding="async">
       <span style="font-family:var(--mono);font-size:11px;color:var(--muted);min-width:36px;">No.${p.id}</span>
       <span class="name">${p.name}</span>
       <div class="poke-types">${p.type.map(typeBadge).join('')}</div>
@@ -3279,7 +3361,7 @@ function buildItemGrid(who,searchQ){
   let headerHtml='';
   if(cur&&cur!=='없음'){
     const imgUrl=ITEM_IMAGE_MAP[cur];
-    const imgTag=imgUrl?`<img src="${imgUrl}" style="width:14px;height:14px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px;" onerror="this.style.display='none'">`:'';
+    const imgTag=imgUrl?`<img src="${imgUrl}" alt="${cur}" style="width:14px;height:14px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px;" onerror="this.style.display='none'" loading="lazy" decoding="async">`:'';
     headerHtml=`<div style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;background:rgba(255,214,0,0.10);border:1px solid rgba(255,214,0,0.4);border-radius:6px;padding:5px 10px;margin-bottom:4px;">
       <span style="color:var(--accent);font-size:12px;font-weight:600;">${imgTag}선택: ${cur}</span>
       <button onclick="setItem('${who}','없음')" title="도구 해제" style="background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 6px;line-height:1;border-radius:4px;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--muted)'">✕</button>
@@ -3308,7 +3390,7 @@ function buildItemGrid(who,searchQ){
     btn.className='item-btn'+(cur===item?' active':'');
     btn.onclick=function(){setItem(who,item);};
     const imgUrl=ITEM_IMAGE_MAP[item];
-    if(imgUrl){const img=document.createElement('img');img.src=imgUrl;img.style.cssText='width:16px;height:16px;object-fit:contain;image-rendering:pixelated;margin-right:3px;vertical-align:middle;';img.onerror=function(){this.style.display='none';};btn.appendChild(img);}
+    if(imgUrl){const img=document.createElement('img');img.loading='lazy';img.decoding='async';img.src=imgUrl;img.style.cssText='width:16px;height:16px;object-fit:contain;image-rendering:pixelated;margin-right:3px;vertical-align:middle;';img.onerror=function(){this.style.display='none';};btn.appendChild(img);}
     btn.appendChild(document.createTextNode(item));
     grid.appendChild(btn);
   });
@@ -3762,18 +3844,59 @@ function filterGen(gen,btn){
   renderAllPokemon();
 }
 
+// H3: 가상 스크롤 — 처음 40개만 렌더 후 sentinel 감지 시 40개씩 추가
+let __pokeListData = [];
+let __pokeListRendered = 0;
+const __POKE_BATCH = 40;
+let __pokeIntersectionObs = null;
+
+function __renderPokeRow(p) {
+  return `<div class="poke-row" onclick="showDetail(${p.id})">
+    <img class="poke-sprite" src="${spriteUrl(p.id)}" alt="${p.name}" onerror="this.style.opacity=0" loading="lazy" decoding="async">
+    <span class="poke-num">No.${p.id}</span>
+    <span class="poke-name">${p.name}</span>
+    <div class="poke-types">${p.type.map(typeBadge).join('')}</div>
+    ${hasMega(p.id)?'<span style="font-size:10px;color:var(--accent);font-weight:700;margin-left:4px;background:rgba(255,214,0,0.12);padding:2px 5px;border-radius:4px;">MEGA</span>':''}
+    <span style="font-size:11px;color:var(--muted);margin-left:auto;">${p.gen}세대</span>
+  </div>`;
+}
+
+function __renderNextBatch() {
+  const el = document.getElementById('dex-all-list');
+  if (!el) return;
+  const remaining = __pokeListData.slice(__pokeListRendered, __pokeListRendered + __POKE_BATCH);
+  if (remaining.length === 0) return;
+  // sentinel 제거 → 새 row 추가 → sentinel 다시
+  const sentinel = document.getElementById('__poke-sentinel');
+  if (sentinel) sentinel.remove();
+  el.insertAdjacentHTML('beforeend', remaining.map(__renderPokeRow).join(''));
+  __pokeListRendered += remaining.length;
+  if (__pokeListRendered < __pokeListData.length) {
+    el.insertAdjacentHTML('beforeend', '<div id="__poke-sentinel" style="height:1px;"></div>');
+    const newSentinel = document.getElementById('__poke-sentinel');
+    if (newSentinel && __pokeIntersectionObs) __pokeIntersectionObs.observe(newSentinel);
+  }
+}
+
 function renderAllPokemon(){
-  const el=document.getElementById('dex-all-list');if(!el)return;
-  const data=currentGen===0?POKEMON_DATA:POKEMON_DATA.filter(p=>p.gen===currentGen);
-  el.innerHTML=data.map(p=>`
-    <div class="poke-row" onclick="showDetail(${p.id})">
-      <img class="poke-sprite" src="${spriteUrl(p.id)}" alt="${p.name}" onerror="this.style.opacity=0">
-      <span class="poke-num">No.${p.id}</span>
-      <span class="poke-name">${p.name}</span>
-      <div class="poke-types">${p.type.map(typeBadge).join('')}</div>
-      ${MEGA_DATA[p.id]?'<span style="font-size:10px;color:var(--accent);font-weight:700;margin-left:4px;background:rgba(255,214,0,0.12);padding:2px 5px;border-radius:4px;">MEGA</span>':''}
-      <span style="font-size:11px;color:var(--muted);margin-left:auto;">${p.gen}세대</span>
-    </div>`).join('');
+  const el = document.getElementById('dex-all-list');
+  if (!el) return;
+  __pokeListData = currentGen===0 ? POKEMON_DATA : POKEMON_DATA.filter(p=>p.gen===currentGen);
+  __pokeListRendered = 0;
+  el.innerHTML = '';
+  // IntersectionObserver 초기화 (한 번만)
+  if (!__pokeIntersectionObs) {
+    __pokeIntersectionObs = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          __pokeIntersectionObs.unobserve(e.target);
+          __renderNextBatch();
+        }
+      }
+    }, {rootMargin: '300px'});
+  }
+  // 첫 배치 렌더 + sentinel 추가
+  __renderNextBatch();
 }
 
 
@@ -3988,7 +4111,7 @@ function renderSamples(){
     list.innerHTML=`<div class="empty"><div class="empty-icon">🔍</div><p style="font-size:13px;">검색 결과 없음</p></div>`;
     return;
   }
-  const itemImgUrl=item=>ITEM_IMAGE_MAP[item]?`<img src="${ITEM_IMAGE_MAP[item]}" style="width:18px;height:18px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:3px;" onerror="this.style.display='none'">`:'';
+  const itemImgUrl=item=>ITEM_IMAGE_MAP[item]?`<img src="${ITEM_IMAGE_MAP[item]}" alt="${item}" style="width:18px;height:18px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:3px;" onerror="this.style.display='none'" loading="lazy" decoding="async">`:'';
   // 전체 DB에서의 실제 인덱스를 추적
   list.innerHTML=data.map((s)=>{
     const realIdx=SAMPLE_DB.indexOf(s);
@@ -3998,7 +4121,7 @@ function renderSamples(){
     if(isMega){const fs=getMegaFormSprite(s.id,s.name);if(fs)sprite=fs;else if(MEGA_DATA[s.id]){const md=MEGA_DATA[s.id];if(md.X&&s.name.includes('X'))sprite=md.X.sprite||sprite;else if(md.Y&&s.name.includes('Y'))sprite=md.Y.sprite||sprite;else if(md.sprite)sprite=md.sprite;}}
     const tagColor=TAG_COLORS[s.tag]||'#888';
     return`<div class="poke-row" onclick="showSampleDetail(${realIdx})" style="flex-wrap:nowrap;">
-      <img src="${sprite}" style="width:52px;height:52px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));" onerror="this.src='${spriteUrl(s.id)}'">
+      <img src="${sprite}" alt="포켓몬 스프라이트" style="width:52px;height:52px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));" onerror="this.src='${spriteUrl(s.id)}'" loading="lazy" decoding="async">
       <div style="flex:1;min-width:0;">
         <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
           <span style="font-size:14px;font-weight:600;">${s.name}</span>
@@ -4045,7 +4168,7 @@ function showSampleDetail(idx){
   const statKeys=['hp','atk','def','spa','spd','spe'];
   const statLabels=['체력','공격','방어','특공','특방','속도'];
   const natUpLabel={'atk':'공격','def':'방어','spa':'특공','spd':'특방','spe':'속도','hp':'체력'};
-  const itemImgUrl=ITEM_IMAGE_MAP[s.item]?`<img src="${ITEM_IMAGE_MAP[s.item]}" style="width:22px;height:22px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px;" onerror="this.style.display='none'">`:'';
+  const itemImgUrl=ITEM_IMAGE_MAP[s.item]?`<img src="${ITEM_IMAGE_MAP[s.item]}" alt="${s.item}" style="width:22px;height:22px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px;" onerror="this.style.display='none'" loading="lazy" decoding="async">`:'';
   const statBars=statKeys.map((k,i)=>{
     const base=stats[k]||0;
     const real=calcSampleStat(base,k);
@@ -4066,7 +4189,7 @@ function showSampleDetail(idx){
   <div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:20px;margin-top:12px;position:relative;overflow:hidden;">
     <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(91,138,240,.3),transparent);"></div>
     <div style="display:flex;align-items:flex-start;gap:16px;margin-bottom:16px;">
-      <img src="${sprite}" style="width:100px;height:100px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));" onerror="this.src='${spriteUrl(s.id)}'">
+      <img src="${sprite}" alt="포켓몬 스프라이트" style="width:100px;height:100px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));" onerror="this.src='${spriteUrl(s.id)}'" loading="lazy" decoding="async">
       <div style="flex:1;">
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
           <span style="font-family:var(--display);font-size:24px;font-weight:700;">${s.name}</span>
@@ -4175,7 +4298,7 @@ async function loadStats() {
     const rankColor = i === 0 ? 'var(--gold)' : i < 3 ? 'var(--accent)' : i < 10 ? 'var(--muted2)' : 'var(--muted)';
     return '<div class="poke-row" style="padding:10px 14px;cursor:default;">'
       + '<span style="font-family:var(--mono);font-size:13px;font-weight:700;color:'+rankColor+';min-width:28px;text-align:center;">'+(i+1)+'</span>'
-      + '<img src="'+imgSrc+'" style="width:48px;height:48px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));" onerror="this.style.opacity=0.2">'
+      + '<img src="'+imgSrc+'" alt="'+korName+'" style="width:48px;height:48px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));" onerror="this.style.opacity=0.2" loading="lazy" decoding="async">'
       + '<div style="flex:1;min-width:0;">'
       + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">'
       + '<span style="font-size:14px;font-weight:600;">'+korName+'</span>'
@@ -4225,7 +4348,7 @@ function renderStatsList() {
     const rankColor = i === 0 ? 'var(--gold)' : i < 3 ? 'var(--accent)' : i < 10 ? 'var(--muted2)' : 'var(--muted)';
     return '<div class="poke-row" style="padding:10px 14px;cursor:default;">'
       + '<span style="font-family:var(--mono);font-size:14px;font-weight:700;color:' + rankColor + ';min-width:28px;text-align:center;">' + (i+1) + '</span>'
-      + '<img src="' + imgSrc + '" style="width:52px;height:52px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));" onerror="this.style.opacity=0.2">'
+      + '<img src="' + imgSrc + '" alt="포켓몬" style="width:52px;height:52px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));" onerror="this.style.opacity=0.2" loading="lazy" decoding="async">'
       + '<div style="flex:1;min-width:0;">'
       + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">'
       + '<span style="font-size:14px;font-weight:600;">' + p.kor + '</span>'
@@ -4306,7 +4429,7 @@ function filterWrList(side, query) {
   dd.style.display = '';
   dd.innerHTML = results.map(p =>
     `<div onclick="selectWrPoke('${side}',${p.id},'${p.name}')" style="display:flex;align-items:center;gap:8px;padding:7px 12px;cursor:pointer;border-bottom:1px solid var(--border);" onmouseover="this.style.background='var(--surface)'" onmouseout="this.style.background=''">
-      <img src="https://pkmnchamps.github.io/images/sprites/${String(p.id).padStart(4,'0')}_profile.png" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;" onerror="this.style.opacity=0.3">
+      <img src="https://pkmnchamps.github.io/images/sprites/${String(p.id).padStart(4,'0')}_profile.png" alt="${p.name}" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;" onerror="this.style.opacity=0.3" loading="lazy" decoding="async">
       <span style="font-size:13px;">${p.name}</span>
       <span style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-left:auto;">No.${p.id}</span>
     </div>`
@@ -5094,7 +5217,7 @@ function renderAiParty(side) {
 
     return `<div style="background:var(--surface2);border:${cardBorder};border-radius:10px;padding:8px 10px;">
       <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-        <img src="${sprite}" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;${megaActive?'filter:drop-shadow(0 0 6px rgba(251,146,60,0.6));':''}" onerror="this.style.display='none'">
+        <img src="${sprite}" alt="${p.name}" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;${megaActive?'filter:drop-shadow(0 0 6px rgba(251,146,60,0.6));':''}" onerror="this.style.display='none'" loading="lazy" decoding="async">
         <span style="font-size:12px;font-weight:600;">${displayName}</span>
         ${summaryBadges.join(' · ')}
         <div style="flex:1;"></div>
@@ -5533,7 +5656,7 @@ function renderTeam(){
       : `<input type="text" value="${cur}" oninput="setTeamAbility(${p.id},this.value)" placeholder="특성" style="font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--fg);padding:4px 8px;font-family:'Noto Sans KR',sans-serif;width:100px;">`;
     return `
     <div class="team-slot">
-      <img class="poke-sprite" src="${spriteUrl(p.id)}" alt="${p.name}" onerror="this.style.opacity=0">
+      <img class="poke-sprite" src="${spriteUrl(p.id)}" alt="${p.name}" onerror="this.style.opacity=0" loading="lazy" decoding="async">
       <span style="font-family:var(--mono);font-size:11px;color:var(--muted);min-width:36px;">No.${p.id}</span>
       <span class="name">${p.name}</span>
       <div class="poke-types">${p.type.map(typeBadge).join('')}</div>
@@ -5654,7 +5777,7 @@ function buildItemGrid(who,searchQ){
   let headerHtml='';
   if(cur&&cur!=='없음'){
     const imgUrl=ITEM_IMAGE_MAP[cur];
-    const imgTag=imgUrl?`<img src="${imgUrl}" style="width:14px;height:14px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px;" onerror="this.style.display='none'">`:'';
+    const imgTag=imgUrl?`<img src="${imgUrl}" alt="${cur}" style="width:14px;height:14px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px;" onerror="this.style.display='none'" loading="lazy" decoding="async">`:'';
     headerHtml=`<div style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;background:rgba(255,214,0,0.10);border:1px solid rgba(255,214,0,0.4);border-radius:6px;padding:5px 10px;margin-bottom:4px;">
       <span style="color:var(--accent);font-size:12px;font-weight:600;">${imgTag}선택: ${cur}</span>
       <button onclick="setItem('${who}','없음')" title="도구 해제" style="background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 6px;line-height:1;border-radius:4px;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--muted)'">✕</button>
@@ -5683,7 +5806,7 @@ function buildItemGrid(who,searchQ){
     btn.className='item-btn'+(cur===item?' active':'');
     btn.onclick=function(){setItem(who,item);};
     const imgUrl=ITEM_IMAGE_MAP[item];
-    if(imgUrl){const img=document.createElement('img');img.src=imgUrl;img.style.cssText='width:16px;height:16px;object-fit:contain;image-rendering:pixelated;margin-right:3px;vertical-align:middle;';img.onerror=function(){this.style.display='none';};btn.appendChild(img);}
+    if(imgUrl){const img=document.createElement('img');img.loading='lazy';img.decoding='async';img.src=imgUrl;img.style.cssText='width:16px;height:16px;object-fit:contain;image-rendering:pixelated;margin-right:3px;vertical-align:middle;';img.onerror=function(){this.style.display='none';};btn.appendChild(img);}
     btn.appendChild(document.createTextNode(item));
     grid.appendChild(btn);
   });
@@ -5717,17 +5840,36 @@ initSampleTagFilters();
 renderSamples();
 
 
-// ===== API 키 관리 =====
+// ===== API 키 관리 (H4: 세션 모드 + 메모리 보관) =====
 const WORKER_URL = 'https://rotomuwiki-api.kljjgu02.workers.dev';
-function getApiKey() { return localStorage.getItem('rotomuwiki_apikey') || ''; }
+let __sessionApiKey = ''; // 세션 모드일 때 메모리에만 보관
+
+function getApiKey() {
+  // 우선순위: 세션 메모리 > localStorage
+  if (__sessionApiKey) return __sessionApiKey;
+  return localStorage.getItem('rotomuwiki_apikey') || '';
+}
+function maskApiKey(key) {
+  if (!key) return '';
+  if (key.length <= 8) return '****';
+  return key.slice(0, 7) + '...' + key.slice(-4);
+}
 function openApiKeyModal() {
   const key = getApiKey();
   const input = document.getElementById('apikey-input');
   const status = document.getElementById('apikey-status');
+  const sessionCb = document.getElementById('apikey-session-only');
   if (input) input.value = key;
+  if (sessionCb) sessionCb.checked = !!__sessionApiKey && !localStorage.getItem('rotomuwiki_apikey');
   if (status) {
-    if (key) { status.className='apikey-status set'; status.textContent='✅ API 키 설정됨: sk-ant-...' + key.slice(-4); }
-    else { status.className='apikey-status unset'; status.textContent='⚠️ API 키 미설정'; }
+    if (key) {
+      const isSession = !!__sessionApiKey && !localStorage.getItem('rotomuwiki_apikey');
+      status.className = 'apikey-status set';
+      status.textContent = `✅ API 키 ${isSession?'(세션 모드)':'(저장됨)'}: ${maskApiKey(key)}`;
+    } else {
+      status.className = 'apikey-status unset';
+      status.textContent = '⚠️ API 키 미설정';
+    }
   }
   document.getElementById('apikey-overlay').classList.add('show');
 }
@@ -5735,7 +5877,16 @@ function closeApiKeyModal() { document.getElementById('apikey-overlay').classLis
 function saveApiKey() {
   const val = document.getElementById('apikey-input').value.trim();
   if (!val) { alert('API 키를 입력해주세요.'); return; }
-  localStorage.setItem('rotomuwiki_apikey', val);
+  const sessionOnly = document.getElementById('apikey-session-only')?.checked;
+  if (sessionOnly) {
+    // 세션 모드: 메모리에만 보관, localStorage 비우기
+    __sessionApiKey = val;
+    localStorage.removeItem('rotomuwiki_apikey');
+  } else {
+    // 영구 저장: localStorage
+    localStorage.setItem('rotomuwiki_apikey', val);
+    __sessionApiKey = ''; // 세션 변수 비움
+  }
   const btn = document.getElementById('apikey-navbar-btn');
   if (btn) btn.classList.add('active');
   closeApiKeyModal();
@@ -5743,6 +5894,15 @@ function saveApiKey() {
 function toggleApiKeyVisibility() {
   const input = document.getElementById('apikey-input');
   input.type = input.type === 'password' ? 'text' : 'password';
+}
+function clearApiKey() {
+  // 키 완전 삭제 (영구 + 세션 둘 다)
+  localStorage.removeItem('rotomuwiki_apikey');
+  __sessionApiKey = '';
+  const btn = document.getElementById('apikey-navbar-btn');
+  if (btn) btn.classList.remove('active');
+  alert('API 키가 삭제되었습니다.');
+  closeApiKeyModal();
 }
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('apikey-navbar-btn');
@@ -5937,7 +6097,7 @@ function runFreeGuide(pokeId, megaVariant) {
         var spriteUrl = 'https://pkmnchamps.github.io/images/sprites/' + spriteId + '_profile.png';
         var roleText = m.build && m.build.role ? m.build.role : '';
         return '<span class="g-tag ' + tagClass + '" style="flex-direction:row;align-items:center;gap:8px;padding:8px 12px;">'
-          + '<img src="' + spriteUrl + '" style="width:40px;height:40px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;" onerror="this.style.display=\'none\';" />'
+          + '<img src="' + spriteUrl + '" alt="포켓몬" style="width:40px;height:40px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;" onerror="this.style.display=\'none\';"  loading="lazy" decoding="async"/>'
           + '<span style="display:flex;flex-direction:column;gap:2px;min-width:0;">'
             + '<span style="font-weight:600;display:inline-flex;align-items:center;">' + typeWrap + m.name + '</span>'
             + (roleText ? '<span style="font-size:10px;opacity:.7;font-weight:400;letter-spacing:.2px;">' + roleText + '</span>' : '')
