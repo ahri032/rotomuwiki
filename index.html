@@ -2129,7 +2129,7 @@ function typeBadge(t){
 // 기본: POKEMON[id] 형태. 리전폼/메가는 baseId + formType + formKey
 // DATA_VERSION과 함께 관리. 모든 legacy DB는 이 트리에서 자동 생성됨.
 
-const DATA_VERSION = '2026-04-29-bugfix3';
+const DATA_VERSION = '2026-04-29-ui1';
 
 const POKEMON = {
   10129:{name:'켄타로스 (팔데아 화염)',type:['격투','불꽃'],gen:9,stats:{hp:75,atk:110,def:105,spa:30,spd:70,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/tauros-paldea-blaze-breed.png',abilities:['위협','되새김질','분노의경혈'],moves:[],baseId:128,formType:'regional',formKey:'paldea-blaze'},
@@ -2548,6 +2548,18 @@ if (typeof window !== 'undefined' && (location.hostname === 'localhost' || locat
 
 function spriteUrl(id){if(FORM_SPRITE[id]){return FORM_SPRITE[id];}const o=SPRITE_OVERRIDE[id]||id;const pad=String(o).padStart(4,'0');return`https://pkmnchamps.github.io/images/sprites/${pad}_profile.png`;}
 function statColor(v){if(v>=120)return'#5b8af0';if(v>=100)return'#4ade80';if(v>=80)return'#f5c842';if(v>=60)return'#fb923c';return'#f87171';}
+// 능력치 종류별 색상 (pkmnchamps 표준)
+function statColorByType(k){
+  switch(k){
+    case 'hp':  return '#f87171'; // 빨강
+    case 'atk': return '#fb923c'; // 주황
+    case 'def': return '#f5c842'; // 노랑
+    case 'spa': return '#4dabf7'; // 파랑
+    case 'spd': return '#4ade80'; // 청록(초록)
+    case 'spe': return '#c084fc'; // 보라
+    default: return '#5b8af0';
+  }
+}
 
 // ===== 메가진화 데이터 (POKEMON 트리에서 자동 생성) =====
 // ⚠️ MEGA_DATA는 POKEMON 트리의 단일 원본에서 자동 파생됨.
@@ -2964,10 +2976,11 @@ function renderStatBars(stats){
   const keys=[{k:'hp',l:'HP'},{k:'atk',l:'ATK'},{k:'def',l:'DEF'},{k:'spa',l:'SPA'},{k:'spd',l:'SPD'},{k:'spe',l:'SPE'}];
   return keys.map(({k,l})=>{
     const v=stats[k],pct=Math.min(100,Math.round(v/180*100));
+    const c=statColorByType(k);
     return `<div class="stat-row">
       <span class="stat-label">${l}</span>
-      <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${statColor(v)};"></div></div>
-      <span class="stat-val" style="color:${statColor(v)};">${v}</span>
+      <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${c};"></div></div>
+      <span class="stat-val" style="color:${c};">${v}</span>
     </div>`;
   }).join('');
 }
