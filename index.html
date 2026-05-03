@@ -229,6 +229,14 @@ h1{display:none;}
   .page-header-title{font-size:22px;font-weight:800;color:var(--text);margin:0 0 6px 0;letter-spacing:-0.5px;display:flex;align-items:center;gap:10px;}
   .page-header-icon{font-size:24px;}
   .page-header-desc{font-size:13px;color:var(--muted);margin:0;line-height:1.5;}
+  /* === 승률 분석 빈 상태 안내 === */
+  .wr-empty-card{margin-top:20px;padding:32px 24px;background:linear-gradient(135deg,rgba(91,138,240,0.06),rgba(192,132,252,0.06));border:1px solid var(--border);border-radius:var(--radius);text-align:center;}
+  .wr-empty-icon{font-size:48px;margin-bottom:12px;opacity:0.85;}
+  .wr-empty-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
+  .wr-empty-desc{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+  .wr-empty-tips{display:flex;flex-direction:column;gap:10px;max-width:520px;margin:0 auto;text-align:left;background:rgba(0,0,0,0.15);border-radius:10px;padding:16px 20px;}
+  .wr-tip-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text);line-height:1.5;}
+  .wr-tip-bullet{flex-shrink:0;font-size:16px;line-height:1.3;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 input,select{
@@ -724,7 +732,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
         <!-- 내 포켓몬 -->
         <div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:14px;">
-          <div style="font-size:11px;color:var(--accent);font-family:var(--mono);letter-spacing:2px;margin-bottom:8px;">MY POKÉMON</div>
+          <div style="font-size:11px;color:var(--accent);font-family:var(--mono);letter-spacing:2px;margin-bottom:8px;">내 포켓몬</div>
           <div style="position:relative;margin-bottom:8px;">
             <input id="wr-my-search" type="text" placeholder="포켓몬 검색..." autocomplete="off"
               oninput="filterWrList('my',this.value)" onfocus="showWrList('my')"
@@ -788,7 +796,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
         <!-- 상대 포켓몬 -->
         <div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:14px;">
-          <div style="font-size:11px;color:#f87171;font-family:var(--mono);letter-spacing:2px;margin-bottom:8px;">OPPONENT</div>
+          <div style="font-size:11px;color:#f87171;font-family:var(--mono);letter-spacing:2px;margin-bottom:8px;">상대 포켓몬</div>
           <div style="position:relative;margin-bottom:8px;">
             <input id="wr-op-search" type="text" placeholder="포켓몬 검색..." autocomplete="off"
               oninput="filterWrList('op',this.value)" onfocus="showWrList('op')"
@@ -846,6 +854,18 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
       <!-- 결과 -->
       <div id="wr-result" style="display:none;"></div>
+
+      <!-- 빈 상태 안내 (결과 없을 때) -->
+      <div id="wr-empty-hint" class="wr-empty-card">
+        <div class="wr-empty-icon">⚔️</div>
+        <div class="wr-empty-title">두 포켓몬을 선택하면 승률이 표시됩니다</div>
+        <div class="wr-empty-desc">능력치, 도구, 특성, 기술 효과를 모두 반영해 1:1 대면 승률을 시뮬레이션합니다.</div>
+        <div class="wr-empty-tips">
+          <div class="wr-tip-row"><span class="wr-tip-bullet">💡</span><span>스피드가 빠른 쪽이 선공권을 가져 유리합니다</span></div>
+          <div class="wr-tip-row"><span class="wr-tip-bullet">⚡</span><span>특성·도구·전장 효과를 적용하면 결과가 크게 달라질 수 있습니다</span></div>
+          <div class="wr-tip-row"><span class="wr-tip-bullet">🎯</span><span>4기술 자동 선택 — 가장 효과적인 기술 1턴 사용 기준</span></div>
+        </div>
+      </div>
     </div>
 
     <!-- AI 파티 분석 -->
@@ -855,7 +875,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
         <!-- 내 파티 -->
         <div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:14px;">
-          <div style="font-size:11px;color:var(--accent);font-family:var(--mono);letter-spacing:2px;margin-bottom:10px;">MY PARTY <span id="ai-my-count" style="color:var(--muted);">0/6</span></div>
+          <div style="font-size:11px;color:var(--accent);font-family:var(--mono);letter-spacing:2px;margin-bottom:10px;">내 파티 <span id="ai-my-count" style="color:var(--muted);">0/6</span></div>
           <div id="wr-ai-party" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;min-height:40px;"></div>
           <div style="display:flex;gap:6px;align-items:center;">
             <div style="position:relative;flex:1;">
@@ -872,7 +892,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
         <!-- 상대 파티 -->
         <div style="background:var(--surface);border:1px solid rgba(248,113,113,.3);border-radius:var(--radius);padding:14px;">
-          <div style="font-size:11px;color:#f87171;font-family:var(--mono);letter-spacing:2px;margin-bottom:10px;">OPPONENT PARTY <span id="ai-op-count" style="color:var(--muted);">0/6</span></div>
+          <div style="font-size:11px;color:#f87171;font-family:var(--mono);letter-spacing:2px;margin-bottom:10px;">상대 파티 <span id="ai-op-count" style="color:var(--muted);">0/6</span></div>
           <div id="wr-op-party" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;min-height:40px;"></div>
           <div style="display:flex;gap:6px;align-items:center;">
             <div style="position:relative;flex:1;">
@@ -2162,7 +2182,7 @@ function typeBadge(t){
 // 기본: POKEMON[id] 형태. 리전폼/메가는 baseId + formType + formKey
 // DATA_VERSION과 함께 관리. 모든 legacy DB는 이 트리에서 자동 생성됨.
 
-const DATA_VERSION = '2026-04-29-ui2';
+const DATA_VERSION = '2026-04-29-ui3';
 
 const POKEMON = {
   10129:{name:'켄타로스 (팔데아 화염)',type:['격투','불꽃'],gen:9,stats:{hp:75,atk:110,def:105,spa:30,spd:70,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/tauros-paldea-blaze-breed.png',abilities:['위협','되새김질','분노의경혈'],moves:[],baseId:128,formType:'regional',formKey:'paldea-blaze'},
@@ -3019,6 +3039,22 @@ function renderStatBars(stats){
 }
 
 
+
+// === 승률 분석 빈 상태 자동 토글 ===
+(function setupWinrateEmptyToggle(){
+  setTimeout(()=>{
+    const result = document.getElementById('wr-result');
+    const hint = document.getElementById('wr-empty-hint');
+    if (!result || !hint) return;
+    const update = () => {
+      // 결과 영역에 내용이 있고 보이면 안내 숨김
+      const hasContent = result.style.display !== 'none' && result.children.length > 0;
+      hint.style.display = hasContent ? 'none' : '';
+    };
+    new MutationObserver(update).observe(result, {attributes:true, childList:true, attributeFilter:['style']});
+    update();
+  }, 100);
+})();
 
 // === 메가 동기화: 상세 → 데미지 계산기 ===
 function applyDetailToCalc(id, megaVariant) {
