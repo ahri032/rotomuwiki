@@ -2126,6 +2126,16 @@ const MOVE_DATA = {
   "집게해머":{"power":100,"type":"물","cat":"물리","acc":90,"pp":12}
 };
 
+// 기술 라벨용 강화 색상 헬퍼 (bg 13% → 27%, border 33% → 67%)
+function moveTypeColor(type){
+  const tc = (typeof TYPE_COLORS !== 'undefined') ? TYPE_COLORS[type] : null;
+  if (!tc) return null;
+  return {
+    bg: tc.bg.replace(/22$/, '44'),
+    border: tc.border.replace(/55$/, 'aa'),
+    text: tc.text
+  };
+}
 const TYPE_COLORS={
   노말:{bg:'#A8A77A22',text:'#c8c47a',border:'#A8A77A55'},
   불꽃:{bg:'#EE813022',text:'#f4a060',border:'#EE813055'},
@@ -2182,7 +2192,7 @@ function typeBadge(t){
 // 기본: POKEMON[id] 형태. 리전폼/메가는 baseId + formType + formKey
 // DATA_VERSION과 함께 관리. 모든 legacy DB는 이 트리에서 자동 생성됨.
 
-const DATA_VERSION = '2026-04-29-ui3';
+const DATA_VERSION = '2026-04-29-ui4';
 
 const POKEMON = {
   10129:{name:'켄타로스 (팔데아 화염)',type:['격투','불꽃'],gen:9,stats:{hp:75,atk:110,def:105,spa:30,spd:70,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/tauros-paldea-blaze-breed.png',abilities:['위협','되새김질','분노의경혈'],moves:[],baseId:128,formType:'regional',formKey:'paldea-blaze'},
@@ -3489,7 +3499,8 @@ function renderMoveSlots(){
     const mv_name = calcState.atk.selectedMoves[i];
     if(mv_name){
       const mv = MOVE_DATA[mv_name] || {power:60,type:'노말',cat:'물리'};
-      const typeColor = TYPE_COLORS[mv.type] ? `background:${TYPE_COLORS[mv.type].bg};border-color:${TYPE_COLORS[mv.type].border};` : '';
+      const _tc = moveTypeColor(mv.type);
+      const typeColor = _tc ? `background:${_tc.bg};border-color:${_tc.border};` : '';
       el.className = 'move-slot filled';
       const catBadgeColor = mv.cat==='물리'?'#f4934a':mv.cat==='특수'?'#4d83f5':'#6b80a8';
       el.innerHTML = `<span class="slot-clear" onclick="event.stopPropagation();clearMoveSlot(${i})">×</span>
@@ -4190,7 +4201,7 @@ function renderSamples(){
           ${p.type.map(typeBadge).join('')}
         </div>
         <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;">
-          ${s.moves.map(m=>{const mv=MOVE_DATA[m];const tc=mv?TYPE_COLORS[mv.type]:null;return`<span style="font-size:11px;padding:2px 7px;border-radius:8px;background:${tc?tc.bg:'rgba(255,255,255,0.05)'};color:${tc?tc.text:'#888'};border:1px solid ${tc?tc.border:'rgba(255,255,255,0.1)'};">${m}</span>`}).join('')}
+          ${s.moves.map(m=>{const mv=MOVE_DATA[m];const tc=mv?moveTypeColor(mv.type):null;return`<span style="font-size:11px;padding:2px 7px;border-radius:8px;background:${tc?tc.bg:'rgba(255,255,255,0.05)'};color:${tc?tc.text:'#888'};border:1px solid ${tc?tc.border:'rgba(255,255,255,0.1)'};font-weight:600;">${m}</span>`}).join('')}
         </div>
       </div>
       <div style="text-align:right;flex-shrink:0;margin-left:8px;">
@@ -4263,7 +4274,7 @@ function showSampleDetail(idx){
           <span><span style="color:var(--muted);font-size:11px;">성격 </span><b style="color:#f5c842;">${s.nature}</b> ↑${natUpLabel[s.up]||s.up} ↓${natUpLabel[s.down]||s.down}</span>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
-          ${s.moves.map(m=>{const mv=MOVE_DATA[m];const tc=mv?TYPE_COLORS[mv.type]:null;return`<span style="padding:4px 10px;border-radius:8px;font-size:12px;background:${tc?tc.bg:'rgba(255,255,255,0.05)'};color:${tc?tc.text:'#888'};border:1px solid ${tc?tc.border:'rgba(255,255,255,0.1)'};">${m}${mv&&mv.cat!=='변화'?` <span style="font-size:10px;opacity:.7;">${mv.power}</span>`:''}</span>`}).join('')}
+          ${s.moves.map(m=>{const mv=MOVE_DATA[m];const tc=mv?moveTypeColor(mv.type):null;return`<span style="padding:4px 10px;border-radius:8px;font-size:12px;background:${tc?tc.bg:'rgba(255,255,255,0.05)'};color:${tc?tc.text:'#888'};border:1px solid ${tc?tc.border:'rgba(255,255,255,0.1)'};font-weight:600;">${m}${mv&&mv.cat!=='변화'?` <span style="font-size:10px;opacity:.7;">${mv.power}</span>`:''}</span>`}).join('')}
         </div>
       </div>
     </div>
