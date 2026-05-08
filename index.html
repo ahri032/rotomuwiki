@@ -502,6 +502,21 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 .weak-badge{font-size:12px;padding:4px 10px;border-radius:20px;}
 .eff-label{font-size:14px;font-weight:500;margin-top:6px;}
 .total-chip{font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:600;color:var(--accent);background:rgba(77,131,245,.12);padding:3px 8px;border-radius:4px;margin-left:8px;}
+/* ===== Tier 2-1: BST 강조 (pkmnchamps 패턴) ===== */
+.bst-stats-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:12px;}
+.bst-stats-header .card-title{margin-bottom:0;}
+.bst-box{text-align:right;line-height:1.1;flex-shrink:0;}
+.bst-label{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1.5px;margin-bottom:2px;}
+.bst-value{font-family:'Noto Sans KR',sans-serif;font-size:28px;font-weight:800;color:var(--text);letter-spacing:-.5px;line-height:1;}
+.bst-value.mega{color:var(--accent);}
+.bst-compare{display:inline-block;font-family:'Noto Sans KR',sans-serif;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-top:4px;letter-spacing:.2px;}
+.bst-compare.up{background:rgba(34,197,94,.15);color:#4ade80;}
+.bst-compare.down{background:rgba(148,163,184,.12);color:#94a3b8;}
+.bst-compare.eq{background:rgba(148,163,184,.10);color:#94a3b8;}
+@media (max-width:480px){
+  .bst-value{font-size:24px;}
+  .bst-label{font-size:9px;}
+}
 .gen-filter-btn{padding:5px 10px;font-size:11px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--muted);cursor:pointer;transition:all .15px;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
 .gen-filter-btn:hover{border-color:var(--border3);color:var(--text);}
 .gen-filter-btn.active{background:rgba(77,131,245,.15);border-color:var(--accent);color:var(--accent);font-weight:600;}
@@ -2198,7 +2213,7 @@ function typeBadge(t){
 // 기본: POKEMON[id] 형태. 리전폼/메가는 baseId + formType + formKey
 // DATA_VERSION과 함께 관리. 모든 legacy DB는 이 트리에서 자동 생성됨.
 
-const DATA_VERSION = '2026-04-29-fix5';
+const DATA_VERSION = '2026-04-29-t21';
 
 const POKEMON = {
   10129:{name:'켄타로스 (팔데아 화염)',type:['격투','불꽃'],gen:9,stats:{hp:75,atk:110,def:105,spa:30,spd:70,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/tauros-paldea-blaze-breed.png',abilities:['위협','되새김질','분노의경혈'],moves:[],baseId:128,formType:'regional',formKey:'paldea-blaze'},
@@ -3174,7 +3189,21 @@ function showDetail(id,megaVariant){
           </div>
         </div>
       </div>
-      <div class="card-title">종족값 <span class="total-chip">합계 ${total}</span></div>
+      ${(function(){
+        const avgBst = isMega ? 602 : 501;
+        const diff = total - avgBst;
+        const diffClass = diff > 10 ? 'up' : (diff < -10 ? 'down' : 'eq');
+        const diffSign = diff > 0 ? '+' : (diff < 0 ? '' : '±');
+        const diffText = diff === 0 ? '평균' : `평균 ${diffSign}${diff}`;
+        return `<div class="bst-stats-header">
+          <div class="card-title">종족값</div>
+          <div class="bst-box">
+            <div class="bst-label">BST</div>
+            <div class="bst-value${isMega?' mega':''}">${total}</div>
+            <div class="bst-compare ${diffClass}">${diffText}</div>
+          </div>
+        </div>`;
+      })()}
       ${renderStatBars(displayP.stats)}
 
     <!-- 특성 섹션 -->
