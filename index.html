@@ -249,17 +249,21 @@ input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(77
 input::placeholder{color:var(--muted);}
 select option{background:var(--surface2);}
 
+/* 메인 탭 검색창 max-width 600px (가독성 ↑, 가운데 정렬) */
+#search-input, #item-search { max-width: 600px; display: block; margin-left: auto; margin-right: auto; }
+#team-search { max-width: 600px; display: block; margin-left: auto; margin-right: auto; margin-top: 8px; }
+
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;position:relative;overflow:hidden;transition:background .3s,border-color .3s;}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);}
 .card-title{font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px;color:var(--accent);margin-bottom:14px;opacity:.9;}
 
 .badge{display:inline-block;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;letter-spacing:.5px;}
 
-.poke-row{display:flex;align-items:center;gap:12px;padding:8px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:5px;cursor:pointer;transition:all .18s;}
+.poke-row{display:flex;align-items:center;gap:10px;padding:5px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:4px;cursor:pointer;transition:all .18s;}
 .poke-row:hover{border-color:var(--border2);background:var(--surface3);transform:translateX(2px);}
 .poke-num{font-family:var(--mono);font-size:11px;color:var(--muted);min-width:38px;}
 .poke-name{font-size:14px;font-weight:500;flex:1;}
-.poke-sprite{width:52px;height:52px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));}
+.poke-sprite{width:40px;height:40px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));}
 .poke-sprite-lg{width:120px;height:120px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));}
 .poke-types{display:flex;gap:4px;}
 
@@ -285,15 +289,17 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 .calc-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;position:relative;overflow:hidden;}
 /* 데미지 탭 가로 2열 레이아웃 */
 @media (min-width: 900px){
-  #tab-dmg.active{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:12px;align-items:start;}
+  #tab-dmg.active{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto auto;gap:12px;align-items:start;}
   #tab-dmg > .calc-section{margin-bottom:0;}
-  /* 좌측 공격 섹션: 1열, 1~2행 차지 (방어+전장효과 합산 높이만큼) */
-  #tab-dmg > .calc-section:nth-of-type(1){grid-column:1;grid-row:1 / span 2;}
-  /* 우측 1행: 방어 섹션 */
-  #tab-dmg > .calc-section:nth-of-type(2){grid-column:2;grid-row:1;}
-  /* 우측 2행: 전장효과 (공격 섹션 옆 빈공간 채움) */
-  #tab-dmg > .calc-section:nth-of-type(3){grid-column:2;grid-row:2;}
-  #tab-dmg > #dmg-result{grid-column:1 / -1;grid-row:3;}
+  /* 페이지 헤더는 전체 폭 (1행 0열~끝열) */
+  #tab-dmg > .page-header{grid-column:1 / -1;grid-row:1;margin-bottom:0;padding-bottom:8px;}
+  /* 좌측 공격 섹션: 1열, 2~3행 차지 (방어+전장효과 합산 높이만큼) */
+  #tab-dmg > .calc-section:nth-of-type(1){grid-column:1;grid-row:2 / span 2;}
+  /* 우측 2행: 방어 섹션 */
+  #tab-dmg > .calc-section:nth-of-type(2){grid-column:2;grid-row:2;}
+  /* 우측 3행: 전장효과 (공격 섹션 옆 빈공간 채움) */
+  #tab-dmg > .calc-section:nth-of-type(3){grid-column:2;grid-row:3;}
+  #tab-dmg > #dmg-result{grid-column:1 / -1;grid-row:4;}
   /* 모바일 친화: 능력 포인트 그리드, 도구 그리드 등이 좁아진 컬럼에 맞게 */
   #tab-dmg .calc-section .ev-grid{grid-template-columns:repeat(3,1fr);}
   #tab-dmg .calc-section select,
@@ -595,7 +601,7 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
   .calc-section { padding: 8px !important; }
   .ev-grid { grid-template-columns: repeat(2,1fr) !important; }
   .item-grid { grid-template-columns: 1fr !important; }
-  .poke-row { padding: 6px 10px !important; gap: 8px !important; font-size: 12px; }
+  .poke-row { padding: 4px 10px !important; gap: 8px !important; font-size: 12px; }
   .poke-name { font-size: 13px !important; }
   .poke-num { font-size: 11px !important; }
   .poke-sprite { width: 36px !important; height: 36px !important; }
@@ -636,9 +642,9 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
       <input class="apikey-input" id="apikey-input" type="password" placeholder="sk-ant-..." autocomplete="off" />
       <button class="apikey-toggle" onclick="toggleApiKeyVisibility()">👁</button>
     </div>
-    <label for="apikey-session-only" style="display:flex;align-items:flex-start;gap:8px;margin:8px 0;font-size:12px;color:var(--muted);cursor:pointer;line-height:1.5;">
-      <input type="checkbox" id="apikey-session-only" style="cursor:pointer;flex-shrink:0;margin-top:2px;">
-      <span style="flex:1 1 auto;min-width:0;">이 브라우저에 저장하지 않고 <strong>이번 세션에만</strong> 사용 (탭 닫으면 사라짐)</span>
+    <label for="apikey-session-only" style="display:grid;grid-template-columns:auto 1fr;align-items:start;gap:8px;margin:8px 0;font-size:12px;color:var(--muted);cursor:pointer;line-height:1.5;">
+      <input type="checkbox" id="apikey-session-only" style="cursor:pointer;margin-top:2px;">
+      <span>이 브라우저에 저장하지 않고 <strong>이번 세션에만</strong> 사용 (탭 닫으면 사라짐)</span>
     </label>
     <div style="font-size:11px;color:var(--muted);background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.3);border-radius:6px;padding:8px 10px;margin-bottom:10px;line-height:1.5;">
       <strong style="color:#fb923c;">⚠ 보안 안내:</strong><br>
@@ -695,10 +701,10 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
   <!-- STATS -->
   <div id="tab-stats" class="panel">
-    <div class="page-header">
+    <header class="page-header">
       <h1 class="page-header-title"><span class="page-header-icon">📊</span>배틀 통계</h1>
       <p class="page-header-desc">싱글·더블 배틀의 채용률 순위와 활용법을 한눈에 확인하세요.</p>
-    </div>
+    </header>
     <div style="display:flex;gap:4px;margin-bottom:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:4px;">
       <button class="tab active" id="stats-tab-single" onclick="switchStatsTab('single',this)" style="flex:1;font-size:13px;">⚔️ 싱글 배틀</button>
       <button class="tab" id="stats-tab-double" onclick="switchStatsTab('double',this)" style="flex:1;font-size:13px;">👥 더블 배틀</button>
@@ -715,10 +721,10 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
   <!-- WINRATE -->
   <div id="tab-winrate" class="panel">
-    <div class="page-header">
+    <header class="page-header">
       <h1 class="page-header-title"><span class="page-header-icon">🏆</span>승률 분석</h1>
       <p class="page-header-desc">포켓몬 1:1 대면 승률을 시뮬레이션하고, AI로 파티 약점을 분석합니다.</p>
-    </div>
+    </header>
 
     <!-- 서브 탭 -->
     <div style="display:flex;gap:4px;margin-bottom:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:4px;">
@@ -932,10 +938,10 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
   <!-- DEX -->
   <div id="tab-dex" class="panel active">
-    <div class="page-header">
+    <header class="page-header">
       <h1 class="page-header-title"><span class="page-header-icon">📖</span>포켓덱스</h1>
       <p class="page-header-desc">포켓몬 챔피언스에 등장하는 272마리의 종족값, 특성, 메가 진화를 한눈에 확인하세요.</p>
-    </div>
+    </header>
     <input type="text" id="search-input" placeholder="포켓몬 이름 검색..." oninput="searchPokemon(this.value)" autocomplete="off">
     <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;">
       <button class="gen-filter-btn active" onclick="filterGen(0,this)">전체</button>
@@ -956,23 +962,23 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
   <!-- TEAM -->
   <div id="tab-team" class="panel">
-    <div class="page-header">
+    <header class="page-header">
       <h1 class="page-header-title"><span class="page-header-icon">⚔️</span>팀 빌더</h1>
       <p class="page-header-desc">최대 6마리의 파티를 구성하고 타입 상성·역할을 검토하세요.</p>
-    </div>
+    </header>
     <p class="sec">내 파티 <span id="team-count" style="font-family:var(--mono);font-size:11px;color:var(--accent);">0 / 6</span></p>
     <div id="team-list"></div>
-    <input type="text" id="team-search" placeholder="추가할 포켓몬 이름 검색..." oninput="teamSearch(this.value)" autocomplete="off" style="margin-top:8px;">
+    <input type="text" id="team-search" placeholder="추가할 포켓몬 이름 검색..." oninput="teamSearch(this.value)" autocomplete="off">
     <div id="team-search-results"></div>
     <div id="team-analysis"></div>
   </div>
 
   <!-- DMG -->
   <div id="tab-dmg" class="panel">
-    <div class="page-header">
+    <header class="page-header">
       <h1 class="page-header-title"><span class="page-header-icon">🔢</span>데미지 계산기</h1>
       <p class="page-header-desc">공격·방어 포켓몬의 능력치, 성격, 도구, 전장 효과를 적용해 데미지를 정밀 계산합니다.</p>
-    </div>
+    </header>
     <div class="calc-section">
       <div class="calc-label">⚡ 공격 포켓몬</div>
       <div class="calc-pokemon-header">
@@ -1163,10 +1169,10 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
   <!-- ITEMS -->
   <div id="tab-items" class="panel">
-    <div class="page-header">
+    <header class="page-header">
       <h1 class="page-header-title"><span class="page-header-icon">🎒</span>도구 도감</h1>
       <p class="page-header-desc">소지품, 메가스톤, 타입 강화 등 122개 도구의 효과와 가격을 확인하세요.</p>
-    </div>
+    </header>
     <input type="text" id="item-search" placeholder="도구 이름으로 검색..." oninput="searchItems(this.value)" autocomplete="off">
     <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;" id="item-cat-filters">
       <button class="item-cat-btn active" onclick="filterItemCat('전체',this)">전체</button>
@@ -1184,10 +1190,10 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2);box-shadow:0 
 
   <!-- SAMPLES -->
   <div id="tab-samples" class="panel">
-    <div class="page-header">
+    <header class="page-header">
       <h1 class="page-header-title"><span class="page-header-icon">🃏</span>샘플 빌드</h1>
       <p class="page-header-desc">검증된 70개 샘플 빌드로 빠르게 메타에 적응하거나, 나만의 빌드를 만들어 공유하세요.</p>
-    </div>
+    </header>
     <!-- 상단: 포켓몬 검색 + 텍스트 검색 -->
     <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
       <div style="position:relative;flex:1;min-width:180px;">
@@ -2192,7 +2198,7 @@ function typeBadge(t){
 // 기본: POKEMON[id] 형태. 리전폼/메가는 baseId + formType + formKey
 // DATA_VERSION과 함께 관리. 모든 legacy DB는 이 트리에서 자동 생성됨.
 
-const DATA_VERSION = '2026-04-29-ui4';
+const DATA_VERSION = '2026-04-29-fix5';
 
 const POKEMON = {
   10129:{name:'켄타로스 (팔데아 화염)',type:['격투','불꽃'],gen:9,stats:{hp:75,atk:110,def:105,spa:30,spd:70,spe:100},sprite:'https://pkmnchamps.github.io/images/sprites/forms/tauros-paldea-blaze-breed.png',abilities:['위협','되새김질','분노의경혈'],moves:[],baseId:128,formType:'regional',formKey:'paldea-blaze'},
@@ -3114,7 +3120,7 @@ function searchPokemon(q){
     <div class="poke-row" onclick="showDetail(${p.id})">
       <img class="poke-sprite" src="${spriteUrl(p.id)}" alt="${p.name}" onerror="this.style.opacity=0" loading="lazy" decoding="async">
       <span class="poke-num">No.${p.id}</span>
-      ${hasMega(p.id)?'<span style="font-size:10px;color:var(--accent);font-weight:700;background:rgba(255,214,0,0.12);padding:2px 5px;border-radius:4px;margin-right:2px;">MEGA</span>':''}
+      ${hasMega(p.id)?'<span style="font-size:9px;color:#fff;font-weight:800;background:linear-gradient(135deg,#fb923c,#a855f7);padding:2px 7px;border-radius:5px;margin-right:2px;letter-spacing:0.5px;box-shadow:0 1px 3px rgba(168,85,247,0.3);">MEGA</span>':''}
       <span class="poke-name">${p.name}</span>
       <div class="poke-types">${p.type.map(typeBadge).join('')}</div>
       <span style="font-size:11px;color:var(--muted);margin-left:auto;">${p.gen}세대</span>
@@ -3928,7 +3934,7 @@ function __renderPokeRow(p) {
     <span class="poke-num">No.${p.id}</span>
     <span class="poke-name">${p.name}</span>
     <div class="poke-types">${p.type.map(typeBadge).join('')}</div>
-    ${hasMega(p.id)?'<span style="font-size:10px;color:var(--accent);font-weight:700;margin-left:4px;background:rgba(255,214,0,0.12);padding:2px 5px;border-radius:4px;">MEGA</span>':''}
+    ${hasMega(p.id)?'<span style="font-size:9px;color:#fff;font-weight:800;margin-left:4px;background:linear-gradient(135deg,#fb923c,#a855f7);padding:2px 7px;border-radius:5px;letter-spacing:0.5px;box-shadow:0 1px 3px rgba(168,85,247,0.3);">MEGA</span>':''}
     <span style="font-size:11px;color:var(--muted);margin-left:auto;">${p.gen}세대</span>
   </div>`;
 }
