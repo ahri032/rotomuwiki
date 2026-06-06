@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "playerTeam": [
+    {
+      "name": "리자몽",
+      "type": ["불꽃", "비행"],
+      "stats": { "hp": 78, "atk": 84, "def": 78, "spA": 109, "spD": 85, "spe": 100 },
+      "evs":   { "hp": 0,  "atk": 0,  "def": 0,  "spA": 32,  "spD": 0,  "spe": 32 },
+      "nature": "겁쟁이",
+      "up": "spe",
+      "down": "atk",
+      "ability": "맹화",
+      "item": "오랭열매",
+      "moves": ["에어슬래시", "오버히트", "플레어드라이브", "화염방사"]
+    },
+    {
+      "name": "이상해꽃",
+      "type": ["풀", "독"],
+      "stats": { "hp": 80, "atk": 82, "def": 83, "spA": 100, "spD": 100, "spe": 80 },
+      "evs":   { "hp": 32, "atk": 0,  "def": 16, "spA": 32,  "spD": 16, "spe": 0 },
+      "nature": "차분",
+      "up": "spd",
+      "down": "atk",
+      "ability": "심록",
+      "item": "잔반",
+      "moves": ["기가드레인", "수면가루", "맹독", "씨폭탄"]
+    },
+    {
+      "name": "거북왕",
+      "type": ["물"],
+      "stats": { "hp": 79, "atk": 83, "def": 100, "spA": 85, "spD": 105, "spe": 78 },
+      "evs":   { "hp": 32, "atk": 0,  "def": 32, "spA": 0,   "spD": 0,  "spe": 0 },
+      "nature": "차분",
+      "up": "spd",
+      "down": "atk",
+      "ability": "급류",
+      "item": "돌격조끼",
+      "moves": ["하이드로펌프", "냉동빔", "지진", "물기"]
+    },
+    {
+      "name": "피카츄",
+      "type": ["전기"],
+      "stats": { "hp": 35, "atk": 55, "def": 40, "spA": 50, "spD": 50, "spe": 90 },
+      "evs":   { "hp": 0,  "atk": 32, "def": 0,  "spA": 0,  "spD": 0,  "spe": 32 },
+      "nature": "성급",
+      "up": "spe",
+      "down": "atk",
+      "ability": "정전기",
+      "item": "전기구슬",
+      "moves": ["10만볼트", "철꼬리", "전광석화", "볼트태클"]
+    },
+    {
+      "name": "잠만보",
+      "type": ["노말"],
+      "stats": { "hp": 160, "atk": 110, "def": 65, "spA": 65, "spD": 110, "spe": 30 },
+      "evs":   { "hp": 32,  "atk": 32,  "def": 0,  "spA": 0,  "spD": 0,   "spe": 0 },
+      "nature": "고집",
+      "up": "atk",
+      "down": "spa",
+      "ability": "두꺼운지방",
+      "item": "기합의띠",
+      "moves": ["놀라게하기", "지진", "자기암시", "잠자기"]
+    },
+    {
+      "name": "갸라도스",
+      "type": ["물", "비행"],
+      "stats": { "hp": 95, "atk": 125, "def": 79, "spA": 60, "spD": 100, "spe": 81 },
+      "evs":   { "hp": 0,  "atk": 32,  "def": 0,  "spA": 0,  "spD": 0,   "spe": 32 },
+      "nature": "고집",
+      "up": "atk",
+      "down": "spa",
+      "ability": "위협",
+      "item": "용의이빨",
+      "moves": ["폭포오르기", "용의춤", "지진", "얼음엄니"]
+    }
+  ],
+  "enemyTeam": [
+    {
+      "name": "피카츄",
+      "type": ["전기"],
+      "stats": { "hp": 35, "atk": 55, "def": 40, "spA": 50, "spD": 50, "spe": 90 },
+      "ability": "정전기"
+    },
+    {
+      "name": "이상해풀",
+      "type": ["풀", "독"],
+      "stats": { "hp": 60, "atk": 62, "def": 63, "spA": 80, "spD": 80, "spe": 60 },
+      "ability": "심록"
+    },
+    {
+      "name": "꼬부기",
+      "type": ["물"],
+      "stats": { "hp": 44, "atk": 48, "def": 65, "spA": 50, "spD": 64, "spe": 43 },
+      "ability": "급류"
+    },
+    {
+      "name": "캐터피",
+      "type": ["벌레"],
+      "stats": { "hp": 45, "atk": 30, "def": 35, "spA": 20, "spD": 20, "spe": 45 },
+      "ability": "벌레의알림"
+    },
+    {
+      "name": "구구",
+      "type": ["노말", "비행"],
+      "stats": { "hp": 40, "atk": 45, "def": 40, "spA": 35, "spD": 35, "spe": 56 },
+      "ability": "남의떡잎"
+    },
+    {
+      "name": "꼬렛",
+      "type": ["노말"],
+      "stats": { "hp": 30, "atk": 56, "def": 35, "spA": 25, "spD": 35, "spe": 72 },
+      "ability": "도주"
+    }
+  ]
+}
