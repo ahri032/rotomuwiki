@@ -1,13 +1,43 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="ko">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | RotomuBattle</title>
+    <title>로토무위키 | 배틀 시뮬레이터</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="stylesheet" href="TemplateData/style.css?v=639173680953850023">
   </head>
   <body>
+    <header class="battle-header">
+      <a class="battle-brand" href="../" aria-label="로토무위키로 돌아가기">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>로토무위키</span>
+      </a>
+      <div class="battle-mode">
+        <span class="mode-dot" aria-hidden="true"></span>
+        BATTLE SIMULATOR
+      </div>
+      <a class="back-link" href="../">계산기로 돌아가기</a>
+    </header>
+
+    <aside class="battle-rail rail-left" aria-hidden="true">
+      <span class="rail-index">01</span>
+      <span class="rail-label">ROTOMU LAB</span>
+      <span class="rail-line"></span>
+      <span class="radar-ring"><i></i></span>
+      <span class="rail-node node-a"></span>
+      <span class="rail-node node-b"></span>
+    </aside>
+
+    <aside class="battle-rail rail-right" aria-hidden="true">
+      <span class="rail-index">3V3</span>
+      <span class="rail-label">SINGLE BATTLE</span>
+      <span class="rail-line"></span>
+      <span class="signal-bars"><i></i><i></i><i></i><i></i></span>
+      <span class="rail-node node-a"></span>
+      <span class="rail-node node-b"></span>
+    </aside>
+
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
@@ -22,6 +52,11 @@
         <div id="unity-fullscreen-button"></div>
         <div id="unity-build-title">RotomuBattle</div>
       </div>
+    </div>
+    <div class="page-status" aria-hidden="true">
+      <span>POKÉMON CHAMPIONS</span>
+      <i></i>
+      <span>DAMAGE ANALYSIS SYSTEM</span>
     </div>
     <script>
       var canvas = document.querySelector("#unity-canvas");
